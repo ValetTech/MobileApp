@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "620897060016",
+    "firebase_url": "https://one-button-63ff9-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "one-button-63ff9",
+    "storage_bucket": "one-button-63ff9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620897060016:android:0e2722535719bd181c6775",
+        "android_client_info": {
+          "package_name": "com.flutterflow.valet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "620897060016-ileoeuuorlg228sp9i1cu5r5rrdr3qnt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPc9mz_AJOj-C6VLLX4JVOF96TtWKdFIA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "620897060016-ileoeuuorlg228sp9i1cu5r5rrdr3qnt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "620897060016-obvn7mha47mncp073qiq0bc9nl57kra7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.flutterflow.valet"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
