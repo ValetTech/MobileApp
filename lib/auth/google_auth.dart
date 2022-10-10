@@ -23,7 +23,7 @@ Future<User?> signInWithGoogle(BuildContext context) async {
         idToken: auth.idToken, accessToken: auth.accessToken);
     return FirebaseAuth.instance.signInWithCredential(credential);
   };
-  return signInOrCreateAccount(context, signInFunc);
+  return signInOrCreateAccount(context, signInFunc, 'GOOGLE');
 }
 
 Future signOutWithGoogle() => _googleSignIn.signOut();

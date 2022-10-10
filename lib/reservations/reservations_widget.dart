@@ -1,24 +1,27 @@
 import '../backend/api_requests/api_calls.dart';
 import '../components/calendar_picker_valet_widget.dart';
 import '../components/end_drawer_container_widget.dart';
-import '../components/header_search_widget.dart';
 import '../components/new_reservation_widget.dart';
+import '../components/section_header_widget.dart';
 import '../flutter_flow/flutter_flow_choice_chips.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../view_reservation/view_reservation_widget.dart';
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ReservationsWidget extends StatefulWidget {
-  const ReservationsWidget({Key? key}) : super(key: key);
+  const ReservationsWidget({
+    Key? key,
+    this.pageName,
+  }) : super(key: key);
+
+  final String? pageName;
 
   @override
   _ReservationsWidgetState createState() => _ReservationsWidgetState();
@@ -34,6 +37,7 @@ class _ReservationsWidgetState extends State<ReservationsWidget> {
     super.initState();
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      setState(() => FFAppState().currentPage = 'Reservations');
       setState(() => FFAppState().resMinDate = getCurrentTimestamp);
     });
 
@@ -47,58 +51,22 @@ class _ReservationsWidgetState extends State<ReservationsWidget> {
         color: FlutterFlowTheme.of(context).primaryColor,
         child: Scaffold(
           key: scaffoldKey,
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(60),
-            child: AppBar(
-              backgroundColor: FlutterFlowTheme.of(context).white,
-              automaticallyImplyLeading: false,
-              flexibleSpace: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(16, 0, 50, 10),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    HeaderSearchWidget(),
-                  ],
-                ),
-              ),
-              actions: [
-                FlutterFlowIconButton(
-                  borderColor: Colors.transparent,
-                  borderRadius: 30,
-                  borderWidth: 1,
-                  buttonSize: 60,
-                  icon: Icon(
-                    Icons.menu,
-                    color: FlutterFlowTheme.of(context).iconGray,
-                    size: 30,
-                  ),
-                  onPressed: () async {
-                    scaffoldKey.currentState!.openEndDrawer();
-                  },
-                ),
-              ],
-              elevation: 6,
-            ),
-          ),
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () async {
               await showModalBottomSheet(
                 isScrollControlled: true,
-                backgroundColor: Colors.transparent,
                 context: context,
                 builder: (context) {
                   return Padding(
                     padding: MediaQuery.of(context).viewInsets,
                     child: Container(
-                      height: 400,
+                      height: MediaQuery.of(context).size.height * 0.85,
                       child: NewReservationWidget(),
                     ),
                   );
                 },
-              );
+              ).then((value) => setState(() {}));
             },
             backgroundColor: FlutterFlowTheme.of(context).secondaryColor,
             icon: Icon(
@@ -136,6 +104,38 @@ class _ReservationsWidgetState extends State<ReservationsWidget> {
                   ],
                 ),
               ],
+            ),
+          ),
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(60),
+            child: AppBar(
+              backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+              automaticallyImplyLeading: false,
+              leading: Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+                child: Container(
+                  width: 200,
+                  decoration: BoxDecoration(),
+                  child: SectionHeaderWidget(),
+                ),
+              ),
+              actions: [
+                FlutterFlowIconButton(
+                  borderColor: Colors.transparent,
+                  borderRadius: 30,
+                  borderWidth: 1,
+                  buttonSize: 60,
+                  icon: Icon(
+                    Icons.menu,
+                    color: FlutterFlowTheme.of(context).iconGray,
+                    size: 30,
+                  ),
+                  onPressed: () async {
+                    scaffoldKey.currentState!.openEndDrawer();
+                  },
+                ),
+              ],
+              elevation: 6,
             ),
           ),
           body: SafeArea(
@@ -208,10 +208,6 @@ class _ReservationsWidgetState extends State<ReservationsWidget> {
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             16, 0, 16, 0),
                                         child: FlutterFlowChoiceChips(
-                                          initiallySelected:
-                                              choiceChipsValues != null
-                                                  ? choiceChipsValues
-                                                  : [],
                                           options: FFAppState()
                                               .selectedResArea
                                               .map((label) => ChipData(label))
@@ -403,110 +399,197 @@ class _ReservationsWidgetState extends State<ReservationsWidget> {
                                               (context, reservationIndex) {
                                             final reservationItem =
                                                 reservation[reservationIndex];
-                                            return InkWell(
-                                              onTap: () async {
-                                                await Navigator.push(
-                                                  context,
-                                                  PageTransition(
-                                                    type: PageTransitionType
-                                                        .rightToLeft,
-                                                    duration: Duration(
-                                                        milliseconds: 300),
-                                                    reverseDuration: Duration(
-                                                        milliseconds: 300),
-                                                    child:
-                                                        ViewReservationWidget(
-                                                      resFullName: getJsonField(
-                                                        listViewGETReservationsResponse
-                                                            .jsonBody,
-                                                        r'''$.customer.fullName''',
+                                            return Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(12, 0, 0, 0),
+                                              child: Container(
+                                                width: double.infinity,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 4,
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(12,
+                                                                    12, 0, 0),
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0,
+                                                                          0,
+                                                                          0,
+                                                                          4),
+                                                              child: Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons
+                                                                        .timer_rounded,
+                                                                    color: Color(
+                                                                        0xFF57636C),
+                                                                    size: 16,
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            4,
+                                                                            0,
+                                                                            0,
+                                                                            0),
+                                                                    child: Text(
+                                                                      getJsonField(
+                                                                        reservationItem,
+                                                                        r'''$.dateTime''',
+                                                                      ).toString(),
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyText2
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Outfit',
+                                                                            color:
+                                                                                Color(0xFF57636C),
+                                                                            fontSize:
+                                                                                14,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            useGoogleFonts:
+                                                                                GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText2Family),
+                                                                          ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              getJsonField(
+                                                                reservationItem,
+                                                                r'''$.customer.fullName''',
+                                                              ).toString(),
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .subtitle1
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Overpass',
+                                                                    color: Color(
+                                                                        0xFF101213),
+                                                                    fontSize:
+                                                                        18,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    useGoogleFonts: GoogleFonts
+                                                                            .asMap()
+                                                                        .containsKey(
+                                                                            FlutterFlowTheme.of(context).subtitle1Family),
+                                                                  ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0,
+                                                                          4,
+                                                                          0,
+                                                                          0),
+                                                              child: Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons.phone,
+                                                                    color: Color(
+                                                                        0xFF57636C),
+                                                                    size: 16,
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            4,
+                                                                            0,
+                                                                            0,
+                                                                            0),
+                                                                    child: Text(
+                                                                      getJsonField(
+                                                                        reservationItem,
+                                                                        r'''$.customer.phone''',
+                                                                      ).toString(),
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyText2
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Outfit',
+                                                                            color:
+                                                                                Color(0xFF57636C),
+                                                                            fontSize:
+                                                                                14,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            useGoogleFonts:
+                                                                                GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText2Family),
+                                                                          ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                );
-                                              },
-                                              child: Slidable(
-                                                actionPane:
-                                                    const SlidableScrollActionPane(),
-                                                secondaryActions: [
-                                                  IconSlideAction(
-                                                    caption: 'Allocate',
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .iconGray,
-                                                    icon: Icons.group_add,
-                                                    onTap: () {
-                                                      print(
-                                                          'SlidableActionWidget pressed ...');
-                                                    },
-                                                  ),
-                                                  IconSlideAction(
-                                                    caption: 'Edit',
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .iconGray,
-                                                    icon: Icons.edit_rounded,
-                                                    onTap: () {
-                                                      print(
-                                                          'SlidableActionWidget pressed ...');
-                                                    },
-                                                  ),
-                                                ],
-                                                child: ListTile(
-                                                  title: Text(
-                                                    getJsonField(
-                                                      reservationItem,
-                                                      r'''$.customer.fullName''',
-                                                    ).toString(),
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .title3
-                                                        .override(
-                                                          fontFamily:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .title3Family,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          useGoogleFonts: GoogleFonts
-                                                                  .asMap()
-                                                              .containsKey(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .title3Family),
-                                                        ),
-                                                  ),
-                                                  subtitle: Text(
-                                                    getJsonField(
-                                                      reservationItem,
-                                                      r'''$.customer.phone''',
-                                                    ).toString(),
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .subtitle2
-                                                        .override(
-                                                          fontFamily:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .subtitle2Family,
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .iconGray,
-                                                          useGoogleFonts: GoogleFonts
-                                                                  .asMap()
-                                                              .containsKey(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .subtitle2Family),
-                                                        ),
-                                                  ),
-                                                  trailing: Icon(
-                                                    Icons.arrow_forward_ios,
-                                                    color: Color(0xFF303030),
-                                                    size: 20,
-                                                  ),
-                                                  tileColor: Color(0xFFF5F5F5),
-                                                  dense: false,
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        children: [
+                                                          FlutterFlowIconButton(
+                                                            borderColor: Colors
+                                                                .transparent,
+                                                            borderRadius: 30,
+                                                            borderWidth: 1,
+                                                            buttonSize: 60,
+                                                            icon: Icon(
+                                                              Icons
+                                                                  .keyboard_arrow_right,
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .primaryText,
+                                                              size: 30,
+                                                            ),
+                                                            onPressed: () {
+                                                              print(
+                                                                  'IconButton pressed ...');
+                                                            },
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             );

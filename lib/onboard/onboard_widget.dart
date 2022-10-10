@@ -1,8 +1,6 @@
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../main.dart';
-import '../manager_login/manager_login_widget.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -39,14 +37,9 @@ class _OnboardWidgetState extends State<OnboardWidget> {
       }
 
       if (biometriLoginResult!) {
-        await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NavBarPage(initialPage: 'Dashboard'),
-          ),
-        );
+        context.pushNamed('Dashboard');
       } else {
-        Navigator.pop(context);
+        context.pop();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -213,13 +206,7 @@ class _OnboardWidgetState extends State<OnboardWidget> {
                                   EdgeInsetsDirectional.fromSTEB(0, 24, 0, 24),
                               child: FFButtonWidget(
                                 onPressed: () async {
-                                  await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          NavBarPage(initialPage: 'Dashboard'),
-                                    ),
-                                  );
+                                  context.pushNamed('Dashboard');
                                 },
                                 text: 'Login',
                                 icon: Icon(
@@ -270,14 +257,14 @@ class _OnboardWidgetState extends State<OnboardWidget> {
                         children: [
                           FFButtonWidget(
                             onPressed: () async {
-                              await Navigator.push(
-                                context,
-                                PageTransition(
-                                  type: PageTransitionType.fade,
-                                  duration: Duration(milliseconds: 300),
-                                  reverseDuration: Duration(milliseconds: 300),
-                                  child: ManagerLoginWidget(),
-                                ),
+                              context.pushNamed(
+                                'managerLogin',
+                                extra: <String, dynamic>{
+                                  kTransitionInfoKey: TransitionInfo(
+                                    hasTransition: true,
+                                    transitionType: PageTransitionType.fade,
+                                  ),
+                                },
                               );
                             },
                             text: 'Manager Login',

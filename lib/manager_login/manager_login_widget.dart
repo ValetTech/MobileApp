@@ -3,7 +3,6 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,11 +16,9 @@ class ManagerLoginWidget extends StatefulWidget {
 
 class _ManagerLoginWidgetState extends State<ManagerLoginWidget> {
   TextEditingController? emailAddressController;
-
   TextEditingController? passwordLoginController;
 
   late bool passwordLoginVisibility;
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -31,6 +28,13 @@ class _ManagerLoginWidgetState extends State<ManagerLoginWidget> {
     passwordLoginController = TextEditingController();
     passwordLoginVisibility = false;
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    emailAddressController?.dispose();
+    passwordLoginController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -310,6 +314,8 @@ class _ManagerLoginWidgetState extends State<ManagerLoginWidget> {
                                   EdgeInsetsDirectional.fromSTEB(0, 44, 0, 0),
                               child: FFButtonWidget(
                                 onPressed: () async {
+                                  GoRouter.of(context).prepareAuthEvent();
+
                                   final user = await signInWithEmail(
                                     context,
                                     emailAddressController!.text,
@@ -319,14 +325,7 @@ class _ManagerLoginWidgetState extends State<ManagerLoginWidget> {
                                     return;
                                   }
 
-                                  await Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          NavBarPage(initialPage: 'Dashboard'),
-                                    ),
-                                    (r) => false,
-                                  );
+                                  context.goNamedAuth('Dashboard', mounted);
                                 },
                                 text: 'Login',
                                 icon: Icon(

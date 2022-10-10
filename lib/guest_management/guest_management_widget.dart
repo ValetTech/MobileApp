@@ -2,6 +2,8 @@ import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,119 +16,143 @@ class GuestManagementWidget extends StatefulWidget {
 
 class _GuestManagementWidgetState extends State<GuestManagementWidget>
     with TickerProviderStateMixin {
-  TextEditingController? textController;
-
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
     'containerOnPageLoadAnimation1': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
-      duration: 400,
-      hideBeforeAnimating: false,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 100),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
+      effects: [
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 400.ms,
+          begin: 0,
+          end: 1,
+        ),
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 400.ms,
+          begin: Offset(0, 100),
+          end: Offset(0, 0),
+        ),
+      ],
     ),
     'containerOnPageLoadAnimation2': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
-      duration: 400,
-      hideBeforeAnimating: false,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 110),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
+      effects: [
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 400.ms,
+          begin: 0,
+          end: 1,
+        ),
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 400.ms,
+          begin: Offset(0, 110),
+          end: Offset(0, 0),
+        ),
+      ],
     ),
     'containerOnPageLoadAnimation3': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
-      duration: 400,
-      hideBeforeAnimating: false,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 120),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
+      effects: [
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 400.ms,
+          begin: 0,
+          end: 1,
+        ),
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 400.ms,
+          begin: Offset(0, 120),
+          end: Offset(0, 0),
+        ),
+      ],
     ),
     'containerOnPageLoadAnimation4': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
-      duration: 400,
-      hideBeforeAnimating: false,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 130),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
+      effects: [
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 400.ms,
+          begin: 0,
+          end: 1,
+        ),
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 400.ms,
+          begin: Offset(0, 130),
+          end: Offset(0, 0),
+        ),
+      ],
     ),
     'containerOnPageLoadAnimation5': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
-      duration: 400,
-      hideBeforeAnimating: false,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 140),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
+      effects: [
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 400.ms,
+          begin: 0,
+          end: 1,
+        ),
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 400.ms,
+          begin: Offset(0, 140),
+          end: Offset(0, 0),
+        ),
+      ],
     ),
     'containerOnPageLoadAnimation6': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
-      duration: 400,
-      hideBeforeAnimating: false,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 150),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
+      effects: [
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 400.ms,
+          begin: 0,
+          end: 1,
+        ),
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 400.ms,
+          begin: Offset(0, 150),
+          end: Offset(0, 0),
+        ),
+      ],
     ),
   };
+  TextEditingController? textController;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    startPageLoadAnimations(
-      animationsMap.values
-          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
+    setupAnimations(
+      animationsMap.values.where((anim) =>
+          anim.trigger == AnimationTrigger.onActionTrigger ||
+          !anim.applyInitialState),
       this,
     );
 
     textController = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    textController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -136,6 +162,7 @@ class _GuestManagementWidgetState extends State<GuestManagementWidget>
         color: FlutterFlowTheme.of(context).primaryColor,
         child: Scaffold(
           key: scaffoldKey,
+          backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
           appBar: AppBar(
             backgroundColor: FlutterFlowTheme.of(context).primaryColor,
             automaticallyImplyLeading: false,
@@ -152,7 +179,6 @@ class _GuestManagementWidgetState extends State<GuestManagementWidget>
             centerTitle: true,
             elevation: 0,
           ),
-          backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
           body: SafeArea(
             child: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
@@ -349,9 +375,8 @@ class _GuestManagementWidgetState extends State<GuestManagementWidget>
                                   ],
                                 ),
                               ),
-                            ).animated([
-                              animationsMap['containerOnPageLoadAnimation1']!
-                            ]),
+                            ).animateOnPageLoad(animationsMap[
+                                'containerOnPageLoadAnimation1']!),
                           ),
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
@@ -456,9 +481,8 @@ class _GuestManagementWidgetState extends State<GuestManagementWidget>
                                   ],
                                 ),
                               ),
-                            ).animated([
-                              animationsMap['containerOnPageLoadAnimation2']!
-                            ]),
+                            ).animateOnPageLoad(animationsMap[
+                                'containerOnPageLoadAnimation2']!),
                           ),
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
@@ -563,9 +587,8 @@ class _GuestManagementWidgetState extends State<GuestManagementWidget>
                                   ],
                                 ),
                               ),
-                            ).animated([
-                              animationsMap['containerOnPageLoadAnimation3']!
-                            ]),
+                            ).animateOnPageLoad(animationsMap[
+                                'containerOnPageLoadAnimation3']!),
                           ),
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
@@ -670,9 +693,8 @@ class _GuestManagementWidgetState extends State<GuestManagementWidget>
                                   ],
                                 ),
                               ),
-                            ).animated([
-                              animationsMap['containerOnPageLoadAnimation4']!
-                            ]),
+                            ).animateOnPageLoad(animationsMap[
+                                'containerOnPageLoadAnimation4']!),
                           ),
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
@@ -777,9 +799,8 @@ class _GuestManagementWidgetState extends State<GuestManagementWidget>
                                   ],
                                 ),
                               ),
-                            ).animated([
-                              animationsMap['containerOnPageLoadAnimation5']!
-                            ]),
+                            ).animateOnPageLoad(animationsMap[
+                                'containerOnPageLoadAnimation5']!),
                           ),
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
@@ -884,9 +905,8 @@ class _GuestManagementWidgetState extends State<GuestManagementWidget>
                                   ],
                                 ),
                               ),
-                            ).animated([
-                              animationsMap['containerOnPageLoadAnimation6']!
-                            ]),
+                            ).animateOnPageLoad(animationsMap[
+                                'containerOnPageLoadAnimation6']!),
                           ),
                         ],
                       ),

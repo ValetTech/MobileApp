@@ -40,7 +40,7 @@ class ApiCallResponse {
   final dynamic jsonBody;
   final Map<String, String> headers;
   final int statusCode;
-  // Whether we recieved a 2xx status (which generally marks success).
+  // Whether we received a 2xx status (which generally marks success).
   bool get succeeded => statusCode >= 200 && statusCode < 300;
   String getHeader(String headerName) => headers[headerName] ?? '';
 

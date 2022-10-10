@@ -22,6 +22,12 @@ class _HeaderSearchWidgetState extends State<HeaderSearchWidget> {
   }
 
   @override
+  void dispose() {
+    textController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: textController,

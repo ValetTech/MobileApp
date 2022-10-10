@@ -1,7 +1,7 @@
 import '../auth/auth_util.dart';
+import '../components/new_reservation_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../onboard/onboard_widget.dart';
 import '../flutter_flow/random_data_util.dart' as random_data;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -30,12 +30,12 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
       padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
       child: SingleChildScrollView(
         child: Column(
-          mainAxisSize: MainAxisSize.max,
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
               mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
@@ -66,14 +66,6 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                         ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 16, 16, 0),
-                  child: Icon(
-                    Icons.menu,
-                    color: FlutterFlowTheme.of(context).iconGray,
-                    size: 30,
-                  ),
-                ),
               ],
             ),
             Divider(),
@@ -83,16 +75,21 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                 color: Colors.white,
               ),
             ),
-            ListTile(
-              leading: Icon(
-                Icons.dashboard,
+            InkWell(
+              onTap: () async {
+                context.pushNamed('Dashboard');
+              },
+              child: ListTile(
+                leading: Icon(
+                  Icons.dashboard,
+                ),
+                title: Text(
+                  'Dashboard',
+                  style: FlutterFlowTheme.of(context).bodyText1,
+                ),
+                tileColor: Color(0xFFF5F5F5),
+                dense: false,
               ),
-              title: Text(
-                'Dashboard',
-                style: FlutterFlowTheme.of(context).subtitle2,
-              ),
-              tileColor: Color(0xFFF5F5F5),
-              dense: false,
             ),
             ListTile(
               title: Text(
@@ -100,35 +97,57 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                 style: FlutterFlowTheme.of(context).bodyText2.override(
                       fontFamily: FlutterFlowTheme.of(context).bodyText2Family,
                       color: FlutterFlowTheme.of(context).secondaryText,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.bold,
                       useGoogleFonts: GoogleFonts.asMap().containsKey(
                           FlutterFlowTheme.of(context).bodyText2Family),
                     ),
               ),
               dense: false,
-              contentPadding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+              contentPadding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
             ),
-            ListTile(
-              leading: FaIcon(
-                FontAwesomeIcons.calendarPlus,
+            InkWell(
+              onTap: () async {
+                context.pushNamed('Reservations');
+
+                await showModalBottomSheet(
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) {
+                    return Padding(
+                      padding: MediaQuery.of(context).viewInsets,
+                      child: NewReservationWidget(),
+                    );
+                  },
+                ).then((value) => setState(() {}));
+              },
+              child: ListTile(
+                leading: FaIcon(
+                  FontAwesomeIcons.calendarPlus,
+                ),
+                title: Text(
+                  'New Reservation',
+                  style: FlutterFlowTheme.of(context).bodyText1,
+                ),
+                tileColor: Color(0xFFF5F5F5),
+                dense: false,
               ),
-              title: Text(
-                'New Reservation',
-                style: FlutterFlowTheme.of(context).subtitle2,
-              ),
-              tileColor: Color(0xFFF5F5F5),
-              dense: false,
             ),
-            ListTile(
-              leading: Icon(
-                Icons.calendar_today,
+            InkWell(
+              onTap: () async {
+                context.pushNamed('ViewReservation');
+              },
+              child: ListTile(
+                leading: Icon(
+                  Icons.calendar_today,
+                ),
+                title: Text(
+                  'View/Modify Reservations',
+                  style: FlutterFlowTheme.of(context).bodyText1,
+                ),
+                tileColor: Color(0xFFF5F5F5),
+                dense: false,
               ),
-              title: Text(
-                'View/Modify Reservations',
-                style: FlutterFlowTheme.of(context).subtitle2,
-              ),
-              tileColor: Color(0xFFF5F5F5),
-              dense: false,
             ),
             ListTile(
               leading: Icon(
@@ -136,7 +155,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
               ),
               title: Text(
                 'Allocate To Table',
-                style: FlutterFlowTheme.of(context).subtitle2,
+                style: FlutterFlowTheme.of(context).bodyText1,
               ),
               tileColor: Color(0xFFF5F5F5),
               dense: false,
@@ -147,13 +166,13 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                 style: FlutterFlowTheme.of(context).bodyText2.override(
                       fontFamily: FlutterFlowTheme.of(context).bodyText2Family,
                       color: FlutterFlowTheme.of(context).secondaryText,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.bold,
                       useGoogleFonts: GoogleFonts.asMap().containsKey(
                           FlutterFlowTheme.of(context).bodyText2Family),
                     ),
               ),
               dense: false,
-              contentPadding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+              contentPadding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
             ),
             ListTile(
               leading: Icon(
@@ -161,7 +180,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
               ),
               title: Text(
                 'List View',
-                style: FlutterFlowTheme.of(context).subtitle2,
+                style: FlutterFlowTheme.of(context).bodyText1,
               ),
               tileColor: Color(0xFFF5F5F5),
               dense: false,
@@ -172,7 +191,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
               ),
               title: Text(
                 'Table View',
-                style: FlutterFlowTheme.of(context).subtitle2,
+                style: FlutterFlowTheme.of(context).bodyText1,
               ),
               tileColor: Color(0xFFF5F5F5),
               dense: false,
@@ -183,13 +202,13 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                 style: FlutterFlowTheme.of(context).bodyText2.override(
                       fontFamily: FlutterFlowTheme.of(context).bodyText2Family,
                       color: FlutterFlowTheme.of(context).secondaryText,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.bold,
                       useGoogleFonts: GoogleFonts.asMap().containsKey(
                           FlutterFlowTheme.of(context).bodyText2Family),
                     ),
               ),
               dense: false,
-              contentPadding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+              contentPadding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
             ),
             ListTile(
               leading: Icon(
@@ -197,21 +216,26 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
               ),
               title: Text(
                 'New Order',
-                style: FlutterFlowTheme.of(context).subtitle2,
+                style: FlutterFlowTheme.of(context).bodyText1,
               ),
               tileColor: Color(0xFFF5F5F5),
               dense: false,
             ),
-            ListTile(
-              leading: Icon(
-                Icons.payment,
+            InkWell(
+              onTap: () async {
+                context.pushNamed('Orders');
+              },
+              child: ListTile(
+                leading: Icon(
+                  Icons.payment,
+                ),
+                title: Text(
+                  'View/Modify Open Orders',
+                  style: FlutterFlowTheme.of(context).bodyText1,
+                ),
+                tileColor: Color(0xFFF5F5F5),
+                dense: false,
               ),
-              title: Text(
-                'View/Modify Open Orders',
-                style: FlutterFlowTheme.of(context).subtitle2,
-              ),
-              tileColor: Color(0xFFF5F5F5),
-              dense: false,
             ),
             ListTile(
               title: Text(
@@ -219,35 +243,36 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                 style: FlutterFlowTheme.of(context).bodyText2.override(
                       fontFamily: FlutterFlowTheme.of(context).bodyText2Family,
                       color: FlutterFlowTheme.of(context).secondaryText,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.bold,
                       useGoogleFonts: GoogleFonts.asMap().containsKey(
                           FlutterFlowTheme.of(context).bodyText2Family),
                     ),
               ),
               dense: false,
-              contentPadding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.fastfood_sharp,
-              ),
-              title: Text(
-                'View Menu',
-                style: FlutterFlowTheme.of(context).subtitle2,
-              ),
-              tileColor: Color(0xFFF5F5F5),
-              dense: false,
+              contentPadding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
             ),
             InkWell(
               onTap: () async {
+                context.pushNamed('menu');
+              },
+              child: ListTile(
+                leading: Icon(
+                  Icons.fastfood_sharp,
+                ),
+                title: Text(
+                  'View Menu',
+                  style: FlutterFlowTheme.of(context).bodyText1,
+                ),
+                tileColor: Color(0xFFF5F5F5),
+                dense: false,
+              ),
+            ),
+            InkWell(
+              onTap: () async {
+                GoRouter.of(context).prepareAuthEvent();
                 await signOut();
-                await Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => OnboardWidget(),
-                  ),
-                  (r) => false,
-                );
+
+                context.goNamedAuth('Onboard', mounted);
               },
               child: ListTile(
                 leading: Icon(
@@ -255,7 +280,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                 ),
                 title: Text(
                   'Logout',
-                  style: FlutterFlowTheme.of(context).subtitle2,
+                  style: FlutterFlowTheme.of(context).bodyText1,
                 ),
                 tileColor: Color(0xFFF5F5F5),
                 dense: false,

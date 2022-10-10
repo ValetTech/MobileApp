@@ -36,44 +36,6 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget> {
         color: FlutterFlowTheme.of(context).primaryColor,
         child: Scaffold(
           key: scaffoldKey,
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(60),
-            child: AppBar(
-              backgroundColor: FlutterFlowTheme.of(context).white,
-              automaticallyImplyLeading: false,
-              leading: FlutterFlowIconButton(
-                borderColor: Colors.transparent,
-                borderRadius: 30,
-                borderWidth: 1,
-                buttonSize: 60,
-                icon: Icon(
-                  Icons.arrow_back_rounded,
-                  color: FlutterFlowTheme.of(context).iconGray,
-                  size: 30,
-                ),
-                onPressed: () async {
-                  Navigator.pop(context);
-                },
-              ),
-              actions: [
-                FlutterFlowIconButton(
-                  borderColor: Colors.transparent,
-                  borderRadius: 30,
-                  borderWidth: 1,
-                  buttonSize: 60,
-                  icon: Icon(
-                    Icons.menu,
-                    color: FlutterFlowTheme.of(context).iconGray,
-                    size: 30,
-                  ),
-                  onPressed: () async {
-                    scaffoldKey.currentState!.openEndDrawer();
-                  },
-                ),
-              ],
-              elevation: 6,
-            ),
-          ),
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
           endDrawer: Drawer(
             elevation: 16,
@@ -94,6 +56,44 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget> {
                   ],
                 ),
               ],
+            ),
+          ),
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(60),
+            child: AppBar(
+              backgroundColor: FlutterFlowTheme.of(context).white,
+              automaticallyImplyLeading: false,
+              leading: FlutterFlowIconButton(
+                borderColor: Colors.transparent,
+                borderRadius: 30,
+                borderWidth: 1,
+                buttonSize: 60,
+                icon: Icon(
+                  Icons.arrow_back_rounded,
+                  color: FlutterFlowTheme.of(context).iconGray,
+                  size: 30,
+                ),
+                onPressed: () async {
+                  context.pop();
+                },
+              ),
+              actions: [
+                FlutterFlowIconButton(
+                  borderColor: Colors.transparent,
+                  borderRadius: 30,
+                  borderWidth: 1,
+                  buttonSize: 60,
+                  icon: Icon(
+                    Icons.menu,
+                    color: FlutterFlowTheme.of(context).iconGray,
+                    size: 30,
+                  ),
+                  onPressed: () async {
+                    scaffoldKey.currentState!.openEndDrawer();
+                  },
+                ),
+              ],
+              elevation: 6,
             ),
           ),
           body: SafeArea(

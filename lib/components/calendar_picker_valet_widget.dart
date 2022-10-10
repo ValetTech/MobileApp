@@ -14,12 +14,12 @@ class CalendarPickerValetWidget extends StatefulWidget {
 }
 
 class _CalendarPickerValetWidgetState extends State<CalendarPickerValetWidget> {
-  DateTimeRange? calendarPickerSelectedDay;
+  DateTimeRange? calendarPickerReservationsSelectedDay;
 
   @override
   void initState() {
     super.initState();
-    calendarPickerSelectedDay = DateTimeRange(
+    calendarPickerReservationsSelectedDay = DateTimeRange(
       start: DateTime.now().startOfDay,
       end: DateTime.now().endOfDay,
     );
@@ -37,11 +37,11 @@ class _CalendarPickerValetWidgetState extends State<CalendarPickerValetWidget> {
         weekStartsMonday: true,
         initialDate: getCurrentTimestamp,
         onChange: (DateTimeRange? newSelectedDate) async {
-          calendarPickerSelectedDay = newSelectedDate;
-          setState(() =>
-              FFAppState().selectedResDate = calendarPickerSelectedDay?.start);
-          setState(
-              () => FFAppState().resMaxDate = calendarPickerSelectedDay?.end);
+          calendarPickerReservationsSelectedDay = newSelectedDate;
+          setState(() => FFAppState().selectedResDate =
+              calendarPickerReservationsSelectedDay?.start);
+          setState(() => FFAppState().resMaxDate =
+              calendarPickerReservationsSelectedDay?.end);
           setState(() {});
         },
         titleStyle: FlutterFlowTheme.of(context).subtitle2,

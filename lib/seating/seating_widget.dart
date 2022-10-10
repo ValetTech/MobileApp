@@ -1,9 +1,10 @@
-import '../components/app_bar_with_search_widget.dart';
 import '../components/calendar_picker_valet_widget.dart';
 import '../components/end_drawer_container_widget.dart';
+import '../components/section_header_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -20,6 +21,10 @@ class _SeatingWidgetState extends State<SeatingWidget> {
   @override
   void initState() {
     super.initState();
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      setState(() => FFAppState().currentPage = 'Seating');
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -31,16 +36,6 @@ class _SeatingWidgetState extends State<SeatingWidget> {
         color: FlutterFlowTheme.of(context).primaryColor,
         child: Scaffold(
           key: scaffoldKey,
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(80),
-            child: AppBar(
-              backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-              automaticallyImplyLeading: false,
-              flexibleSpace: AppBarWithSearchWidget(),
-              actions: [],
-              elevation: 6,
-            ),
-          ),
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
@@ -86,6 +81,19 @@ class _SeatingWidgetState extends State<SeatingWidget> {
                   children: [],
                 ),
               ],
+            ),
+          ),
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(60),
+            child: AppBar(
+              backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+              automaticallyImplyLeading: false,
+              leading: Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+                child: SectionHeaderWidget(),
+              ),
+              actions: [],
+              elevation: 6,
             ),
           ),
           body: SafeArea(

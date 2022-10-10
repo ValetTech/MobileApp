@@ -63,4 +63,4 @@ Future<UserCredential> appleSignIn() async {
 }
 
 Future<User?> signInWithApple(BuildContext context) =>
-    signInOrCreateAccount(context, appleSignIn);
+    signInOrCreateAccount(context, appleSignIn, 'APPLE');

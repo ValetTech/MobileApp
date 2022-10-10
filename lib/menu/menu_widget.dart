@@ -13,7 +13,6 @@ class MenuWidget extends StatefulWidget {
 
 class _MenuWidgetState extends State<MenuWidget> {
   TextEditingController? searchBarController;
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -24,12 +23,19 @@ class _MenuWidgetState extends State<MenuWidget> {
   }
 
   @override
+  void dispose() {
+    searchBarController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Title(
         title: 'menu',
         color: FlutterFlowTheme.of(context).primaryColor,
         child: Scaffold(
           key: scaffoldKey,
+          backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
           appBar: AppBar(
             backgroundColor: FlutterFlowTheme.of(context).primaryColor,
             automaticallyImplyLeading: false,
@@ -46,7 +52,6 @@ class _MenuWidgetState extends State<MenuWidget> {
             centerTitle: true,
             elevation: 0,
           ),
-          backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
           body: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Column(

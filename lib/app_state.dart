@@ -14,6 +14,7 @@ class FFAppState {
 
   Future initializePersistedState() async {
     prefs = await SharedPreferences.getInstance();
+    _currentPage = prefs.getString('ff_currentPage') ?? _currentPage;
   }
 
   late SharedPreferences prefs;
@@ -25,6 +26,15 @@ class FFAppState {
   DateTime? resMinDate;
 
   DateTime? resMaxDate;
+
+  String _currentPage = '';
+  String get currentPage => _currentPage;
+  set currentPage(String _value) {
+    _currentPage = _value;
+    prefs.setString('ff_currentPage', _value);
+  }
+
+  int selectedSittingId = 0;
 }
 
 LatLng? _latLngFromString(String? val) {

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -38,6 +39,7 @@ class FlutterFlowChoiceChips extends StatefulWidget {
     required this.multiselect,
     this.initialized = true,
     this.alignment = WrapAlignment.start,
+    this.selectedValuesVariable,
   });
 
   final List<String>? initiallySelected;
@@ -50,6 +52,7 @@ class FlutterFlowChoiceChips extends StatefulWidget {
   final bool multiselect;
   final bool initialized;
   final WrapAlignment alignment;
+  final ValueNotifier<List<String>?>? selectedValuesVariable;
 
   @override
   State<FlutterFlowChoiceChips> createState() => _FlutterFlowChoiceChipsState();
@@ -57,6 +60,9 @@ class FlutterFlowChoiceChips extends StatefulWidget {
 
 class _FlutterFlowChoiceChipsState extends State<FlutterFlowChoiceChips> {
   late List<String> choiceChipValues;
+  ValueListenable<List<String>?>? get changeSelectedValues =>
+      widget.selectedValuesVariable;
+  List<String>? get selectedValues => widget.selectedValuesVariable?.value;
 
   @override
   void initState() {
@@ -67,6 +73,19 @@ class _FlutterFlowChoiceChipsState extends State<FlutterFlowChoiceChips> {
         (_) => widget.onChanged(choiceChipValues),
       );
     }
+    changeSelectedValues?.addListener(() {
+      if (widget.selectedValuesVariable != null &&
+          selectedValues != null &&
+          choiceChipValues != selectedValues) {
+        setState(() => choiceChipValues = List.from(selectedValues!));
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    changeSelectedValues?.removeListener(() {});
+    super.dispose();
   }
 
   @override

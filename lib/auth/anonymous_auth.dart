@@ -5,5 +5,5 @@ import 'auth_util.dart';
 
 Future<User?> signInAnonymously(BuildContext context) async {
   final signInFunc = () => FirebaseAuth.instance.signInAnonymously();
-  return signInOrCreateAccount(context, signInFunc);
+  return signInOrCreateAccount(context, signInFunc, 'ANONYMOUS');
 }
