@@ -381,9 +381,8 @@ class _NewReservationPageViewWidgetState
                                   future: ValetAPIGroup
                                       .gETSittingTypesByDateCall
                                       .call(
-                                    date: functions.formatDateTimeForPOST(
-                                        resCalendarPickerReservationsSelectedDay!
-                                            .start),
+                                    date: functions.formatDateForPOST(
+                                        FFAppState().selectedDate!),
                                   ),
                                   builder: (context, snapshot) {
                                     // Customize what your widget looks like when it's loading.
@@ -678,8 +677,12 @@ class _NewReservationPageViewWidgetState
                                       .toList()
                                       .map((label) => ChipData(label))
                                       .toList(),
-                                  onChanged: (val) => setState(
-                                      () => timeChoiceValue = val?.first),
+                                  onChanged: (val) async {
+                                    setState(
+                                        () => timeChoiceValue = val?.first);
+                                    setState(() => FFAppState().resTime =
+                                        timeChoiceValue!);
+                                  },
                                   selectedChipStyle: ChipStyle(
                                     backgroundColor:
                                         FlutterFlowTheme.of(context)
@@ -791,7 +794,7 @@ class _NewReservationPageViewWidgetState
                               options: FFButtonOptions(
                                 height: 40,
                                 color: valueOrDefault<Color>(
-                                  areaChoiceValue == 'true'
+                                  timeChoiceValue == 'true'
                                       ? FlutterFlowTheme.of(context)
                                           .secondaryColor
                                       : FlutterFlowTheme.of(context).iconGray,
@@ -1218,6 +1221,8 @@ class _NewReservationPageViewWidgetState
                                       resCalendarPickerReservationsSelectedDay!
                                           .start),
                                   venue: 1,
+                                  resSittingId: FFAppState().resSittingId,
+                                  resTime: timeChoiceValue,
                                 );
                                 if ((newResAPICallResult?.succeeded ?? true)) {
                                   Navigator.pop(context);

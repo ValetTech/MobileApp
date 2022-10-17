@@ -97,6 +97,7 @@ class NewReservationCall {
     String? resMaxDate = '',
     int? venue = 1,
     int? resSittingId,
+    String? resTime = '',
   }) {
     final body = '''
 {
@@ -107,7 +108,7 @@ class NewReservationCall {
     "phone": "${resPhone}"
   },
   "sittingId": ${resSittingId},
-  "dateTime": "${resDate}",
+  "dateTime": "${resDate}T${resTime}",
   "duration": 90,
   "noGuests": ${resNumPeople},
   "notes": "${resNotes}",
