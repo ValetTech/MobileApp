@@ -5,21 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CalendarPickerValetWidget extends StatefulWidget {
-  const CalendarPickerValetWidget({Key? key}) : super(key: key);
+class CalendarPickerValetExpandedWidget extends StatefulWidget {
+  const CalendarPickerValetExpandedWidget({Key? key}) : super(key: key);
 
   @override
-  _CalendarPickerValetWidgetState createState() =>
-      _CalendarPickerValetWidgetState();
+  _CalendarPickerValetExpandedWidgetState createState() =>
+      _CalendarPickerValetExpandedWidgetState();
 }
 
-class _CalendarPickerValetWidgetState extends State<CalendarPickerValetWidget> {
-  DateTimeRange? calendarPickerSelectedDay;
+class _CalendarPickerValetExpandedWidgetState
+    extends State<CalendarPickerValetExpandedWidget> {
+  DateTimeRange? calendarPickerReservationsSelectedDay;
 
   @override
   void initState() {
     super.initState();
-    calendarPickerSelectedDay = DateTimeRange(
+    calendarPickerReservationsSelectedDay = DateTimeRange(
       start: DateTime.now().startOfDay,
       end: DateTime.now().endOfDay,
     );
@@ -33,17 +34,14 @@ class _CalendarPickerValetWidgetState extends State<CalendarPickerValetWidget> {
       child: FlutterFlowCalendar(
         color: FlutterFlowTheme.of(context).secondaryColor,
         iconColor: FlutterFlowTheme.of(context).secondaryText,
-        weekFormat: true,
+        weekFormat: false,
         weekStartsMonday: true,
         initialDate: getCurrentTimestamp,
+        rowHeight: 35,
         onChange: (DateTimeRange? newSelectedDate) async {
-          calendarPickerSelectedDay = newSelectedDate;
-          setState(() =>
-              FFAppState().selectedDate = calendarPickerSelectedDay?.start);
-          setState(
-              () => FFAppState().resMinDate = calendarPickerSelectedDay?.start);
-          setState(
-              () => FFAppState().resMaxDate = calendarPickerSelectedDay?.end);
+          calendarPickerReservationsSelectedDay = newSelectedDate;
+          setState(() => FFAppState().selectedDate =
+              calendarPickerReservationsSelectedDay?.start);
           setState(() {});
         },
         titleStyle: FlutterFlowTheme.of(context).subtitle2,

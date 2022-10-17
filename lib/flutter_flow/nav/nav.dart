@@ -99,9 +99,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'reservations',
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'Reservations')
-                  : ReservationsWidget(
-                      pageName: params.getParam('pageName', ParamType.String),
-                    ),
+                  : ReservationsWidget(),
             ),
             FFRoute(
               name: 'Seating',
@@ -123,9 +121,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => MenuWidget(),
             ),
             FFRoute(
-              name: 'guestManagement',
-              path: 'guestManagement',
-              builder: (context, params) => GuestManagementWidget(),
+              name: 'NewReservation',
+              path: 'newReservation',
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: NewReservationWidget(
+                  resDetails: params.getParam('resDetails', ParamType.JSON),
+                ),
+              ),
             ),
             FFRoute(
               name: 'consumerEntry',
@@ -135,9 +138,17 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'ViewReservation',
               path: 'viewReservation',
-              builder: (context, params) => ViewReservationWidget(
-                resFullName: params.getParam('resFullName', ParamType.JSON),
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: ViewReservationWidget(
+                  resDetails: params.getParam('resDetails', ParamType.JSON),
+                ),
               ),
+            ),
+            FFRoute(
+              name: 'newSittingOrArea',
+              path: 'newSittingOrArea',
+              builder: (context, params) => NewSittingOrAreaWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),
@@ -315,9 +326,9 @@ class FFRoute {
                   child: Center(
                     child: Image.asset(
                       'assets/images/Valet-WhiteOnBlue.png',
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      fit: BoxFit.fitWidth,
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.fill,
                     ),
                   ),
                 )

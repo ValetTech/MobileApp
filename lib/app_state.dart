@@ -14,27 +14,51 @@ class FFAppState {
 
   Future initializePersistedState() async {
     prefs = await SharedPreferences.getInstance();
-    _currentPage = prefs.getString('ff_currentPage') ?? _currentPage;
   }
 
   late SharedPreferences prefs;
-
-  DateTime? selectedResDate;
-
-  List<String> selectedResArea = ['Main', 'Outside', 'Upstairs'];
 
   DateTime? resMinDate;
 
   DateTime? resMaxDate;
 
-  String _currentPage = '';
-  String get currentPage => _currentPage;
-  set currentPage(String _value) {
-    _currentPage = _value;
-    prefs.setString('ff_currentPage', _value);
-  }
-
   int selectedSittingId = 0;
+
+  String newAreaName = '';
+
+  String newAreaDescription = '';
+
+  int NewAreaNumTables = 0;
+
+  int newAreaTableCap = 0;
+
+  int resNumPeople = 0;
+
+  DateTime? resDate;
+
+  String resArea = '';
+
+  String resSitting = '';
+
+  String resFirstName = '';
+
+  String resLastName = '';
+
+  String resEmail = '';
+
+  String resTime = '';
+
+  String resNotes = '';
+
+  DateTime? selectedDate;
+
+  List<String> sittingTypes = ['Breakfast', 'Lunch', 'Dinner', 'Custom'];
+
+  int resSittingId = 0;
+
+  bool filtersOn = false;
+
+  String resPhone = '';
 }
 
 LatLng? _latLngFromString(String? val) {

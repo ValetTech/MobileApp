@@ -25,20 +25,7 @@ class _SectionHeaderWidgetState extends State<SectionHeaderWidget> {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Text(
-          FFAppState().currentPage,
-          textAlign: TextAlign.start,
-          style: FlutterFlowTheme.of(context).title1.override(
-                fontFamily: 'Overpass',
-                color: FlutterFlowTheme.of(context).secondaryColor,
-                fontSize: 32,
-                fontWeight: FontWeight.w600,
-                useGoogleFonts: GoogleFonts.asMap()
-                    .containsKey(FlutterFlowTheme.of(context).title1Family),
-              ),
-        ),
-      ],
+      children: [],
     );
   }
 }

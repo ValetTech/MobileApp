@@ -81,6 +81,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                 centerTitle: true,
                 expandedTitleScale: 1.0,
               ),
+              toolbarHeight: 60,
               elevation: 6,
             ),
           ),

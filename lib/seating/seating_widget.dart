@@ -1,10 +1,8 @@
 import '../components/calendar_picker_valet_widget.dart';
 import '../components/end_drawer_container_widget.dart';
-import '../components/section_header_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,10 +19,6 @@ class _SeatingWidgetState extends State<SeatingWidget> {
   @override
   void initState() {
     super.initState();
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      setState(() => FFAppState().currentPage = 'Seating');
-    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -88,10 +82,6 @@ class _SeatingWidgetState extends State<SeatingWidget> {
             child: AppBar(
               backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
               automaticallyImplyLeading: false,
-              leading: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
-                child: SectionHeaderWidget(),
-              ),
               actions: [],
               elevation: 6,
             ),

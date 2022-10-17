@@ -1,5 +1,5 @@
 import '../auth/auth_util.dart';
-import '../components/new_reservation_widget.dart';
+import '../components/new_reservation_page_view_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/random_data_util.dart' as random_data;
@@ -116,7 +116,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                   builder: (context) {
                     return Padding(
                       padding: MediaQuery.of(context).viewInsets,
-                      child: NewReservationWidget(),
+                      child: NewReservationPageViewWidget(),
                     );
                   },
                 ).then((value) => setState(() {}));
