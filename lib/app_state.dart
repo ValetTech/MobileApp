@@ -46,8 +46,6 @@ class FFAppState {
 
   String resEmail = '';
 
-  String resTime = '';
-
   String resNotes = '';
 
   DateTime? selectedDate;
@@ -59,6 +57,8 @@ class FFAppState {
   bool filtersOn = false;
 
   String resPhone = '';
+
+  String resTime = '';
 }
 
 LatLng? _latLngFromString(String? val) {

@@ -6,7 +6,6 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
-import '../flutter_flow/random_data_util.dart' as random_data;
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'
     as smooth_page_indicator;
 import 'package:flutter/material.dart';
@@ -670,13 +669,12 @@ class _NewReservationPageViewWidgetState
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
                                 child: FlutterFlowChoiceChips(
-                                  options: List.generate(
-                                          random_data.randomInteger(1, 10),
-                                          (index) => random_data.randomDate())
-                                      .map((e) => dateTimeFormat('jm', e))
-                                      .toList()
-                                      .map((label) => ChipData(label))
-                                      .toList(),
+                                  options: [
+                                    ChipData('09:00 AM'),
+                                    ChipData('11:30 AM'),
+                                    ChipData('06:00 PM'),
+                                    ChipData('01:30 PM')
+                                  ],
                                   onChanged: (val) async {
                                     setState(
                                         () => timeChoiceValue = val?.first);
@@ -1154,7 +1152,7 @@ class _NewReservationPageViewWidgetState
                                                     .bodyText1Family),
                                       ),
                                   maxLines: 3,
-                                  keyboardType: TextInputType.phone,
+                                  keyboardType: TextInputType.multiline,
                                 ),
                               ),
                             ],
@@ -1210,8 +1208,6 @@ class _NewReservationPageViewWidgetState
                                     await ValetAPIGroup.newReservationCall.call(
                                   resNumPeople:
                                       resNumPeopleCountControllerValue,
-                                  resArea: areaChoiceValue,
-                                  resSitting: sittChoiceValue,
                                   resFirstName: firstNameController!.text,
                                   resLastName: lastNameController!.text,
                                   resEmail: emailController!.text,
@@ -1222,7 +1218,7 @@ class _NewReservationPageViewWidgetState
                                           .start),
                                   venue: 1,
                                   resSittingId: FFAppState().resSittingId,
-                                  resTime: timeChoiceValue,
+                                  resTime: FFAppState().resTime,
                                 );
                                 if ((newResAPICallResult?.succeeded ?? true)) {
                                   Navigator.pop(context);

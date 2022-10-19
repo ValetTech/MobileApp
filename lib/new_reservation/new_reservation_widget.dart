@@ -39,23 +39,9 @@ class _NewReservationWidgetState extends State<NewReservationWidget> {
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
           endDrawer: Drawer(
             elevation: 16,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                        child: EndDrawerContainerWidget(),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+            child: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+              child: EndDrawerContainerWidget(),
             ),
           ),
           appBar: PreferredSize(

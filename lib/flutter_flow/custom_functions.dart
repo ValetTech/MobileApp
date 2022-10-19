@@ -33,3 +33,9 @@ String formatDateForPOST(DateTime dateTime) {
   String formatForPOST = DateFormat('yyyy-MM-dd').format(dateTime);
   return formatForPOST;
 }
+
+String formatTimeForPOST(DateTime resTime) {
+  // take a timestamp and return a string in the format 2022-12-25T10:30:00
+  String formatForPOST = DateFormat('HH:MM').format(resTime);
+  return formatForPOST;
+}
