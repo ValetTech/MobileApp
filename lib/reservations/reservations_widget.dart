@@ -376,6 +376,12 @@ class _ReservationsWidgetState extends State<ReservationsWidget> {
                                                           .map<String>((s) =>
                                                               s.toString())
                                                           .toList()
+                                                          .where((e) =>
+                                                              calendarPickerReservationsMainSelectedDay
+                                                                  ?.start ==
+                                                              FFAppState()
+                                                                  .selectedDate)
+                                                          .toList()
                                                           .map((label) =>
                                                               ChipData(label))
                                                           .toList(),

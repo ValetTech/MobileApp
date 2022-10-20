@@ -1,5 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/lat_lng.dart';
+import 'dart:convert';
 
 class FFAppState {
   static final FFAppState _instance = FFAppState._internal();
@@ -34,7 +35,7 @@ class FFAppState {
 
   int resNumPeople = 0;
 
-  DateTime? resDate;
+  DateTime? resDate = DateTime.fromMillisecondsSinceEpoch(1666224960000);
 
   String resArea = '';
 
@@ -59,6 +60,10 @@ class FFAppState {
   String resPhone = '';
 
   String resTime = '';
+
+  dynamic selectedSittingJSON;
+
+  String defaultSittingValue = 'No Sittings Available';
 }
 
 LatLng? _latLngFromString(String? val) {

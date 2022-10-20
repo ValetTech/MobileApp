@@ -20,6 +20,7 @@ class ValetAPIGroup {
       GETSittingTypesByDateCall();
   static GETAreasBySittingIDCall gETAreasBySittingIDCall =
       GETAreasBySittingIDCall();
+  static GETSittingTypesCall gETSittingTypesCall = GETSittingTypesCall();
 }
 
 class NewAreaCall {
@@ -162,6 +163,21 @@ class GETSittingTypesByDateCall {
         r'''$[:].type''',
         true,
       );
+  dynamic sittingStartTime(dynamic response) => getJsonField(
+        response,
+        r'''$[:].startTime''',
+        true,
+      );
+  dynamic getAreas(dynamic response) => getJsonField(
+        response,
+        r'''$[*].areas''',
+        true,
+      );
+  dynamic areaBySitting(dynamic response) => getJsonField(
+        response,
+        r'''$[:].areas''',
+        true,
+      );
 }
 
 class GETAreasBySittingIDCall {
@@ -195,6 +211,36 @@ class GETAreasBySittingIDCall {
   dynamic areaId(dynamic response) => getJsonField(
         response,
         r'''$[:].id''',
+        true,
+      );
+  dynamic areaSittingsStartTime(dynamic response) => getJsonField(
+        response,
+        r'''$[:].sittings[:].startTime''',
+        true,
+      );
+}
+
+class GETSittingTypesCall {
+  Future<ApiCallResponse> call({
+    String? date = '',
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'GET Sitting Types',
+      apiUrl: '${ValetAPIGroup.baseUrl}/sittings/types',
+      callType: ApiCallType.GET,
+      headers: {
+        ...ValetAPIGroup.headers,
+      },
+      params: {
+        'date': date,
+      },
+      returnBody: true,
+    );
+  }
+
+  dynamic body(dynamic response) => getJsonField(
+        response,
+        r'''$''',
         true,
       );
 }
@@ -285,6 +331,10 @@ class GETReservationsCall {
         response,
         r'''$[:].sitting.type''',
         true,
+      );
+  static dynamic isVip(dynamic response) => getJsonField(
+        response,
+        r'''$[:].customer.isVip''',
       );
 }
 

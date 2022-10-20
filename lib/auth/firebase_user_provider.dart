@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'auth_util.dart';
-
 class ValetFirebaseUser {
   ValetFirebaseUser(this.user);
   User? user;
@@ -19,7 +17,6 @@ Stream<ValetFirebaseUser> valetFirebaseUserStream() => FirebaseAuth.instance
         .map<ValetFirebaseUser>(
       (user) {
         currentUser = ValetFirebaseUser(user);
-        updateUserJwtTimer(user);
         return currentUser!;
       },
     );

@@ -235,15 +235,13 @@ class _NewReservationPageViewWidgetState
                                     FlutterFlowTheme.of(context).secondaryText,
                                 weekFormat: false,
                                 weekStartsMonday: true,
-                                initialDate: getCurrentTimestamp,
                                 rowHeight: 35,
                                 onChange:
                                     (DateTimeRange? newSelectedDate) async {
                                   resCalendarPickerReservationsSelectedDay =
                                       newSelectedDate;
-                                  setState(() => FFAppState().selectedDate =
-                                      resCalendarPickerReservationsSelectedDay
-                                          ?.start);
+                                  setState(() => FFAppState().resDate =
+                                      FFAppState().resDate);
                                   setState(() {});
                                 },
                                 titleStyle:
@@ -288,9 +286,6 @@ class _NewReservationPageViewWidgetState
                               onPressed: () async {
                                 setState(() => FFAppState().resNumPeople =
                                     resNumPeopleCountControllerValue!);
-                                setState(() => FFAppState().selectedDate =
-                                    resCalendarPickerReservationsSelectedDay
-                                        ?.start);
                                 await pageViewController?.nextPage(
                                   duration: Duration(milliseconds: 300),
                                   curve: Curves.ease,
@@ -380,8 +375,12 @@ class _NewReservationPageViewWidgetState
                                   future: ValetAPIGroup
                                       .gETSittingTypesByDateCall
                                       .call(
-                                    date: functions.formatDateForPOST(
-                                        FFAppState().selectedDate!),
+                                    date: valueOrDefault<String>(
+                                      resCalendarPickerReservationsSelectedDay
+                                          ?.start
+                                          ?.toString(),
+                                      '2022-10-17',
+                                    ),
                                   ),
                                   builder: (context, snapshot) {
                                     // Customize what your widget looks like when it's loading.
@@ -401,16 +400,22 @@ class _NewReservationPageViewWidgetState
                                     final sittChoiceGETSittingTypesByDateResponse =
                                         snapshot.data!;
                                     return FlutterFlowChoiceChips(
-                                      options: (ValetAPIGroup
-                                              .gETSittingTypesByDateCall
-                                              .sittingType(
-                                        sittChoiceGETSittingTypesByDateResponse
-                                            .jsonBody,
-                                      ) as List)
-                                          .map<String>((s) => s.toString())
-                                          .toList()
-                                          .map((label) => ChipData(label))
-                                          .toList(),
+                                      options:
+                                          (sittChoiceGETSittingTypesByDateResponse
+                                                          .statusCode ==
+                                                      200
+                                                  ? (ValetAPIGroup
+                                                          .gETSittingTypesByDateCall
+                                                          .sittingType(
+                                                      sittChoiceGETSittingTypesByDateResponse
+                                                          .jsonBody,
+                                                    ) as List)
+                                                      .map<String>(
+                                                          (s) => s.toString())
+                                                      .toList()
+                                                  : ["No Sittings Available"])
+                                              .map((label) => ChipData(label))
+                                              .toList(),
                                       onChanged: (val) async {
                                         setState(
                                             () => sittChoiceValue = val?.first);
@@ -418,8 +423,27 @@ class _NewReservationPageViewWidgetState
                                                 .resSittingId = getJsonField(
                                               sittChoiceGETSittingTypesByDateResponse
                                                   .jsonBody,
-                                              r'''$.sittingId''',
+                                              r'''$[:].id''',
                                             ));
+                                        setState(() => FFAppState().resSitting =
+                                            sittChoiceValue!);
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              functions.resSittingIdToString(
+                                                  FFAppState().resSittingId),
+                                              style: TextStyle(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                              ),
+                                            ),
+                                            duration:
+                                                Duration(milliseconds: 4000),
+                                            backgroundColor: Color(0x00000000),
+                                          ),
+                                        );
                                       },
                                       selectedChipStyle: ChipStyle(
                                         backgroundColor:
@@ -528,9 +552,13 @@ class _NewReservationPageViewWidgetState
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
                                 child: FutureBuilder<ApiCallResponse>(
-                                  future: ValetAPIGroup.gETAreasBySittingIDCall
+                                  future: ValetAPIGroup
+                                      .gETSittingTypesByDateCall
                                       .call(
-                                    sittingId: FFAppState().resSittingId,
+                                    date:
+                                        resCalendarPickerReservationsSelectedDay
+                                            ?.start
+                                            ?.toString(),
                                   ),
                                   builder: (context, snapshot) {
                                     // Customize what your widget looks like when it's loading.
@@ -547,21 +575,27 @@ class _NewReservationPageViewWidgetState
                                         ),
                                       );
                                     }
-                                    final areaChoiceGETAreasBySittingIDResponse =
+                                    final areaChoiceGETSittingTypesByDateResponse =
                                         snapshot.data!;
                                     return FlutterFlowChoiceChips(
-                                      options: (ValetAPIGroup
-                                              .gETAreasBySittingIDCall
-                                              .areaName(
-                                        areaChoiceGETAreasBySittingIDResponse
-                                            .jsonBody,
-                                      ) as List)
-                                          .map<String>((s) => s.toString())
-                                          .toList()
-                                          .map((label) => ChipData(label))
-                                          .toList(),
-                                      onChanged: (val) => setState(
-                                          () => areaChoiceValue = val?.first),
+                                      options: [
+                                        ChipData(
+                                            'Option 1', Icons.train_outlined)
+                                      ],
+                                      onChanged: (val) async {
+                                        setState(
+                                            () => areaChoiceValue = val?.first);
+                                        setState(() =>
+                                            FFAppState().resSittingId =
+                                                valueOrDefault<int>(
+                                              getJsonField(
+                                                areaChoiceGETSittingTypesByDateResponse
+                                                    .jsonBody,
+                                                r'''$[:]''',
+                                              ),
+                                              0,
+                                            ));
+                                      },
                                       selectedChipStyle: ChipStyle(
                                         backgroundColor:
                                             FlutterFlowTheme.of(context)

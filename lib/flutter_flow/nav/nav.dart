@@ -121,6 +121,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => MenuWidget(),
             ),
             FFRoute(
+              name: 'consumerEntry',
+              path: 'consumerEntry',
+              builder: (context, params) => ConsumerEntryWidget(),
+            ),
+            FFRoute(
               name: 'NewReservation',
               path: 'newReservation',
               builder: (context, params) => NavBarPage(
@@ -129,11 +134,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                   resDetails: params.getParam('resDetails', ParamType.JSON),
                 ),
               ),
-            ),
-            FFRoute(
-              name: 'consumerEntry',
-              path: 'consumerEntry',
-              builder: (context, params) => ConsumerEntryWidget(),
             ),
             FFRoute(
               name: 'ViewReservation',

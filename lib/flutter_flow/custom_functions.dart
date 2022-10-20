@@ -39,3 +39,17 @@ String formatTimeForPOST(DateTime resTime) {
   String formatForPOST = DateFormat('HH:MM').format(resTime);
   return formatForPOST;
 }
+
+List<String> getSittingTypes(List<String>? sittingTypes) {
+  // Add your function code here!
+  if (sittingTypes == null || sittingTypes.isEmpty) {
+    return ["No Sittings Avaliable"];
+  }
+  return sittingTypes;
+}
+
+String resSittingIdToString(int resSittingId) {
+  // convert the int to string
+  String resSittingIdString = resSittingId.toString();
+  return resSittingIdString;
+}
