@@ -53,3 +53,29 @@ String resSittingIdToString(int resSittingId) {
   String resSittingIdString = resSittingId.toString();
   return resSittingIdString;
 }
+
+List<dynamic> getAreasBySittingId(
+  List<dynamic> allAreas,
+  int? sittingId,
+) {
+  // Add your function code here!
+
+  List<dynamic>? areas = allAreas; //.map((x)=>jsonDecode(x));
+  if (allAreas.isEmpty || allAreas[0] == null) {
+    return [];
+  }
+  if (sittingId != null && sittingId != 0) {
+    try {
+      areas = areas
+          .where((i) => i['sittings']?.map((s) => s['id'])?.contains(sittingId))
+          .toList();
+    } catch (err) {
+      return [];
+    }
+  }
+  if (areas.isEmpty) {
+    return [];
+  }
+
+  return areas;
+}

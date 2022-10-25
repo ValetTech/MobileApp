@@ -400,22 +400,26 @@ class _NewReservationPageViewWidgetState
                                     final sittChoiceGETSittingTypesByDateResponse =
                                         snapshot.data!;
                                     return FlutterFlowChoiceChips(
-                                      options:
-                                          (sittChoiceGETSittingTypesByDateResponse
-                                                          .statusCode ==
-                                                      200
-                                                  ? (ValetAPIGroup
-                                                          .gETSittingTypesByDateCall
-                                                          .sittingType(
-                                                      sittChoiceGETSittingTypesByDateResponse
-                                                          .jsonBody,
-                                                    ) as List)
-                                                      .map<String>(
-                                                          (s) => s.toString())
-                                                      .toList()
-                                                  : ["No Sittings Available"])
-                                              .map((label) => ChipData(label))
-                                              .toList(),
+                                      options: (ValetAPIGroup
+                                                      .gETSittingTypesByDateCall
+                                                      .sittings(
+                                                        sittChoiceGETSittingTypesByDateResponse
+                                                            .jsonBody,
+                                                      )
+                                                      .length >
+                                                  0
+                                              ? (ValetAPIGroup
+                                                      .gETSittingTypesByDateCall
+                                                      .sittingType(
+                                                  sittChoiceGETSittingTypesByDateResponse
+                                                      .jsonBody,
+                                                ) as List)
+                                                  .map<String>(
+                                                      (s) => s.toString())
+                                                  .toList()
+                                              : ["No Sittings Available"])
+                                          .map((label) => ChipData(label))
+                                          .toList(),
                                       onChanged: (val) async {
                                         setState(
                                             () => sittChoiceValue = val?.first);
@@ -578,10 +582,46 @@ class _NewReservationPageViewWidgetState
                                     final areaChoiceGETSittingTypesByDateResponse =
                                         snapshot.data!;
                                     return FlutterFlowChoiceChips(
-                                      options: [
-                                        ChipData(
-                                            'Option 1', Icons.train_outlined)
-                                      ],
+                                      options: () {
+                                        if (ValetAPIGroup
+                                                .gETSittingTypesByDateCall
+                                                .sittings(
+                                                  areaChoiceGETSittingTypesByDateResponse
+                                                      .jsonBody,
+                                                )
+                                                .length ==
+                                            0) {
+                                          return ["No Sittings Avaliable"];
+                                        } else if (ValetAPIGroup
+                                                .gETSittingTypesByDateCall
+                                                .getAllAreas(
+                                                  areaChoiceGETSittingTypesByDateResponse
+                                                      .jsonBody,
+                                                )
+                                                .length ==
+                                            0) {
+                                          return ["No Areas Avaliable"];
+                                        } else if (ValetAPIGroup
+                                                .gETSittingTypesByDateCall
+                                                .getAllAreas(
+                                                  areaChoiceGETSittingTypesByDateResponse
+                                                      .jsonBody,
+                                                )
+                                                .length >
+                                            0) {
+                                          return (getJsonField(
+                                            areaChoiceGETSittingTypesByDateResponse
+                                                .jsonBody,
+                                            r'''$.sittings[:].areas[*].name''',
+                                          ) as List)
+                                              .map<String>((s) => s.toString())
+                                              .toList();
+                                        } else {
+                                          return ["No Areas Avaliable"];
+                                        }
+                                      }()
+                                          .map((label) => ChipData(label))
+                                          .toList(),
                                       onChanged: (val) async {
                                         setState(
                                             () => areaChoiceValue = val?.first);

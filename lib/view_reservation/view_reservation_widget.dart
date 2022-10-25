@@ -100,14 +100,17 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget> {
                     ),
                   ],
                   flexibleSpace: FlexibleSpaceBar(
-                    title: Text(
-                      'Details',
-                      textAlign: TextAlign.start,
-                      style: GoogleFonts.getFont(
-                        'Overpass',
-                        color: FlutterFlowTheme.of(context).secondaryColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 32,
+                    title: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
+                      child: Text(
+                        'Details',
+                        textAlign: TextAlign.start,
+                        style: GoogleFonts.getFont(
+                          'Overpass',
+                          color: FlutterFlowTheme.of(context).secondaryColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 32,
+                        ),
                       ),
                     ),
                     centerTitle: true,

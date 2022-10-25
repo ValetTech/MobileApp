@@ -15,6 +15,14 @@ class FFAppState {
 
   Future initializePersistedState() async {
     prefs = await SharedPreferences.getInstance();
+    _NullValue = prefs.getString('ff_NullValue') ?? _NullValue;
+    if (prefs.containsKey('ff_empty204JSON')) {
+      try {
+        _empty204JSON = jsonDecode(prefs.getString('ff_empty204JSON') ?? '');
+      } catch (e) {
+        print("Can't decode persisted json. Error: $e.");
+      }
+    }
   }
 
   late SharedPreferences prefs;
@@ -64,6 +72,20 @@ class FFAppState {
   dynamic selectedSittingJSON;
 
   String defaultSittingValue = 'No Sittings Available';
+
+  String _NullValue = '';
+  String get NullValue => _NullValue;
+  set NullValue(String _value) {
+    _NullValue = _value;
+    prefs.setString('ff_NullValue', _value);
+  }
+
+  dynamic _empty204JSON = jsonDecode('{}');
+  dynamic get empty204JSON => _empty204JSON;
+  set empty204JSON(dynamic _value) {
+    _empty204JSON = _value;
+    prefs.setString('ff_empty204JSON', jsonEncode(_value));
+  }
 }
 
 LatLng? _latLngFromString(String? val) {

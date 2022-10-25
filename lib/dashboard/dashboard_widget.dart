@@ -73,7 +73,10 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                       mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        HeaderWidget(),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
+                          child: HeaderWidget(),
+                        ),
                       ],
                     ),
                   ),

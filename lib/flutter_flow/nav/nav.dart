@@ -109,16 +109,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                   : SeatingWidget(),
             ),
             FFRoute(
+              name: 'menuold',
+              path: 'menuold',
+              builder: (context, params) => MenuoldWidget(),
+            ),
+            FFRoute(
               name: 'Orders',
               path: 'orders',
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'Orders')
                   : OrdersWidget(),
-            ),
-            FFRoute(
-              name: 'menu',
-              path: 'menu',
-              builder: (context, params) => MenuWidget(),
             ),
             FFRoute(
               name: 'consumerEntry',
@@ -149,6 +149,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'newSittingOrArea',
               path: 'newSittingOrArea',
               builder: (context, params) => NewSittingOrAreaWidget(),
+            ),
+            FFRoute(
+              name: 'Menu',
+              path: 'menu',
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: MenuWidget(),
+              ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),

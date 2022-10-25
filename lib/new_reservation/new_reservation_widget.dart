@@ -80,13 +80,16 @@ class _NewReservationWidgetState extends State<NewReservationWidget> {
                 ),
               ],
               flexibleSpace: FlexibleSpaceBar(
-                title: Text(
-                  'New Reservation',
-                  style: GoogleFonts.getFont(
-                    'Overpass',
-                    color: FlutterFlowTheme.of(context).secondaryColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 32,
+                title: Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
+                  child: Text(
+                    'New Reservation',
+                    style: GoogleFonts.getFont(
+                      'Overpass',
+                      color: FlutterFlowTheme.of(context).secondaryColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 32,
+                    ),
                   ),
                 ),
                 centerTitle: true,

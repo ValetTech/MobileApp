@@ -150,32 +150,32 @@ class GETSittingTypesByDateCall {
 
   dynamic sittings(dynamic response) => getJsonField(
         response,
-        r'''$''',
+        r'''$.sittings''',
         true,
       );
   dynamic sittingId(dynamic response) => getJsonField(
         response,
-        r'''$[:].id''',
+        r'''$.sittings[:].id''',
         true,
       );
   dynamic sittingType(dynamic response) => getJsonField(
         response,
-        r'''$[:].type''',
+        r'''$.sittings[:].type''',
         true,
       );
   dynamic sittingStartTime(dynamic response) => getJsonField(
         response,
-        r'''$[:].startTime''',
+        r'''$.sittings[:].startTime''',
         true,
       );
-  dynamic getAreas(dynamic response) => getJsonField(
+  dynamic getAllAreas(dynamic response) => getJsonField(
         response,
-        r'''$[*].areas''',
+        r'''$.sittings[:].areas''',
         true,
       );
-  dynamic areaBySitting(dynamic response) => getJsonField(
+  dynamic areaNames(dynamic response) => getJsonField(
         response,
-        r'''$[:].areas''',
+        r'''$.sittings[:].areas[:].name''',
         true,
       );
 }
@@ -269,37 +269,37 @@ class GETReservationsCall {
 
   static dynamic firstName(dynamic response) => getJsonField(
         response,
-        r'''$[:].customer.firstName''',
+        r'''$.reservations[:].customer.firstName''',
         true,
       );
   static dynamic lastName(dynamic response) => getJsonField(
         response,
-        r'''$[:].customer.lastName''',
+        r'''$.reservations[:].customer.lastName''',
         true,
       );
   static dynamic phone(dynamic response) => getJsonField(
         response,
-        r'''$[:].customer.phone''',
+        r'''$.reservations[:].customer.phone''',
         true,
       );
   static dynamic notes(dynamic response) => getJsonField(
         response,
-        r'''$[:].notes''',
+        r'''$.reservations[:].notes''',
         true,
       );
   static dynamic reservationStartDateTime(dynamic response) => getJsonField(
         response,
-        r'''$[:].dateTime''',
+        r'''$.reservations[:].dateTime''',
         true,
       );
   static dynamic reservationDuration(dynamic response) => getJsonField(
         response,
-        r'''$[:].duration''',
+        r'''$.reservations[:].duration''',
         true,
       );
   static dynamic source(dynamic response) => getJsonField(
         response,
-        r'''$[:].source''',
+        r'''$.reservations[:].source''',
         true,
       );
   static dynamic lastNameOrig(dynamic response) => getJsonField(
@@ -309,32 +309,33 @@ class GETReservationsCall {
       );
   static dynamic reservation(dynamic response) => getJsonField(
         response,
-        r'''$[:]''',
+        r'''$.reservations[:]''',
         true,
       );
   static dynamic byBreakfastSitting(dynamic response) => getJsonField(
         response,
-        r'''$[?(@.sitting.type=="Breakfast")]''',
+        r'''$.reservations[?(@.sitting.type=="Breakfast")]''',
         true,
       );
   static dynamic email(dynamic response) => getJsonField(
         response,
-        r'''$[:].customer.email''',
+        r'''$.reservations[:].customer.email''',
         true,
       );
   static dynamic numGuests(dynamic response) => getJsonField(
         response,
-        r'''$[:].noGuests''',
+        r'''$.reservations[:].noGuests''',
         true,
       );
   static dynamic sittingType(dynamic response) => getJsonField(
         response,
-        r'''$[:].sitting.type''',
+        r'''$.reservations[:].sitting.type''',
         true,
       );
   static dynamic isVip(dynamic response) => getJsonField(
         response,
-        r'''$[:].customer.isVip''',
+        r'''$.reservations[:].customer.isVip''',
+        true,
       );
 }
 
@@ -357,17 +358,17 @@ class GETTablesAvailableBySittingIDCall {
 
   static dynamic sittingType(dynamic response) => getJsonField(
         response,
-        r'''$[:].type''',
+        r'''$.tables[:].type''',
         true,
       );
   static dynamic tableId(dynamic response) => getJsonField(
         response,
-        r'''$[:].id''',
+        r'''$.tables[:].id''',
         true,
       );
   static dynamic capacity(dynamic response) => getJsonField(
         response,
-        r'''$[:].capacity''',
+        r'''$.tables[:].capacity''',
         true,
       );
 }

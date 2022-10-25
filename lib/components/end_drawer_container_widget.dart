@@ -103,23 +103,28 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 16),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
-                        child: Icon(
-                          Icons.dashboard,
-                          color: FlutterFlowTheme.of(context).iconGray,
-                          size: 24,
+                  child: InkWell(
+                    onTap: () async {
+                      context.pushNamed('Dashboard');
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
+                          child: Icon(
+                            Icons.dashboard,
+                            color: FlutterFlowTheme.of(context).iconGray,
+                            size: 24,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Dashboard',
-                        style: FlutterFlowTheme.of(context).bodyText1,
-                      ),
-                    ],
+                        Text(
+                          'Dashboard',
+                          style: FlutterFlowTheme.of(context).bodyText1,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Divider(
@@ -271,23 +276,28 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 16),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
-                        child: Icon(
-                          Icons.fastfood_rounded,
-                          color: FlutterFlowTheme.of(context).iconGray,
-                          size: 24,
+                  child: InkWell(
+                    onTap: () async {
+                      context.pushNamed('Menu');
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
+                          child: Icon(
+                            Icons.fastfood_rounded,
+                            color: FlutterFlowTheme.of(context).iconGray,
+                            size: 24,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'View Menu',
-                        style: FlutterFlowTheme.of(context).bodyText1,
-                      ),
-                    ],
+                        Text(
+                          'View Menu',
+                          style: FlutterFlowTheme.of(context).bodyText1,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Divider(
