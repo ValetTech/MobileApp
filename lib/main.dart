@@ -10,7 +10,6 @@ import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 import 'flutter_flow/nav/nav.dart';
 import 'index.dart';
 
@@ -123,8 +122,7 @@ class _NavBarPageState extends State<NavBarPage> {
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
     return Scaffold(
       body: _currentPage ?? tabs[_currentPageName],
-      extendBody: true,
-      bottomNavigationBar: FloatingNavbar(
+      bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (i) => setState(() {
           _currentPage = null;
@@ -133,113 +131,49 @@ class _NavBarPageState extends State<NavBarPage> {
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         selectedItemColor: FlutterFlowTheme.of(context).secondaryColor,
         unselectedItemColor: FlutterFlowTheme.of(context).iconGray,
-        selectedBackgroundColor: FlutterFlowTheme.of(context).primaryColor,
-        borderRadius: 12,
-        itemBorderRadius: 8,
-        margin: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-        width: MediaQuery.of(context).size.width * 1,
-        elevation: 0,
-        items: [
-          FloatingNavbarItem(
-            customWidget: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  FFIcons.kvaletIcon,
-                  color: currentIndex == 0
-                      ? FlutterFlowTheme.of(context).secondaryColor
-                      : FlutterFlowTheme.of(context).iconGray,
-                  size: 24,
-                ),
-                Text(
-                  'Dashboard',
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: currentIndex == 0
-                        ? FlutterFlowTheme.of(context).secondaryColor
-                        : FlutterFlowTheme.of(context).iconGray,
-                    fontSize: 11.0,
-                  ),
-                ),
-              ],
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        type: BottomNavigationBarType.fixed,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(
+              FFIcons.kvaletIcon,
+              size: 20,
             ),
+            label: 'Dashboard',
+            tooltip: '',
           ),
-          FloatingNavbarItem(
-            customWidget: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  currentIndex == 1
-                      ? Icons.people_alt_rounded
-                      : Icons.people_outline_outlined,
-                  color: currentIndex == 1
-                      ? FlutterFlowTheme.of(context).secondaryColor
-                      : FlutterFlowTheme.of(context).iconGray,
-                  size: 20,
-                ),
-                Text(
-                  'Reservations',
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: currentIndex == 1
-                        ? FlutterFlowTheme.of(context).secondaryColor
-                        : FlutterFlowTheme.of(context).iconGray,
-                    fontSize: 11.0,
-                  ),
-                ),
-              ],
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.people_outline_outlined,
+              size: 20,
             ),
+            activeIcon: Icon(
+              Icons.people_alt_rounded,
+              size: 20,
+            ),
+            label: 'Reservations',
+            tooltip: '',
           ),
-          FloatingNavbarItem(
-            customWidget: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  currentIndex == 2
-                      ? Icons.table_chart_rounded
-                      : Icons.table_chart_outlined,
-                  color: currentIndex == 2
-                      ? FlutterFlowTheme.of(context).secondaryColor
-                      : FlutterFlowTheme.of(context).iconGray,
-                  size: 20,
-                ),
-                Text(
-                  'Seating',
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: currentIndex == 2
-                        ? FlutterFlowTheme.of(context).secondaryColor
-                        : FlutterFlowTheme.of(context).iconGray,
-                    fontSize: 11.0,
-                  ),
-                ),
-              ],
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.table_chart_outlined,
+              size: 20,
             ),
+            activeIcon: Icon(
+              Icons.table_chart_rounded,
+              size: 20,
+            ),
+            label: 'Seating',
+            tooltip: '',
           ),
-          FloatingNavbarItem(
-            customWidget: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.add_shopping_cart,
-                  color: currentIndex == 3
-                      ? FlutterFlowTheme.of(context).secondaryColor
-                      : FlutterFlowTheme.of(context).iconGray,
-                  size: 24,
-                ),
-                Text(
-                  'Orders',
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: currentIndex == 3
-                        ? FlutterFlowTheme.of(context).secondaryColor
-                        : FlutterFlowTheme.of(context).iconGray,
-                    fontSize: 11.0,
-                  ),
-                ),
-              ],
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add_shopping_cart,
+              size: 20,
             ),
+            label: 'Orders',
+            tooltip: '',
           )
         ],
       ),

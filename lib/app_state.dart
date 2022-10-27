@@ -15,14 +15,6 @@ class FFAppState {
 
   Future initializePersistedState() async {
     prefs = await SharedPreferences.getInstance();
-    _NullValue = prefs.getString('ff_NullValue') ?? _NullValue;
-    if (prefs.containsKey('ff_empty204JSON')) {
-      try {
-        _empty204JSON = jsonDecode(prefs.getString('ff_empty204JSON') ?? '');
-      } catch (e) {
-        print("Can't decode persisted json. Error: $e.");
-      }
-    }
   }
 
   late SharedPreferences prefs;
@@ -73,19 +65,12 @@ class FFAppState {
 
   String defaultSittingValue = 'No Sittings Available';
 
-  String _NullValue = '';
-  String get NullValue => _NullValue;
-  set NullValue(String _value) {
-    _NullValue = _value;
-    prefs.setString('ff_NullValue', _value);
-  }
+  bool isNull = false;
 
-  dynamic _empty204JSON = jsonDecode('{}');
-  dynamic get empty204JSON => _empty204JSON;
-  set empty204JSON(dynamic _value) {
-    _empty204JSON = _value;
-    prefs.setString('ff_empty204JSON', jsonEncode(_value));
-  }
+  List<dynamic> EmptyReservation = [
+    jsonDecode(
+        '{\"id\":1,\"customerId\":1,\"customer\":{\"id\":1,\"firstName\":\"FUCK\",\"lastName\":\"FUCK\",\"email\":\"FUCK.FUCK@FUCK.FUCK\",\"phone\":\"FUCK\",\"isVip\":false,\"fullName\":\"FUCK FUCK\"},\"sittingId\":111,\"sitting\":{\"id\":111,\"capacity\":12,\"type\":\"Breakfast\",\"startTime\":\"2022-12-25T10:30:00\",\"endTime\":\"2022-12-25T12:30:00\",\"venueId\":1},\"dateTime\":\"2022-10-15T14:00:00\",\"duration\":90,\"noGuests\":2,\"source\":\"Website\",\"status\":\"Pending\",\"notes\":\"FUCK FUCK FUCK\",\"tables\":[]}')
+  ];
 }
 
 LatLng? _latLngFromString(String? val) {

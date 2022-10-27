@@ -46,6 +46,24 @@ class _DashboardWidgetState extends State<DashboardWidget> {
             child: AppBar(
               backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
               automaticallyImplyLeading: false,
+              title: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+                decoration: BoxDecoration(),
+                child: Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
+                        child: HeaderWidget(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               actions: [
                 FlutterFlowIconButton(
                   borderColor: Colors.transparent,
@@ -62,28 +80,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                   },
                 ),
               ],
-              flexibleSpace: FlexibleSpaceBar(
-                title: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 60,
-                  decoration: BoxDecoration(),
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
-                          child: HeaderWidget(),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                centerTitle: true,
-                expandedTitleScale: 1.0,
-              ),
+              centerTitle: true,
               toolbarHeight: 60,
               elevation: 6,
             ),

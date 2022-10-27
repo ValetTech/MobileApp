@@ -136,44 +136,54 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 8),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
-                        child: FaIcon(
-                          FontAwesomeIcons.calendarPlus,
-                          color: FlutterFlowTheme.of(context).iconGray,
-                          size: 24,
+                  child: InkWell(
+                    onTap: () async {
+                      context.pushNamed('NewReservation');
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
+                          child: FaIcon(
+                            FontAwesomeIcons.calendarPlus,
+                            color: FlutterFlowTheme.of(context).iconGray,
+                            size: 24,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'New Reservation',
-                        style: FlutterFlowTheme.of(context).bodyText1,
-                      ),
-                    ],
+                        Text(
+                          'New Reservation',
+                          style: FlutterFlowTheme.of(context).bodyText1,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 8),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
-                        child: Icon(
-                          Icons.calendar_today_rounded,
-                          color: FlutterFlowTheme.of(context).iconGray,
-                          size: 24,
+                  child: InkWell(
+                    onTap: () async {
+                      context.pushNamed('ViewReservation');
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
+                          child: Icon(
+                            Icons.calendar_today_rounded,
+                            color: FlutterFlowTheme.of(context).iconGray,
+                            size: 24,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'View/Modify Reservations',
-                        style: FlutterFlowTheme.of(context).bodyText1,
-                      ),
-                    ],
+                        Text(
+                          'View/Modify Reservations',
+                          style: FlutterFlowTheme.of(context).bodyText1,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Padding(
@@ -206,23 +216,28 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 16),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
-                        child: Icon(
-                          Icons.table_chart,
-                          color: FlutterFlowTheme.of(context).iconGray,
-                          size: 24,
+                  child: InkWell(
+                    onTap: () async {
+                      context.pushNamed('Seating');
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
+                          child: Icon(
+                            Icons.table_chart,
+                            color: FlutterFlowTheme.of(context).iconGray,
+                            size: 24,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'View Seating',
-                        style: FlutterFlowTheme.of(context).bodyText1,
-                      ),
-                    ],
+                        Text(
+                          'View Seating',
+                          style: FlutterFlowTheme.of(context).bodyText1,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Divider(
@@ -234,23 +249,28 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 8),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
-                        child: Icon(
-                          Icons.post_add_rounded,
-                          color: FlutterFlowTheme.of(context).iconGray,
-                          size: 24,
+                  child: InkWell(
+                    onTap: () async {
+                      context.pushNamed('Orders');
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
+                          child: Icon(
+                            Icons.post_add_rounded,
+                            color: FlutterFlowTheme.of(context).iconGray,
+                            size: 24,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'New Order',
-                        style: FlutterFlowTheme.of(context).bodyText1,
-                      ),
-                    ],
+                        Text(
+                          'New Order',
+                          style: FlutterFlowTheme.of(context).bodyText1,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Padding(

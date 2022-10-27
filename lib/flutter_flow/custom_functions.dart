@@ -79,3 +79,9 @@ List<dynamic> getAreasBySittingId(
 
   return areas;
 }
+
+List<String> mapListToString(List<int>? listNumbers) {
+  // Add your function code here!
+  listNumbers ??= [];
+  return listNumbers.map((e) => e.toString()).toList();
+}

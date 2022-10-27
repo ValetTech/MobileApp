@@ -10,6 +10,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(CatagoryStruct.serializer)
       ..add(CategoriesRecord.serializer)
       ..add(MenuRecord.serializer)
+      ..add(OrdersRecord.serializer)
       ..add(UsersRecord.serializer))
     .build();
 

@@ -21,6 +21,7 @@ class ValetAPIGroup {
   static GETAreasBySittingIDCall gETAreasBySittingIDCall =
       GETAreasBySittingIDCall();
   static GETSittingTypesCall gETSittingTypesCall = GETSittingTypesCall();
+  static GETTablesCall gETTablesCall = GETTablesCall();
 }
 
 class NewAreaCall {
@@ -200,22 +201,27 @@ class GETAreasBySittingIDCall {
 
   dynamic areaName(dynamic response) => getJsonField(
         response,
-        r'''$[:].name''',
+        r'''$.areas[:].name''',
         true,
       );
   dynamic areaDescription(dynamic response) => getJsonField(
         response,
-        r'''$[:].description''',
+        r'''$.areas[:].description''',
         true,
       );
-  dynamic areaId(dynamic response) => getJsonField(
+  dynamic sittingId(dynamic response) => getJsonField(
         response,
-        r'''$[:].id''',
+        r'''$.areas[:].sittings[:].id''',
         true,
       );
   dynamic areaSittingsStartTime(dynamic response) => getJsonField(
         response,
-        r'''$[:].sittings[:].startTime''',
+        r'''$.areas[:].sittings[:].startTime''',
+        true,
+      );
+  dynamic areas(dynamic response) => getJsonField(
+        response,
+        r'''$.areas''',
         true,
       );
 }
@@ -245,6 +251,47 @@ class GETSittingTypesCall {
       );
 }
 
+class GETTablesCall {
+  Future<ApiCallResponse> call() {
+    return ApiManager.instance.makeApiCall(
+      callName: 'GET Tables',
+      apiUrl: '${ValetAPIGroup.baseUrl}/tables',
+      callType: ApiCallType.GET,
+      headers: {
+        ...ValetAPIGroup.headers,
+      },
+      params: {},
+      returnBody: true,
+    );
+  }
+
+  dynamic tables(dynamic response) => getJsonField(
+        response,
+        r'''$.tables''',
+        true,
+      );
+  dynamic tableId(dynamic response) => getJsonField(
+        response,
+        r'''$.tables[:].id''',
+        true,
+      );
+  dynamic tableType(dynamic response) => getJsonField(
+        response,
+        r'''$.tables[:].type''',
+        true,
+      );
+  dynamic tableCapacity(dynamic response) => getJsonField(
+        response,
+        r'''$.tables[:].capacity''',
+        true,
+      );
+  dynamic tableAreaId(dynamic response) => getJsonField(
+        response,
+        r'''$.tables[:].areaId''',
+        true,
+      );
+}
+
 /// End Valet API Group Code
 
 class GETReservationsCall {
@@ -252,6 +299,8 @@ class GETReservationsCall {
     String? minDate = '',
     String? maxDate = '',
     String? date = '',
+    int? page,
+    int? size,
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'GET Reservations',
@@ -307,9 +356,9 @@ class GETReservationsCall {
         r'''$..lastName''',
         true,
       );
-  static dynamic reservation(dynamic response) => getJsonField(
+  static dynamic reservations(dynamic response) => getJsonField(
         response,
-        r'''$.reservations[:]''',
+        r'''$.reservations''',
         true,
       );
   static dynamic byBreakfastSitting(dynamic response) => getJsonField(
@@ -335,6 +384,16 @@ class GETReservationsCall {
   static dynamic isVip(dynamic response) => getJsonField(
         response,
         r'''$.reservations[:].customer.isVip''',
+        true,
+      );
+  static dynamic status(dynamic response) => getJsonField(
+        response,
+        r'''$.reservations[:].status''',
+        true,
+      );
+  static dynamic reservation(dynamic response) => getJsonField(
+        response,
+        r'''$[*]''',
         true,
       );
 }
