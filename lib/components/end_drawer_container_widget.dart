@@ -334,26 +334,34 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
             alignment: AlignmentDirectional(-1, 1),
             child: Padding(
               padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 60),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
-                      child: Icon(
-                        Icons.logout,
-                        color: FlutterFlowTheme.of(context).iconGray,
-                        size: 24,
+              child: InkWell(
+                onTap: () async {
+                  GoRouter.of(context).prepareAuthEvent();
+                  await signOut();
+
+                  context.goNamedAuth('Onboard', mounted);
+                },
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
+                        child: Icon(
+                          Icons.logout,
+                          color: FlutterFlowTheme.of(context).iconGray,
+                          size: 24,
+                        ),
                       ),
-                    ),
-                    Text(
-                      'Logout',
-                      style: FlutterFlowTheme.of(context).bodyText1,
-                    ),
-                  ],
+                      Text(
+                        'Logout',
+                        style: FlutterFlowTheme.of(context).bodyText1,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

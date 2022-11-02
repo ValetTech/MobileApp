@@ -1,5 +1,6 @@
 import '../backend/api_requests/api_calls.dart';
 import '../components/end_drawer_container_widget.dart';
+import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_calendar.dart';
 import '../flutter_flow/flutter_flow_choice_chips.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
@@ -10,6 +11,7 @@ import '../flutter_flow/custom_functions.dart' as functions;
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,13 +23,51 @@ class ReservationsWidget extends StatefulWidget {
   _ReservationsWidgetState createState() => _ReservationsWidgetState();
 }
 
-class _ReservationsWidgetState extends State<ReservationsWidget> {
+class _ReservationsWidgetState extends State<ReservationsWidget>
+    with TickerProviderStateMixin {
   ApiCallResponse? resApiOutput;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Completer<ApiCallResponse>? _apiRequestCompleter;
   DateTimeRange? calendarPickerReservationsMainSelectedDay;
   ValueNotifier<List<String>?> areaChipsValues = ValueNotifier(null);
   ValueNotifier<List<String>?> sittingChipsValues = ValueNotifier(null);
+  var hasIconTriggered = false;
+  final animationsMap = {
+    'containerOnActionTriggerAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onActionTrigger,
+      applyInitialState: true,
+      effects: [
+        VisibilityEffect(duration: 1.ms),
+        FadeEffect(
+          curve: Curves.easeIn,
+          delay: 0.ms,
+          duration: 300.ms,
+          begin: 0,
+          end: 1,
+        ),
+        MoveEffect(
+          curve: Curves.easeIn,
+          delay: 0.ms,
+          duration: 300.ms,
+          begin: Offset(0, 50),
+          end: Offset(0, 0),
+        ),
+      ],
+    ),
+    'iconOnActionTriggerAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onActionTrigger,
+      applyInitialState: false,
+      effects: [
+        FadeEffect(
+          curve: Curves.easeIn,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: 0,
+          end: 1,
+        ),
+      ],
+    ),
+  };
 
   @override
   void initState() {
@@ -38,10 +78,12 @@ class _ReservationsWidgetState extends State<ReservationsWidget> {
         date: functions.formatDateForPOST(
             calendarPickerReservationsMainSelectedDay!.start),
       );
-      if ((resApiOutput?.jsonBody ?? '')) {
-        setState(() => FFAppState().isNull = true);
-      } else {
-        setState(() => FFAppState().isNull = false);
+      if ((resApiOutput?.succeeded ?? true)) {
+        if (animationsMap['containerOnActionTriggerAnimation'] != null) {
+          await animationsMap['containerOnActionTriggerAnimation']!
+              .controller
+              .forward(from: 0.0);
+        }
       }
     });
 
@@ -49,6 +91,13 @@ class _ReservationsWidgetState extends State<ReservationsWidget> {
       start: DateTime.now().startOfDay,
       end: DateTime.now().endOfDay,
     );
+    setupAnimations(
+      animationsMap.values.where((anim) =>
+          anim.trigger == AnimationTrigger.onActionTrigger ||
+          !anim.applyInitialState),
+      this,
+    );
+
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -92,6 +141,27 @@ class _ReservationsWidgetState extends State<ReservationsWidget> {
                   backgroundColor:
                       FlutterFlowTheme.of(context).primaryBackground,
                   automaticallyImplyLeading: false,
+                  title: Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(),
+                    child: Align(
+                      alignment: AlignmentDirectional(-1, 0),
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
+                        child: Text(
+                          'Reservations',
+                          textAlign: TextAlign.start,
+                          style: GoogleFonts.getFont(
+                            'Overpass',
+                            color: FlutterFlowTheme.of(context).secondaryColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 32,
+                            fontStyle: FontStyle.normal,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   actions: [
                     FlutterFlowIconButton(
                       borderColor: Colors.transparent,
@@ -108,32 +178,7 @@ class _ReservationsWidgetState extends State<ReservationsWidget> {
                       },
                     ),
                   ],
-                  flexibleSpace: FlexibleSpaceBar(
-                    title: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
-                          child: Text(
-                            'Reservations',
-                            textAlign: TextAlign.start,
-                            style: GoogleFonts.getFont(
-                              'Overpass',
-                              color:
-                                  FlutterFlowTheme.of(context).secondaryColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 32,
-                              fontStyle: FontStyle.normal,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    centerTitle: true,
-                    expandedTitleScale: 1.0,
-                  ),
+                  centerTitle: false,
                   toolbarHeight: 60,
                   elevation: 6,
                 ),
@@ -335,7 +380,11 @@ class _ReservationsWidgetState extends State<ReservationsWidget> {
                                                             context)
                                                         .iconGray,
                                                     size: 24,
-                                                  ),
+                                                  ).animateOnActionTrigger(
+                                                      animationsMap[
+                                                          'iconOnActionTriggerAnimation']!,
+                                                      hasBeenTriggered:
+                                                          hasIconTriggered),
                                                 ),
                                               if (FFAppState().filtersOn ==
                                                   true)
@@ -657,6 +706,9 @@ class _ReservationsWidgetState extends State<ReservationsWidget> {
                                       ],
                                     ),
                                   ),
+                                ).animateOnActionTrigger(
+                                  animationsMap[
+                                      'containerOnActionTriggerAnimation']!,
                                 ),
                               ),
                               Padding(

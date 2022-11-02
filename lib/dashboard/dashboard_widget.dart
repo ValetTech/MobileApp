@@ -50,18 +50,15 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                 width: MediaQuery.of(context).size.width,
                 height: 60,
                 decoration: BoxDecoration(),
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
-                        child: HeaderWidget(),
-                      ),
-                    ],
-                  ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
+                      child: HeaderWidget(),
+                    ),
+                  ],
                 ),
               ),
               actions: [
@@ -80,7 +77,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                   },
                 ),
               ],
-              centerTitle: true,
+              centerTitle: false,
               toolbarHeight: 60,
               elevation: 6,
             ),

@@ -426,8 +426,8 @@ class _ManagerLoginWidgetState extends State<ManagerLoginWidget> {
                     color: FlutterFlowTheme.of(context).white,
                     size: 30,
                   ),
-                  onPressed: () {
-                    print('IconButton pressed ...');
+                  onPressed: () async {
+                    context.pushNamed('Onboard');
                   },
                 ),
               ],

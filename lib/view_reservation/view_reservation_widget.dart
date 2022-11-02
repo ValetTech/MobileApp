@@ -1,11 +1,14 @@
 import '../backend/api_requests/api_calls.dart';
 import '../components/end_drawer_container_widget.dart';
+import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,7 +24,24 @@ class ViewReservationWidget extends StatefulWidget {
   _ViewReservationWidgetState createState() => _ViewReservationWidgetState();
 }
 
-class _ViewReservationWidgetState extends State<ViewReservationWidget> {
+class _ViewReservationWidgetState extends State<ViewReservationWidget>
+    with TickerProviderStateMixin {
+  final animationsMap = {
+    'iconOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      effects: [
+        VisibilityEffect(duration: 1.ms),
+        ShakeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 1000.ms,
+          hz: 10,
+          offset: Offset(0, 0),
+          rotation: 0.087,
+        ),
+      ],
+    ),
+  };
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -785,6 +805,96 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget> {
                                                                 MainAxisSize
                                                                     .min,
                                                             children: [
+                                                              if (getJsonField(
+                                                                    widget
+                                                                        .resDetails,
+                                                                    r'''$.status''',
+                                                                  ) !=
+                                                                  FFAppState()
+                                                                      .pendingString)
+                                                                Icon(
+                                                                  Icons
+                                                                      .check_circle_rounded,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryColor,
+                                                                  size: 30,
+                                                                ),
+                                                              if (getJsonField(
+                                                                    widget
+                                                                        .resDetails,
+                                                                    r'''$.status''',
+                                                                  ) ==
+                                                                  FFAppState()
+                                                                      .pendingString)
+                                                                Icon(
+                                                                  Icons
+                                                                      .info_outline_rounded,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .customColor3,
+                                                                  size: 30,
+                                                                ).animateOnPageLoad(
+                                                                    animationsMap[
+                                                                        'iconOnPageLoadAnimation']!),
+                                                              Expanded(
+                                                                child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional
+                                                                          .fromSTEB(
+                                                                              8,
+                                                                              8,
+                                                                              0,
+                                                                              8),
+                                                                      child:
+                                                                          AutoSizeText(
+                                                                        getJsonField(
+                                                                          widget
+                                                                              .resDetails,
+                                                                          r'''$.status''',
+                                                                        ).toString(),
+                                                                        maxLines:
+                                                                            4,
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .subtitle2
+                                                                            .override(
+                                                                              fontFamily: FlutterFlowTheme.of(context).subtitle2Family,
+                                                                              color: FlutterFlowTheme.of(context).iconGray,
+                                                                              useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).subtitle2Family),
+                                                                            ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(0,
+                                                                      12, 0, 0),
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              Icon(
+                                                                Icons
+                                                                    .check_circle_rounded,
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryColor,
+                                                                size: 30,
+                                                              ),
                                                               Icon(
                                                                 Icons
                                                                     .info_outline_rounded,
@@ -798,6 +908,9 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget> {
                                                                   mainAxisSize:
                                                                       MainAxisSize
                                                                           .min,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
                                                                   children: [
                                                                     Padding(
                                                                       padding: EdgeInsetsDirectional
@@ -808,7 +921,16 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget> {
                                                                               8),
                                                                       child:
                                                                           AutoSizeText(
-                                                                        'This reservation is currently unconfirmed and not allocated to a table.',
+                                                                        getJsonField(
+                                                                                  widget.resDetails,
+                                                                                  r'''$.tables''',
+                                                                                ) ==
+                                                                                FFAppState().emptArray
+                                                                            ? '\"Not allocated to a table\"'
+                                                                            : getJsonField(
+                                                                                widget.resDetails,
+                                                                                r'''$.tables''',
+                                                                              ).toString(),
                                                                         maxLines:
                                                                             4,
                                                                         style: FlutterFlowTheme.of(context)
@@ -972,17 +1094,41 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget> {
                                                             Color(0xFF57636C),
                                                         size: 30,
                                                       ),
-                                                      onPressed: () {
-                                                        print(
-                                                            'IconButton pressed ...');
+                                                      onPressed: () async {
+                                                        context.pushNamed(
+                                                          'EditReservation',
+                                                          queryParams: {
+                                                            'resDetails':
+                                                                serializeParam(
+                                                              viewReservationGETReservationsResponse
+                                                                  .jsonBody,
+                                                              ParamType.JSON,
+                                                            ),
+                                                          }.withoutNulls,
+                                                        );
                                                       },
                                                     ),
-                                                    Text(
-                                                      'Edit',
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyText1,
+                                                    InkWell(
+                                                      onTap: () async {
+                                                        context.pushNamed(
+                                                          'EditReservation',
+                                                          queryParams: {
+                                                            'resDetails':
+                                                                serializeParam(
+                                                              viewReservationGETReservationsResponse
+                                                                  .jsonBody,
+                                                              ParamType.JSON,
+                                                            ),
+                                                          }.withoutNulls,
+                                                        );
+                                                      },
+                                                      child: Text(
+                                                        'Edit',
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyText1,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),

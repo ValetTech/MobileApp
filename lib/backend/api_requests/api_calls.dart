@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../flutter_flow/flutter_flow_util.dart';
 
 import 'api_manager.dart';
@@ -396,6 +398,11 @@ class GETReservationsCall {
         r'''$[*]''',
         true,
       );
+  static dynamic tables(dynamic response) => getJsonField(
+        response,
+        r'''$.reservations[:].tables''',
+        true,
+      );
 }
 
 class GETTablesAvailableBySittingIDCall {
@@ -446,4 +453,13 @@ class ApiPagingParams {
   @override
   String toString() =>
       'PagingParams(nextPageNumber: $nextPageNumber, numItems: $numItems, lastResponse: $lastResponse,)';
+}
+
+String _serializeList(List? list) {
+  list ??= <String>[];
+  try {
+    return json.encode(list);
+  } catch (_) {
+    return '[]';
+  }
 }
