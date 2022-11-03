@@ -967,16 +967,14 @@ class _NewReservationPageViewWidgetState
                                     ),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .customColor3,
+                                        color: Color(0xFFDF3F3F),
                                         width: 1,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .customColor3,
+                                        color: Color(0xFFDF3F3F),
                                         width: 1,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
@@ -1024,16 +1022,14 @@ class _NewReservationPageViewWidgetState
                                     ),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .customColor3,
+                                        color: Color(0xFFDF3F3F),
                                         width: 1,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .customColor3,
+                                        color: Color(0xFFDF3F3F),
                                         width: 1,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
@@ -1081,16 +1077,14 @@ class _NewReservationPageViewWidgetState
                                     ),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .customColor3,
+                                        color: Color(0xFFDF3F3F),
                                         width: 1,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .customColor3,
+                                        color: Color(0xFFDF3F3F),
                                         width: 1,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
@@ -1139,16 +1133,14 @@ class _NewReservationPageViewWidgetState
                                     ),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .customColor3,
+                                        color: Color(0xFFDF3F3F),
                                         width: 1,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .customColor3,
+                                        color: Color(0xFFDF3F3F),
                                         width: 1,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
@@ -1198,16 +1190,14 @@ class _NewReservationPageViewWidgetState
                                     ),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .customColor3,
+                                        color: Color(0xFFDF3F3F),
                                         width: 1,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .customColor3,
+                                        color: Color(0xFFDF3F3F),
                                         width: 1,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
@@ -1315,8 +1305,7 @@ class _NewReservationPageViewWidgetState
                                       content: Text(
                                         'Reservation Error',
                                         style: TextStyle(
-                                          color: FlutterFlowTheme.of(context)
-                                              .customColor3,
+                                          color: Color(0xFFDF3F3F),
                                         ),
                                       ),
                                       duration: Duration(milliseconds: 4000),

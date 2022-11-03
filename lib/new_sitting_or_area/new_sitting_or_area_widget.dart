@@ -330,9 +330,7 @@ class _NewSittingOrAreaWidgetState extends State<NewSittingOrAreaWidget> {
                                       ),
                                     ),
                                     duration: Duration(milliseconds: 4000),
-                                    backgroundColor:
-                                        FlutterFlowTheme.of(context)
-                                            .customColor1,
+                                    backgroundColor: Color(0xFF2FB73C),
                                   ),
                                 );
                               } else {
@@ -347,9 +345,7 @@ class _NewSittingOrAreaWidgetState extends State<NewSittingOrAreaWidget> {
                                       ),
                                     ),
                                     duration: Duration(milliseconds: 4000),
-                                    backgroundColor:
-                                        FlutterFlowTheme.of(context)
-                                            .customColor3,
+                                    backgroundColor: Color(0xFFDF3F3F),
                                   ),
                                 );
                               }
@@ -657,9 +653,7 @@ class _NewSittingOrAreaWidgetState extends State<NewSittingOrAreaWidget> {
                                         ),
                                       ),
                                       duration: Duration(milliseconds: 4000),
-                                      backgroundColor:
-                                          FlutterFlowTheme.of(context)
-                                              .customColor1,
+                                      backgroundColor: Color(0xFF2FB73C),
                                     ),
                                   );
                                 } else {
@@ -674,9 +668,7 @@ class _NewSittingOrAreaWidgetState extends State<NewSittingOrAreaWidget> {
                                         ),
                                       ),
                                       duration: Duration(milliseconds: 4000),
-                                      backgroundColor:
-                                          FlutterFlowTheme.of(context)
-                                              .customColor3,
+                                      backgroundColor: Color(0xFFDF3F3F),
                                     ),
                                   );
                                 }

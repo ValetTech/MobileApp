@@ -340,9 +340,7 @@ class _SeatingWidgetState extends State<SeatingWidget>
                                                 },
                                                 child: Icon(
                                                   Icons.cancel,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .customColor3,
+                                                  color: Color(0xFFDF3F3F),
                                                   size: 24,
                                                 ),
                                               ),

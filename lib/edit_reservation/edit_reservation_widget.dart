@@ -1,17 +1,15 @@
 import '../backend/api_requests/api_calls.dart';
 import '../components/end_drawer_container_widget.dart';
-import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_drop_down.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_toggle_icon.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,40 +17,24 @@ import 'package:google_fonts/google_fonts.dart';
 class EditReservationWidget extends StatefulWidget {
   const EditReservationWidget({
     Key? key,
-    this.resDetails,
+    this.resDetailsEdiit,
   }) : super(key: key);
 
-  final dynamic resDetails;
+  final dynamic resDetailsEdiit;
 
   @override
   _EditReservationWidgetState createState() => _EditReservationWidgetState();
 }
 
-class _EditReservationWidgetState extends State<EditReservationWidget>
-    with TickerProviderStateMixin {
-  final animationsMap = {
-    'iconOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        VisibilityEffect(duration: 1.ms),
-        ShakeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 1000.ms,
-          hz: 10,
-          offset: Offset(0, 0),
-          rotation: 0.087,
-        ),
-      ],
-    ),
-  };
+class _EditReservationWidgetState extends State<EditReservationWidget> {
   DateTime? datePicked;
   TextEditingController? textController5;
-  String? dropDownValue;
+  String? sittingsValue1;
   TextEditingController? textController6;
-  TextEditingController? textController7;
-  TextEditingController? textController1;
-  TextEditingController? textController2;
+  TextEditingController? notesController;
+  String? sittingsValue2;
+  TextEditingController? firstController;
+  TextEditingController? lastController;
   TextEditingController? textController3;
   TextEditingController? textController4;
   final formKey = GlobalKey<FormState>();
@@ -61,62 +43,61 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
   @override
   void initState() {
     super.initState();
-
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       setState(() => FFAppState().isVIP = getJsonField(
-            widget.resDetails,
+            widget.resDetailsEdiit,
             r'''$.customer.isVip''',
           ));
     });
 
-    textController1 = TextEditingController(
+    firstController = TextEditingController(
         text: getJsonField(
-      widget.resDetails,
+      widget.resDetailsEdiit,
       r'''$.customer.firstName''',
     ).toString());
-    textController2 = TextEditingController(
+    lastController = TextEditingController(
         text: getJsonField(
-      widget.resDetails,
+      widget.resDetailsEdiit,
       r'''$.customer.lastName''',
     ).toString());
     textController3 = TextEditingController(
         text: getJsonField(
-      widget.resDetails,
+      widget.resDetailsEdiit,
       r'''$.customer.phone''',
     ).toString());
     textController4 = TextEditingController(
         text: getJsonField(
-      widget.resDetails,
+      widget.resDetailsEdiit,
       r'''$.customer.email''',
+    ).toString());
+    notesController = TextEditingController(
+        text: getJsonField(
+      widget.resDetailsEdiit,
+      r'''$.notes''',
     ).toString());
     textController5 = TextEditingController(
         text: getJsonField(
-      widget.resDetails,
+      widget.resDetailsEdiit,
       r'''$.duration''',
     ).toString());
     textController6 = TextEditingController(
         text: getJsonField(
-      widget.resDetails,
+      widget.resDetailsEdiit,
       r'''$.noGuests''',
-    ).toString());
-    textController7 = TextEditingController(
-        text: getJsonField(
-      widget.resDetails,
-      r'''$.notes''',
     ).toString());
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
   void dispose() {
-    textController1?.dispose();
-    textController2?.dispose();
+    firstController?.dispose();
+    lastController?.dispose();
     textController3?.dispose();
     textController4?.dispose();
+    notesController?.dispose();
     textController5?.dispose();
     textController6?.dispose();
-    textController7?.dispose();
     super.dispose();
   }
 
@@ -267,226 +248,311 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(16, 16, 16, 4),
                                               child: Row(
-                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisSize: MainAxisSize.min,
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
-                                                        .spaceBetween,
+                                                        .spaceEvenly,
                                                 children: [
                                                   Expanded(
-                                                    child: TextFormField(
-                                                      controller:
-                                                          textController1,
-                                                      autofocus: true,
-                                                      obscureText: false,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        labelText: 'First',
-                                                        hintStyle:
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  0, 0, 2, 0),
+                                                      child: TextFormField(
+                                                        controller:
+                                                            firstController,
+                                                        onChanged: (_) =>
+                                                            EasyDebounce
+                                                                .debounce(
+                                                          'firstController',
+                                                          Duration(
+                                                              milliseconds:
+                                                                  2000),
+                                                          () async {
+                                                            setState(() => FFAppState()
+                                                                    .resFirstName =
+                                                                firstController!
+                                                                    .text);
+                                                          },
+                                                        ),
+                                                        autofocus: true,
+                                                        obscureText: false,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          isDense: true,
+                                                          labelText: 'First',
+                                                          enabledBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .iconGray,
+                                                              width: 2,
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                          ),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .iconGray,
+                                                              width: 2,
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                          ),
+                                                          errorBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color: Color(
+                                                                  0x00000000),
+                                                              width: 2,
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                          ),
+                                                          focusedErrorBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color: Color(
+                                                                  0x00000000),
+                                                              width: 2,
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                          ),
+                                                          filled: true,
+                                                          suffixIcon:
+                                                              firstController!
+                                                                      .text
+                                                                      .isNotEmpty
+                                                                  ? InkWell(
+                                                                      onTap:
+                                                                          () async {
+                                                                        firstController
+                                                                            ?.clear();
+                                                                        setState(() =>
+                                                                            FFAppState().resFirstName =
+                                                                                firstController!.text);
+                                                                        setState(
+                                                                            () {});
+                                                                      },
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .clear,
+                                                                        color: Color(
+                                                                            0xFF757575),
+                                                                        size:
+                                                                            22,
+                                                                      ),
+                                                                    )
+                                                                  : null,
+                                                        ),
+                                                        style:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .bodyText2,
-                                                        enabledBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: Color(
-                                                                0x00000000),
-                                                            width: 1,
-                                                          ),
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                          ),
-                                                        ),
-                                                        focusedBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: Color(
-                                                                0x00000000),
-                                                            width: 1,
-                                                          ),
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                          ),
-                                                        ),
-                                                        errorBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: Color(
-                                                                0x00000000),
-                                                            width: 1,
-                                                          ),
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                          ),
-                                                        ),
-                                                        focusedErrorBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: Color(
-                                                                0x00000000),
-                                                            width: 1,
-                                                          ),
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                          ),
-                                                        ),
+                                                                .title3
+                                                                .override(
+                                                                  fontFamily: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .title3Family,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryText,
+                                                                  useGoogleFonts: GoogleFonts
+                                                                          .asMap()
+                                                                      .containsKey(
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .title3Family),
+                                                                ),
                                                       ),
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .title3,
                                                     ),
                                                   ),
                                                   Expanded(
-                                                    child: TextFormField(
-                                                      controller:
-                                                          textController2,
-                                                      autofocus: true,
-                                                      obscureText: false,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        labelText: 'Last',
-                                                        hintStyle:
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  2, 0, 2, 0),
+                                                      child: TextFormField(
+                                                        controller:
+                                                            lastController,
+                                                        onChanged: (_) =>
+                                                            EasyDebounce
+                                                                .debounce(
+                                                          'lastController',
+                                                          Duration(
+                                                              milliseconds:
+                                                                  2000),
+                                                          () async {
+                                                            setState(() => FFAppState()
+                                                                    .resLastName =
+                                                                lastController!
+                                                                    .text);
+                                                          },
+                                                        ),
+                                                        obscureText: false,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          isDense: true,
+                                                          labelText: 'Last',
+                                                          enabledBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .iconGray,
+                                                              width: 2,
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                          ),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .iconGray,
+                                                              width: 2,
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                          ),
+                                                          errorBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color: Color(
+                                                                  0x00000000),
+                                                              width: 2,
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                          ),
+                                                          focusedErrorBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color: Color(
+                                                                  0x00000000),
+                                                              width: 2,
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                          ),
+                                                          filled: true,
+                                                          suffixIcon:
+                                                              lastController!
+                                                                      .text
+                                                                      .isNotEmpty
+                                                                  ? InkWell(
+                                                                      onTap:
+                                                                          () async {
+                                                                        lastController
+                                                                            ?.clear();
+                                                                        setState(() =>
+                                                                            FFAppState().resLastName =
+                                                                                lastController!.text);
+                                                                        setState(
+                                                                            () {});
+                                                                      },
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .clear,
+                                                                        color: Color(
+                                                                            0xFF757575),
+                                                                        size:
+                                                                            22,
+                                                                      ),
+                                                                    )
+                                                                  : null,
+                                                        ),
+                                                        style:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .bodyText2,
-                                                        enabledBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: Color(
-                                                                0x00000000),
-                                                            width: 1,
-                                                          ),
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                          ),
-                                                        ),
-                                                        focusedBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: Color(
-                                                                0x00000000),
-                                                            width: 1,
-                                                          ),
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                          ),
-                                                        ),
-                                                        errorBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: Color(
-                                                                0x00000000),
-                                                            width: 1,
-                                                          ),
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                          ),
-                                                        ),
-                                                        focusedErrorBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: Color(
-                                                                0x00000000),
-                                                            width: 1,
-                                                          ),
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                          ),
-                                                        ),
+                                                                .title3
+                                                                .override(
+                                                                  fontFamily: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .title3Family,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryText,
+                                                                  useGoogleFonts: GoogleFonts
+                                                                          .asMap()
+                                                                      .containsKey(
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .title3Family),
+                                                                ),
                                                       ),
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .title3,
                                                     ),
                                                   ),
-                                                  ToggleIcon(
-                                                    onPressed: () async {
-                                                      setState(() =>
-                                                          FFAppState().isVIP =
-                                                              !FFAppState()
-                                                                  .isVIP);
-                                                    },
-                                                    value: FFAppState().isVIP,
-                                                    onIcon: Icon(
-                                                      Icons.stars_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .secondaryColor,
-                                                      size: 30,
-                                                    ),
-                                                    offIcon: Icon(
-                                                      Icons.star_border_rounded,
-                                                      color:
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                2, 0, 0, 0),
+                                                    child: InkWell(
+                                                      onTap: () async {
+                                                        if (FFAppState()
+                                                            .isVIP) {
+                                                          setState(() =>
+                                                              FFAppState()
+                                                                      .isVIP =
+                                                                  false);
+                                                        } else {
+                                                          setState(() =>
+                                                              FFAppState()
+                                                                      .isVIP =
+                                                                  true);
+                                                        }
+                                                      },
+                                                      child: Icon(
+                                                        Icons.stars_rounded,
+                                                        color: valueOrDefault<
+                                                            Color>(
+                                                          FFAppState().isVIP ==
+                                                                  true
+                                                              ? FlutterFlowTheme
+                                                                      .of(
+                                                                          context)
+                                                                  .secondaryColor
+                                                              : FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .iconGray,
                                                           FlutterFlowTheme.of(
                                                                   context)
                                                               .iconGray,
-                                                      size: 30,
+                                                        ),
+                                                        size: 30,
+                                                      ),
                                                     ),
                                                   ),
                                                 ],
@@ -494,7 +560,7 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
                                             ),
                                             Padding(
                                               padding: EdgeInsetsDirectional
-                                                  .fromSTEB(16, 0, 0, 4),
+                                                  .fromSTEB(16, 0, 16, 4),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
                                                 children: [
@@ -502,96 +568,120 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
                                                     child: TextFormField(
                                                       controller:
                                                           textController3,
-                                                      autofocus: true,
+                                                      onChanged: (_) =>
+                                                          EasyDebounce.debounce(
+                                                        'textController3',
+                                                        Duration(
+                                                            milliseconds: 2000),
+                                                        () async {
+                                                          setState(() =>
+                                                              FFAppState()
+                                                                      .resPhone =
+                                                                  textController3!
+                                                                      .text);
+                                                        },
+                                                      ),
                                                       obscureText: false,
                                                       decoration:
                                                           InputDecoration(
+                                                        isDense: true,
                                                         labelText: 'Phone',
-                                                        hintStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyText2,
                                                         enabledBorder:
-                                                            UnderlineInputBorder(
+                                                            OutlineInputBorder(
                                                           borderSide:
                                                               BorderSide(
-                                                            color: Color(
-                                                                0x00000000),
-                                                            width: 1,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .iconGray,
+                                                            width: 2,
                                                           ),
                                                           borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                          ),
+                                                              BorderRadius
+                                                                  .circular(12),
                                                         ),
                                                         focusedBorder:
-                                                            UnderlineInputBorder(
+                                                            OutlineInputBorder(
                                                           borderSide:
                                                               BorderSide(
-                                                            color: Color(
-                                                                0x00000000),
-                                                            width: 1,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .iconGray,
+                                                            width: 2,
                                                           ),
                                                           borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                          ),
+                                                              BorderRadius
+                                                                  .circular(12),
                                                         ),
                                                         errorBorder:
-                                                            UnderlineInputBorder(
+                                                            OutlineInputBorder(
                                                           borderSide:
                                                               BorderSide(
                                                             color: Color(
                                                                 0x00000000),
-                                                            width: 1,
+                                                            width: 2,
                                                           ),
                                                           borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                          ),
+                                                              BorderRadius
+                                                                  .circular(12),
                                                         ),
                                                         focusedErrorBorder:
-                                                            UnderlineInputBorder(
+                                                            OutlineInputBorder(
                                                           borderSide:
                                                               BorderSide(
                                                             color: Color(
                                                                 0x00000000),
-                                                            width: 1,
+                                                            width: 2,
                                                           ),
                                                           borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                          ),
+                                                              BorderRadius
+                                                                  .circular(12),
                                                         ),
+                                                        filled: true,
+                                                        suffixIcon:
+                                                            textController3!
+                                                                    .text
+                                                                    .isNotEmpty
+                                                                ? InkWell(
+                                                                    onTap:
+                                                                        () async {
+                                                                      textController3
+                                                                          ?.clear();
+                                                                      setState(() => FFAppState()
+                                                                              .resPhone =
+                                                                          textController3!
+                                                                              .text);
+                                                                      setState(
+                                                                          () {});
+                                                                    },
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .clear,
+                                                                      color: Color(
+                                                                          0xFF757575),
+                                                                      size: 22,
+                                                                    ),
+                                                                  )
+                                                                : null,
                                                       ),
                                                       style:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .bodyText1,
+                                                              .bodyText1
+                                                              .override(
+                                                                fontFamily: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyText1Family,
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                                useGoogleFonts: GoogleFonts
+                                                                        .asMap()
+                                                                    .containsKey(
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .bodyText1Family),
+                                                              ),
+                                                      keyboardType:
+                                                          TextInputType.phone,
                                                     ),
                                                   ),
                                                 ],
@@ -599,7 +689,7 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
                                             ),
                                             Padding(
                                               padding: EdgeInsetsDirectional
-                                                  .fromSTEB(16, 0, 0, 0),
+                                                  .fromSTEB(16, 0, 16, 16),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
                                                 children: [
@@ -607,96 +697,121 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
                                                     child: TextFormField(
                                                       controller:
                                                           textController4,
-                                                      autofocus: true,
+                                                      onChanged: (_) =>
+                                                          EasyDebounce.debounce(
+                                                        'textController4',
+                                                        Duration(
+                                                            milliseconds: 2000),
+                                                        () async {
+                                                          setState(() =>
+                                                              FFAppState()
+                                                                      .resEmail =
+                                                                  textController4!
+                                                                      .text);
+                                                        },
+                                                      ),
                                                       obscureText: false,
                                                       decoration:
                                                           InputDecoration(
+                                                        isDense: true,
                                                         labelText: 'E-mail',
-                                                        hintStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyText2,
                                                         enabledBorder:
-                                                            UnderlineInputBorder(
+                                                            OutlineInputBorder(
                                                           borderSide:
                                                               BorderSide(
-                                                            color: Color(
-                                                                0x00000000),
-                                                            width: 1,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .iconGray,
+                                                            width: 2,
                                                           ),
                                                           borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                          ),
+                                                              BorderRadius
+                                                                  .circular(12),
                                                         ),
                                                         focusedBorder:
-                                                            UnderlineInputBorder(
+                                                            OutlineInputBorder(
                                                           borderSide:
                                                               BorderSide(
-                                                            color: Color(
-                                                                0x00000000),
-                                                            width: 1,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .iconGray,
+                                                            width: 2,
                                                           ),
                                                           borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                          ),
+                                                              BorderRadius
+                                                                  .circular(12),
                                                         ),
                                                         errorBorder:
-                                                            UnderlineInputBorder(
+                                                            OutlineInputBorder(
                                                           borderSide:
                                                               BorderSide(
                                                             color: Color(
                                                                 0x00000000),
-                                                            width: 1,
+                                                            width: 2,
                                                           ),
                                                           borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                          ),
+                                                              BorderRadius
+                                                                  .circular(12),
                                                         ),
                                                         focusedErrorBorder:
-                                                            UnderlineInputBorder(
+                                                            OutlineInputBorder(
                                                           borderSide:
                                                               BorderSide(
                                                             color: Color(
                                                                 0x00000000),
-                                                            width: 1,
+                                                            width: 2,
                                                           ),
                                                           borderRadius:
-                                                              const BorderRadius
-                                                                  .only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    4.0),
-                                                          ),
+                                                              BorderRadius
+                                                                  .circular(12),
                                                         ),
+                                                        filled: true,
+                                                        suffixIcon:
+                                                            textController4!
+                                                                    .text
+                                                                    .isNotEmpty
+                                                                ? InkWell(
+                                                                    onTap:
+                                                                        () async {
+                                                                      textController4
+                                                                          ?.clear();
+                                                                      setState(() => FFAppState()
+                                                                              .resEmail =
+                                                                          textController4!
+                                                                              .text);
+                                                                      setState(
+                                                                          () {});
+                                                                    },
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .clear,
+                                                                      color: Color(
+                                                                          0xFF757575),
+                                                                      size: 22,
+                                                                    ),
+                                                                  )
+                                                                : null,
                                                       ),
                                                       style:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .bodyText1,
+                                                              .bodyText1
+                                                              .override(
+                                                                fontFamily: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyText1Family,
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                                useGoogleFonts: GoogleFonts
+                                                                        .asMap()
+                                                                    .containsKey(
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .bodyText1Family),
+                                                              ),
+                                                      keyboardType:
+                                                          TextInputType
+                                                              .emailAddress,
                                                     ),
                                                   ),
                                                 ],
@@ -835,177 +950,240 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
                                                                   MainAxisAlignment
                                                                       .spaceBetween,
                                                               children: [
-                                                                Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  children: [
-                                                                    Icon(
-                                                                      Icons
-                                                                          .calendar_today_rounded,
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .iconGray,
-                                                                      size: 24,
-                                                                    ),
-                                                                    Padding(
-                                                                      padding: EdgeInsetsDirectional
-                                                                          .fromSTEB(
-                                                                              8,
-                                                                              0,
-                                                                              0,
-                                                                              0),
-                                                                      child:
-                                                                          InkWell(
-                                                                        onTap:
-                                                                            () async {
-                                                                          if (kIsWeb) {
-                                                                            final _datePickedDate =
-                                                                                await showDatePicker(
-                                                                              context: context,
-                                                                              initialDate: getCurrentTimestamp,
-                                                                              firstDate: DateTime(1900),
-                                                                              lastDate: DateTime(2050),
-                                                                            );
-
-                                                                            TimeOfDay?
-                                                                                _datePickedTime;
-                                                                            if (_datePickedDate !=
-                                                                                null) {
-                                                                              _datePickedTime = await showTimePicker(
-                                                                                context: context,
-                                                                                initialTime: TimeOfDay.fromDateTime(getCurrentTimestamp),
-                                                                              );
-                                                                            }
-
-                                                                            if (_datePickedDate != null &&
-                                                                                _datePickedTime != null) {
-                                                                              setState(
-                                                                                () => datePicked = DateTime(
-                                                                                  _datePickedDate.year,
-                                                                                  _datePickedDate.month,
-                                                                                  _datePickedDate.day,
-                                                                                  _datePickedTime!.hour,
-                                                                                  _datePickedTime.minute,
-                                                                                ),
-                                                                              );
-                                                                            }
-                                                                          } else {
-                                                                            await DatePicker.showDateTimePicker(
-                                                                              context,
-                                                                              showTitleActions: true,
-                                                                              onConfirm: (date) {
-                                                                                setState(() => datePicked = date);
-                                                                              },
-                                                                              currentTime: getCurrentTimestamp,
-                                                                              minTime: DateTime(0, 0, 0),
-                                                                            );
-                                                                          }
-
-                                                                          setState(() =>
-                                                                              FFAppState().resDate = datePicked);
-                                                                        },
-                                                                        child:
-                                                                            Text(
-                                                                          functions
-                                                                              .formatReservationDate(getJsonField(
-                                                                            widget.resDetails,
-                                                                            r'''$.dateTime''',
-                                                                          ).toString()),
-                                                                          style: FlutterFlowTheme.of(context)
-                                                                              .bodyText2
-                                                                              .override(
-                                                                                fontFamily: 'Outfit',
-                                                                                color: Color(0xFF57636C),
-                                                                                fontSize: 14,
-                                                                                fontWeight: FontWeight.normal,
-                                                                                useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText2Family),
-                                                                              ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0,
+                                                                          0,
+                                                                          2,
+                                                                          0),
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .calendar_today_rounded,
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .iconGray,
+                                                                    size: 24,
+                                                                  ),
                                                                 ),
-                                                                Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  children: [
-                                                                    Container(
-                                                                      width:
-                                                                          200,
-                                                                      child:
-                                                                          TextFormField(
-                                                                        controller:
-                                                                            textController5,
-                                                                        autofocus:
-                                                                            true,
-                                                                        obscureText:
-                                                                            false,
-                                                                        decoration:
-                                                                            InputDecoration(
-                                                                          labelText:
-                                                                              'Duration',
-                                                                          hintStyle:
-                                                                              FlutterFlowTheme.of(context).bodyText2,
-                                                                          enabledBorder:
-                                                                              UnderlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(
-                                                                              color: Color(0x00000000),
-                                                                              width: 1,
-                                                                            ),
-                                                                            borderRadius:
-                                                                                const BorderRadius.only(
-                                                                              topLeft: Radius.circular(4.0),
-                                                                              topRight: Radius.circular(4.0),
-                                                                            ),
-                                                                          ),
-                                                                          focusedBorder:
-                                                                              UnderlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(
-                                                                              color: Color(0x00000000),
-                                                                              width: 1,
-                                                                            ),
-                                                                            borderRadius:
-                                                                                const BorderRadius.only(
-                                                                              topLeft: Radius.circular(4.0),
-                                                                              topRight: Radius.circular(4.0),
-                                                                            ),
-                                                                          ),
-                                                                          errorBorder:
-                                                                              UnderlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(
-                                                                              color: Color(0x00000000),
-                                                                              width: 1,
-                                                                            ),
-                                                                            borderRadius:
-                                                                                const BorderRadius.only(
-                                                                              topLeft: Radius.circular(4.0),
-                                                                              topRight: Radius.circular(4.0),
-                                                                            ),
-                                                                          ),
-                                                                          focusedErrorBorder:
-                                                                              UnderlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(
-                                                                              color: Color(0x00000000),
-                                                                              width: 1,
-                                                                            ),
-                                                                            borderRadius:
-                                                                                const BorderRadius.only(
-                                                                              topLeft: Radius.circular(4.0),
-                                                                              topRight: Radius.circular(4.0),
-                                                                            ),
-                                                                          ),
+                                                                Expanded(
+                                                                  flex: 3,
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0,
+                                                                            0,
+                                                                            2,
+                                                                            0),
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          40,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: Color(
+                                                                            0xFFF5F5F5),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(12),
+                                                                        border:
+                                                                            Border.all(
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).iconGray,
+                                                                          width:
+                                                                              2,
                                                                         ),
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .bodyText1,
+                                                                      ),
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Padding(
+                                                                            padding: EdgeInsetsDirectional.fromSTEB(
+                                                                                8,
+                                                                                0,
+                                                                                0,
+                                                                                0),
+                                                                            child:
+                                                                                InkWell(
+                                                                              onTap: () async {
+                                                                                if (kIsWeb) {
+                                                                                  final _datePickedDate = await showDatePicker(
+                                                                                    context: context,
+                                                                                    initialDate: getCurrentTimestamp,
+                                                                                    firstDate: DateTime(1900),
+                                                                                    lastDate: DateTime(2050),
+                                                                                  );
+
+                                                                                  TimeOfDay? _datePickedTime;
+                                                                                  if (_datePickedDate != null) {
+                                                                                    _datePickedTime = await showTimePicker(
+                                                                                      context: context,
+                                                                                      initialTime: TimeOfDay.fromDateTime(getCurrentTimestamp),
+                                                                                    );
+                                                                                  }
+
+                                                                                  if (_datePickedDate != null && _datePickedTime != null) {
+                                                                                    setState(
+                                                                                      () => datePicked = DateTime(
+                                                                                        _datePickedDate.year,
+                                                                                        _datePickedDate.month,
+                                                                                        _datePickedDate.day,
+                                                                                        _datePickedTime!.hour,
+                                                                                        _datePickedTime.minute,
+                                                                                      ),
+                                                                                    );
+                                                                                  }
+                                                                                } else {
+                                                                                  await DatePicker.showDateTimePicker(
+                                                                                    context,
+                                                                                    showTitleActions: true,
+                                                                                    onConfirm: (date) {
+                                                                                      setState(() => datePicked = date);
+                                                                                    },
+                                                                                    currentTime: getCurrentTimestamp,
+                                                                                    minTime: DateTime(0, 0, 0),
+                                                                                  );
+                                                                                }
+
+                                                                                setState(() => FFAppState().resDate = datePicked);
+                                                                                setState(() => FFAppState().resTime = dateTimeFormat('jm', datePicked));
+                                                                              },
+                                                                              child: Text(
+                                                                                FFAppState().resDate == null
+                                                                                    ? functions.formatReservationDate(getJsonField(
+                                                                                        widget.resDetailsEdiit,
+                                                                                        r'''$.dateTime''',
+                                                                                      ).toString())
+                                                                                    : functions.formatReservationDate(datePicked?.toString()),
+                                                                                textAlign: TextAlign.start,
+                                                                                style: FlutterFlowTheme.of(context).bodyText2.override(
+                                                                                      fontFamily: 'Overpass',
+                                                                                      color: FlutterFlowTheme.of(context).primaryText,
+                                                                                      fontSize: 14,
+                                                                                      fontWeight: FontWeight.normal,
+                                                                                      useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText2Family),
+                                                                                    ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ],
                                                                       ),
                                                                     ),
-                                                                  ],
+                                                                  ),
+                                                                ),
+                                                                Expanded(
+                                                                  flex: 2,
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            2,
+                                                                            0,
+                                                                            0,
+                                                                            0),
+                                                                    child:
+                                                                        TextFormField(
+                                                                      controller:
+                                                                          textController5,
+                                                                      onChanged:
+                                                                          (_) =>
+                                                                              EasyDebounce.debounce(
+                                                                        'textController5',
+                                                                        Duration(
+                                                                            milliseconds:
+                                                                                2000),
+                                                                        () async {
+                                                                          setState(() =>
+                                                                              FFAppState().resDuration = int.parse(textController5!.text));
+                                                                        },
+                                                                      ),
+                                                                      obscureText:
+                                                                          false,
+                                                                      decoration:
+                                                                          InputDecoration(
+                                                                        isDense:
+                                                                            true,
+                                                                        labelText:
+                                                                            'Duration in mins',
+                                                                        enabledBorder:
+                                                                            OutlineInputBorder(
+                                                                          borderSide:
+                                                                              BorderSide(
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).iconGray,
+                                                                            width:
+                                                                                2,
+                                                                          ),
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(12),
+                                                                        ),
+                                                                        focusedBorder:
+                                                                            OutlineInputBorder(
+                                                                          borderSide:
+                                                                              BorderSide(
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).iconGray,
+                                                                            width:
+                                                                                2,
+                                                                          ),
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(12),
+                                                                        ),
+                                                                        errorBorder:
+                                                                            OutlineInputBorder(
+                                                                          borderSide:
+                                                                              BorderSide(
+                                                                            color:
+                                                                                Color(0x00000000),
+                                                                            width:
+                                                                                2,
+                                                                          ),
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(12),
+                                                                        ),
+                                                                        focusedErrorBorder:
+                                                                            OutlineInputBorder(
+                                                                          borderSide:
+                                                                              BorderSide(
+                                                                            color:
+                                                                                Color(0x00000000),
+                                                                            width:
+                                                                                2,
+                                                                          ),
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(12),
+                                                                        ),
+                                                                        filled:
+                                                                            true,
+                                                                        suffixIcon: textController5!.text.isNotEmpty
+                                                                            ? InkWell(
+                                                                                onTap: () async {
+                                                                                  textController5?.clear();
+                                                                                  setState(() => FFAppState().resDuration = int.parse(textController5!.text));
+                                                                                  setState(() {});
+                                                                                },
+                                                                                child: Icon(
+                                                                                  Icons.clear,
+                                                                                  color: Color(0xFF757575),
+                                                                                  size: 22,
+                                                                                ),
+                                                                              )
+                                                                            : null,
+                                                                      ),
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyText1,
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .number,
+                                                                    ),
+                                                                  ),
                                                                 ),
                                                               ],
                                                             ),
@@ -1026,207 +1204,239 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
                                                                   MainAxisAlignment
                                                                       .spaceBetween,
                                                               children: [
-                                                                Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  children: [
-                                                                    Icon(
-                                                                      Icons
-                                                                          .fastfood_rounded,
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .iconGray,
-                                                                      size: 24,
-                                                                    ),
-                                                                    FutureBuilder<
-                                                                        ApiCallResponse>(
-                                                                      future: ValetAPIGroup
-                                                                          .gETSittingTypesByDateCall
-                                                                          .call(
-                                                                        date: functions
-                                                                            .formatDateForPOST(datePicked!),
-                                                                      ),
-                                                                      builder:
-                                                                          (context,
-                                                                              snapshot) {
-                                                                        // Customize what your widget looks like when it's loading.
-                                                                        if (!snapshot
-                                                                            .hasData) {
-                                                                          return Center(
-                                                                            child:
-                                                                                SizedBox(
-                                                                              width: 40,
-                                                                              height: 40,
-                                                                              child: SpinKitRipple(
-                                                                                color: FlutterFlowTheme.of(context).secondaryColor,
-                                                                                size: 40,
-                                                                              ),
-                                                                            ),
-                                                                          );
-                                                                        }
-                                                                        final dropDownGETSittingTypesByDateResponse =
-                                                                            snapshot.data!;
-                                                                        return FlutterFlowDropDown(
-                                                                          initialOption: dropDownValue ??=
-                                                                              getJsonField(
-                                                                            widget.resDetails,
-                                                                            r'''$.sittingType''',
-                                                                          ).toString(),
-                                                                          options: ValetAPIGroup.gETSittingTypesByDateCall
-                                                                                      .sittings(
-                                                                                        dropDownGETSittingTypesByDateResponse.jsonBody,
-                                                                                      )
-                                                                                      .length >
-                                                                                  0
-                                                                              ? (ValetAPIGroup.gETSittingTypesByDateCall.sittingType(
-                                                                                  dropDownGETSittingTypesByDateResponse.jsonBody,
-                                                                                ) as List)
-                                                                                  .map<String>((s) => s.toString())
-                                                                                  .toList()
-                                                                                  .where((e) => datePicked == FFAppState().resDate)
-                                                                                  .toList()
-                                                                              : ["No Sittings"].toList(),
-                                                                          onChanged: (val) =>
-                                                                              setState(() => dropDownValue = val),
-                                                                          width:
-                                                                              180,
-                                                                          height:
-                                                                              50,
-                                                                          textStyle: FlutterFlowTheme.of(context)
-                                                                              .bodyText1
-                                                                              .override(
-                                                                                fontFamily: FlutterFlowTheme.of(context).bodyText1Family,
-                                                                                color: Colors.black,
-                                                                                useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText1Family),
-                                                                              ),
-                                                                          hintText:
-                                                                              'Please select...',
-                                                                          fillColor:
-                                                                              Colors.white,
-                                                                          elevation:
-                                                                              2,
-                                                                          borderColor:
-                                                                              Colors.transparent,
-                                                                          borderWidth:
-                                                                              0,
-                                                                          borderRadius:
-                                                                              0,
-                                                                          margin: EdgeInsetsDirectional.fromSTEB(
-                                                                              12,
-                                                                              4,
-                                                                              12,
-                                                                              4),
-                                                                          hidesUnderline:
-                                                                              true,
-                                                                        );
-                                                                      },
-                                                                    ),
-                                                                  ],
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0,
+                                                                          0,
+                                                                          2,
+                                                                          0),
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .fastfood_rounded,
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .iconGray,
+                                                                    size: 24,
+                                                                  ),
                                                                 ),
-                                                                Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  children: [
-                                                                    Icon(
-                                                                      Icons
-                                                                          .people,
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .iconGray,
-                                                                      size: 24,
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          2,
+                                                                          0,
+                                                                          2,
+                                                                          0),
+                                                                  child: FutureBuilder<
+                                                                      ApiCallResponse>(
+                                                                    future: ValetAPIGroup
+                                                                        .gETSittingTypesByDateCall
+                                                                        .call(
+                                                                      date: functions
+                                                                          .formatDateForPOST(
+                                                                              FFAppState().resDate!),
                                                                     ),
-                                                                  ],
+                                                                    builder:
+                                                                        (context,
+                                                                            snapshot) {
+                                                                      // Customize what your widget looks like when it's loading.
+                                                                      if (!snapshot
+                                                                          .hasData) {
+                                                                        return Center(
+                                                                          child:
+                                                                              SizedBox(
+                                                                            width:
+                                                                                40,
+                                                                            height:
+                                                                                40,
+                                                                            child:
+                                                                                SpinKitRipple(
+                                                                              color: FlutterFlowTheme.of(context).secondaryColor,
+                                                                              size: 40,
+                                                                            ),
+                                                                          ),
+                                                                        );
+                                                                      }
+                                                                      final sittingsGETSittingTypesByDateResponse =
+                                                                          snapshot
+                                                                              .data!;
+                                                                      return FlutterFlowDropDown(
+                                                                        initialOption:
+                                                                            sittingsValue1 ??=
+                                                                                getJsonField(
+                                                                          widget
+                                                                              .resDetailsEdiit,
+                                                                          r'''$.sitting.type''',
+                                                                        ).toString(),
+                                                                        options: ValetAPIGroup.gETSittingTypesByDateCall
+                                                                                    .sittings(
+                                                                                      sittingsGETSittingTypesByDateResponse.jsonBody,
+                                                                                    )
+                                                                                    .length >
+                                                                                0
+                                                                            ? (ValetAPIGroup.gETSittingTypesByDateCall.sittingType(
+                                                                                sittingsGETSittingTypesByDateResponse.jsonBody,
+                                                                              ) as List)
+                                                                                .map<String>((s) => s.toString())
+                                                                                .toList()
+                                                                                .where((e) => datePicked == FFAppState().resDate)
+                                                                                .toList()
+                                                                            : ["No Sittings"].toList(),
+                                                                        onChanged:
+                                                                            (val) async {
+                                                                          setState(() =>
+                                                                              sittingsValue1 = val);
+                                                                          setState(() =>
+                                                                              FFAppState().resSitting = sittingsValue1!);
+                                                                        },
+                                                                        width:
+                                                                            130,
+                                                                        height:
+                                                                            40,
+                                                                        textStyle: FlutterFlowTheme.of(context)
+                                                                            .bodyText1
+                                                                            .override(
+                                                                              fontFamily: FlutterFlowTheme.of(context).bodyText1Family,
+                                                                              color: FlutterFlowTheme.of(context).primaryText,
+                                                                              useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText1Family),
+                                                                            ),
+                                                                        fillColor:
+                                                                            Color(0xFFF5F5F5),
+                                                                        elevation:
+                                                                            2,
+                                                                        borderColor:
+                                                                            FlutterFlowTheme.of(context).iconGray,
+                                                                        borderWidth:
+                                                                            2,
+                                                                        borderRadius:
+                                                                            12,
+                                                                        margin: EdgeInsetsDirectional.fromSTEB(
+                                                                            12,
+                                                                            4,
+                                                                            12,
+                                                                            4),
+                                                                        hidesUnderline:
+                                                                            true,
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          2,
+                                                                          0,
+                                                                          2,
+                                                                          0),
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .people,
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .iconGray,
+                                                                    size: 24,
+                                                                  ),
                                                                 ),
                                                                 Expanded(
+                                                                  flex: 2,
                                                                   child:
                                                                       TextFormField(
                                                                     controller:
                                                                         textController6,
-                                                                    autofocus:
-                                                                        true,
+                                                                    onChanged: (_) =>
+                                                                        EasyDebounce
+                                                                            .debounce(
+                                                                      'textController6',
+                                                                      Duration(
+                                                                          milliseconds:
+                                                                              2000),
+                                                                      () async {
+                                                                        setState(() =>
+                                                                            FFAppState().resNumPeople =
+                                                                                int.parse(textController6!.text));
+                                                                      },
+                                                                    ),
                                                                     obscureText:
                                                                         false,
                                                                     decoration:
                                                                         InputDecoration(
+                                                                      isDense:
+                                                                          true,
                                                                       labelText:
                                                                           'People',
-                                                                      hintStyle:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .bodyText2,
                                                                       enabledBorder:
-                                                                          UnderlineInputBorder(
+                                                                          OutlineInputBorder(
                                                                         borderSide:
                                                                             BorderSide(
                                                                           color:
-                                                                              Color(0x00000000),
+                                                                              FlutterFlowTheme.of(context).iconGray,
                                                                           width:
-                                                                              1,
+                                                                              2,
                                                                         ),
                                                                         borderRadius:
-                                                                            const BorderRadius.only(
-                                                                          topLeft:
-                                                                              Radius.circular(4.0),
-                                                                          topRight:
-                                                                              Radius.circular(4.0),
-                                                                        ),
+                                                                            BorderRadius.circular(12),
                                                                       ),
                                                                       focusedBorder:
-                                                                          UnderlineInputBorder(
+                                                                          OutlineInputBorder(
                                                                         borderSide:
                                                                             BorderSide(
                                                                           color:
-                                                                              Color(0x00000000),
+                                                                              FlutterFlowTheme.of(context).iconGray,
                                                                           width:
-                                                                              1,
+                                                                              2,
                                                                         ),
                                                                         borderRadius:
-                                                                            const BorderRadius.only(
-                                                                          topLeft:
-                                                                              Radius.circular(4.0),
-                                                                          topRight:
-                                                                              Radius.circular(4.0),
-                                                                        ),
+                                                                            BorderRadius.circular(12),
                                                                       ),
                                                                       errorBorder:
-                                                                          UnderlineInputBorder(
+                                                                          OutlineInputBorder(
                                                                         borderSide:
                                                                             BorderSide(
                                                                           color:
                                                                               Color(0x00000000),
                                                                           width:
-                                                                              1,
+                                                                              2,
                                                                         ),
                                                                         borderRadius:
-                                                                            const BorderRadius.only(
-                                                                          topLeft:
-                                                                              Radius.circular(4.0),
-                                                                          topRight:
-                                                                              Radius.circular(4.0),
-                                                                        ),
+                                                                            BorderRadius.circular(12),
                                                                       ),
                                                                       focusedErrorBorder:
-                                                                          UnderlineInputBorder(
+                                                                          OutlineInputBorder(
                                                                         borderSide:
                                                                             BorderSide(
                                                                           color:
                                                                               Color(0x00000000),
                                                                           width:
-                                                                              1,
+                                                                              2,
                                                                         ),
                                                                         borderRadius:
-                                                                            const BorderRadius.only(
-                                                                          topLeft:
-                                                                              Radius.circular(4.0),
-                                                                          topRight:
-                                                                              Radius.circular(4.0),
-                                                                        ),
+                                                                            BorderRadius.circular(12),
                                                                       ),
+                                                                      filled:
+                                                                          true,
+                                                                      suffixIcon: textController6!
+                                                                              .text
+                                                                              .isNotEmpty
+                                                                          ? InkWell(
+                                                                              onTap: () async {
+                                                                                textController6?.clear();
+                                                                                setState(() => FFAppState().resNumPeople = int.parse(textController6!.text));
+                                                                                setState(() {});
+                                                                              },
+                                                                              child: Icon(
+                                                                                Icons.clear,
+                                                                                color: Color(0xFF757575),
+                                                                                size: 22,
+                                                                              ),
+                                                                            )
+                                                                          : null,
                                                                     ),
                                                                     style: FlutterFlowTheme.of(
                                                                             context)
                                                                         .bodyText1,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .number,
                                                                   ),
                                                                 ),
                                                               ],
@@ -1305,12 +1515,8 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
                                                                             context)
                                                                         .size
                                                                         .width,
-                                                                    height: 75,
                                                                     decoration:
                                                                         BoxDecoration(
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .secondaryBackground,
                                                                       borderRadius:
                                                                           BorderRadius.circular(
                                                                               12),
@@ -1326,89 +1532,56 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
                                                                     child:
                                                                         TextFormField(
                                                                       controller:
-                                                                          textController7,
-                                                                      autofocus:
-                                                                          true,
+                                                                          notesController,
+                                                                      onChanged:
+                                                                          (_) =>
+                                                                              EasyDebounce.debounce(
+                                                                        'notesController',
+                                                                        Duration(
+                                                                            milliseconds:
+                                                                                2000),
+                                                                        () async {
+                                                                          setState(() =>
+                                                                              FFAppState().resNotes = notesController!.text);
+                                                                        },
+                                                                      ),
                                                                       obscureText:
                                                                           false,
                                                                       decoration:
                                                                           InputDecoration(
-                                                                        hintStyle:
-                                                                            FlutterFlowTheme.of(context).bodyText2,
                                                                         enabledBorder:
-                                                                            UnderlineInputBorder(
-                                                                          borderSide:
-                                                                              BorderSide(
-                                                                            color:
-                                                                                Color(0x00000000),
-                                                                            width:
-                                                                                1,
-                                                                          ),
-                                                                          borderRadius:
-                                                                              const BorderRadius.only(
-                                                                            topLeft:
-                                                                                Radius.circular(4.0),
-                                                                            topRight:
-                                                                                Radius.circular(4.0),
-                                                                          ),
-                                                                        ),
+                                                                            InputBorder.none,
                                                                         focusedBorder:
-                                                                            UnderlineInputBorder(
-                                                                          borderSide:
-                                                                              BorderSide(
-                                                                            color:
-                                                                                Color(0x00000000),
-                                                                            width:
-                                                                                1,
-                                                                          ),
-                                                                          borderRadius:
-                                                                              const BorderRadius.only(
-                                                                            topLeft:
-                                                                                Radius.circular(4.0),
-                                                                            topRight:
-                                                                                Radius.circular(4.0),
-                                                                          ),
-                                                                        ),
+                                                                            InputBorder.none,
                                                                         errorBorder:
-                                                                            UnderlineInputBorder(
-                                                                          borderSide:
-                                                                              BorderSide(
-                                                                            color:
-                                                                                Color(0x00000000),
-                                                                            width:
-                                                                                1,
-                                                                          ),
-                                                                          borderRadius:
-                                                                              const BorderRadius.only(
-                                                                            topLeft:
-                                                                                Radius.circular(4.0),
-                                                                            topRight:
-                                                                                Radius.circular(4.0),
-                                                                          ),
-                                                                        ),
+                                                                            InputBorder.none,
                                                                         focusedErrorBorder:
-                                                                            UnderlineInputBorder(
-                                                                          borderSide:
-                                                                              BorderSide(
-                                                                            color:
-                                                                                Color(0x00000000),
-                                                                            width:
-                                                                                1,
-                                                                          ),
-                                                                          borderRadius:
-                                                                              const BorderRadius.only(
-                                                                            topLeft:
-                                                                                Radius.circular(4.0),
-                                                                            topRight:
-                                                                                Radius.circular(4.0),
-                                                                          ),
-                                                                        ),
+                                                                            InputBorder.none,
+                                                                        filled:
+                                                                            true,
+                                                                        suffixIcon: notesController!.text.isNotEmpty
+                                                                            ? InkWell(
+                                                                                onTap: () async {
+                                                                                  notesController?.clear();
+                                                                                  setState(() => FFAppState().resNotes = notesController!.text);
+                                                                                  setState(() {});
+                                                                                },
+                                                                                child: Icon(
+                                                                                  Icons.clear,
+                                                                                  color: Color(0xFF757575),
+                                                                                  size: 22,
+                                                                                ),
+                                                                              )
+                                                                            : null,
                                                                       ),
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
                                                                           .bodyText1,
                                                                       maxLines:
-                                                                          3,
+                                                                          null,
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .multiline,
                                                                     ),
                                                                   ),
                                                                 ),
@@ -1427,42 +1600,105 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
                                                               mainAxisSize:
                                                                   MainAxisSize
                                                                       .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
                                                               children: [
-                                                                Icon(
-                                                                  Icons.input,
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .iconGray,
-                                                                  size: 24,
-                                                                ),
                                                                 Padding(
                                                                   padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
-                                                                          8,
                                                                           0,
                                                                           0,
+                                                                          2,
                                                                           0),
-                                                                  child: Text(
-                                                                    getJsonField(
-                                                                      widget
-                                                                          .resDetails,
-                                                                      r'''$.source''',
-                                                                    ).toString(),
-                                                                    style: FlutterFlowTheme.of(
+                                                                  child: Icon(
+                                                                    Icons.input,
+                                                                    color: FlutterFlowTheme.of(
                                                                             context)
-                                                                        .bodyText2
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Outfit',
-                                                                          color:
-                                                                              Color(0xFF57636C),
-                                                                          fontSize:
-                                                                              14,
-                                                                          fontWeight:
-                                                                              FontWeight.normal,
-                                                                          useGoogleFonts:
-                                                                              GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText2Family),
-                                                                        ),
+                                                                        .iconGray,
+                                                                    size: 24,
+                                                                  ),
+                                                                ),
+                                                                Expanded(
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            2,
+                                                                            0,
+                                                                            0,
+                                                                            0),
+                                                                    child: FutureBuilder<
+                                                                        ApiCallResponse>(
+                                                                      future: ValetAPIGroup
+                                                                          .gETSittingTypesByDateCall
+                                                                          .call(
+                                                                        date: functions
+                                                                            .formatDateForPOST(FFAppState().resDate!),
+                                                                      ),
+                                                                      builder:
+                                                                          (context,
+                                                                              snapshot) {
+                                                                        // Customize what your widget looks like when it's loading.
+                                                                        if (!snapshot
+                                                                            .hasData) {
+                                                                          return Center(
+                                                                            child:
+                                                                                SizedBox(
+                                                                              width: 40,
+                                                                              height: 40,
+                                                                              child: SpinKitRipple(
+                                                                                color: FlutterFlowTheme.of(context).secondaryColor,
+                                                                                size: 40,
+                                                                              ),
+                                                                            ),
+                                                                          );
+                                                                        }
+                                                                        final sittingsGETSittingTypesByDateResponse =
+                                                                            snapshot.data!;
+                                                                        return FlutterFlowDropDown(
+                                                                          initialOption: sittingsValue2 ??=
+                                                                              getJsonField(
+                                                                            widget.resDetailsEdiit,
+                                                                            r'''$.source''',
+                                                                          ).toString(),
+                                                                          options: FFAppState()
+                                                                              .sourceOptions
+                                                                              .toList(),
+                                                                          onChanged: (val) =>
+                                                                              setState(() => sittingsValue2 = val),
+                                                                          width: MediaQuery.of(context)
+                                                                              .size
+                                                                              .width,
+                                                                          height:
+                                                                              40,
+                                                                          textStyle: FlutterFlowTheme.of(context)
+                                                                              .bodyText1
+                                                                              .override(
+                                                                                fontFamily: FlutterFlowTheme.of(context).bodyText1Family,
+                                                                                color: FlutterFlowTheme.of(context).primaryText,
+                                                                                useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText1Family),
+                                                                              ),
+                                                                          fillColor:
+                                                                              Color(0xFFF5F5F5),
+                                                                          elevation:
+                                                                              2,
+                                                                          borderColor:
+                                                                              FlutterFlowTheme.of(context).iconGray,
+                                                                          borderWidth:
+                                                                              2,
+                                                                          borderRadius:
+                                                                              12,
+                                                                          margin: EdgeInsetsDirectional.fromSTEB(
+                                                                              12,
+                                                                              4,
+                                                                              12,
+                                                                              4),
+                                                                          hidesUnderline:
+                                                                              true,
+                                                                        );
+                                                                      },
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ],
@@ -1529,7 +1765,7 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
                                                               children: [
                                                                 if (getJsonField(
                                                                       widget
-                                                                          .resDetails,
+                                                                          .resDetailsEdiit,
                                                                       r'''$.status''',
                                                                     ) !=
                                                                     FFAppState()
@@ -1544,7 +1780,7 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
                                                                   ),
                                                                 if (getJsonField(
                                                                       widget
-                                                                          .resDetails,
+                                                                          .resDetailsEdiit,
                                                                       r'''$.status''',
                                                                     ) ==
                                                                     FFAppState()
@@ -1552,13 +1788,10 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
                                                                   Icon(
                                                                     Icons
                                                                         .info_outline_rounded,
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .customColor3,
+                                                                    color: Color(
+                                                                        0xFFDF3F3F),
                                                                     size: 30,
-                                                                  ).animateOnPageLoad(
-                                                                      animationsMap[
-                                                                          'iconOnPageLoadAnimation']!),
+                                                                  ),
                                                                 Expanded(
                                                                   child: Column(
                                                                     mainAxisSize:
@@ -1577,7 +1810,7 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
                                                                         child:
                                                                             AutoSizeText(
                                                                           getJsonField(
-                                                                            widget.resDetails,
+                                                                            widget.resDetailsEdiit,
                                                                             r'''$.status''',
                                                                           ).toString(),
                                                                           maxLines:
@@ -1593,6 +1826,13 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
                                                                       ),
                                                                     ],
                                                                   ),
+                                                                ),
+                                                                Icon(
+                                                                  Icons
+                                                                      .check_circle_outlined,
+                                                                  color: Color(
+                                                                      0xFF005F73),
+                                                                  size: 30,
                                                                 ),
                                                               ],
                                                             ),
@@ -1621,9 +1861,8 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
                                                                 Icon(
                                                                   Icons
                                                                       .info_outline_rounded,
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .customColor3,
+                                                                  color: Color(
+                                                                      0xFFDF3F3F),
                                                                   size: 30,
                                                                 ),
                                                                 Expanded(
@@ -1644,13 +1883,13 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
                                                                         child:
                                                                             AutoSizeText(
                                                                           getJsonField(
-                                                                                    widget.resDetails,
+                                                                                    widget.resDetailsEdiit,
                                                                                     r'''$.tables''',
                                                                                   ) ==
                                                                                   FFAppState().emptArray
                                                                               ? '\"Not allocated to a table\"'
                                                                               : getJsonField(
-                                                                                  widget.resDetails,
+                                                                                  widget.resDetailsEdiit,
                                                                                   r'''$.tables''',
                                                                                 ).toString(),
                                                                           maxLines:
@@ -1853,9 +2092,8 @@ class _EditReservationWidgetState extends State<EditReservationWidget>
                                                         buttonSize: 40,
                                                         icon: Icon(
                                                           Icons.delete_rounded,
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .customColor3,
+                                                          color:
+                                                              Color(0xFFDF3F3F),
                                                           size: 30,
                                                         ),
                                                         onPressed: () {

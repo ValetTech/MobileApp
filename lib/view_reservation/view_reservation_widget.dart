@@ -830,9 +830,8 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                                                                 Icon(
                                                                   Icons
                                                                       .info_outline_rounded,
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .customColor3,
+                                                                  color: Color(
+                                                                      0xFFDF3F3F),
                                                                   size: 30,
                                                                 ).animateOnPageLoad(
                                                                     animationsMap[
@@ -898,9 +897,8 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                                                               Icon(
                                                                 Icons
                                                                     .info_outline_rounded,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .customColor3,
+                                                                color: Color(
+                                                                    0xFFDF3F3F),
                                                                 size: 30,
                                                               ),
                                                               Expanded(
@@ -1098,10 +1096,9 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                                                         context.pushNamed(
                                                           'EditReservation',
                                                           queryParams: {
-                                                            'resDetails':
+                                                            'resDetailsEdiit':
                                                                 serializeParam(
-                                                              viewReservationGETReservationsResponse
-                                                                  .jsonBody,
+                                                              widget.resDetails,
                                                               ParamType.JSON,
                                                             ),
                                                           }.withoutNulls,
@@ -1113,10 +1110,9 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                                                         context.pushNamed(
                                                           'EditReservation',
                                                           queryParams: {
-                                                            'resDetails':
+                                                            'resDetailsEdiit':
                                                                 serializeParam(
-                                                              viewReservationGETReservationsResponse
-                                                                  .jsonBody,
+                                                              widget.resDetails,
                                                               ParamType.JSON,
                                                             ),
                                                           }.withoutNulls,
@@ -1151,9 +1147,7 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                                                       icon: Icon(
                                                         Icons.delete_rounded,
                                                         color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .customColor3,
+                                                            Color(0xFFDF3F3F),
                                                         size: 30,
                                                       ),
                                                       onPressed: () {

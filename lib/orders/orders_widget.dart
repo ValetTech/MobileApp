@@ -345,9 +345,7 @@ class _OrdersWidgetState extends State<OrdersWidget>
                                                 },
                                                 child: Icon(
                                                   Icons.cancel,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .customColor3,
+                                                  color: Color(0xFFDF3F3F),
                                                   size: 24,
                                                 ),
                                               ),

@@ -77,6 +77,10 @@ class FFAppState {
   dynamic emptArray = jsonDecode('[]');
 
   bool isVIP = false;
+
+  int resDuration = 0;
+
+  List<String> sourceOptions = ['Website', 'In-person', 'Email', 'Phone'];
 }
 
 LatLng? _latLngFromString(String? val) {

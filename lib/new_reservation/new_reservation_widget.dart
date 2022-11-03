@@ -260,9 +260,7 @@ class _NewReservationWidgetState extends State<NewReservationWidget> {
                                               buttonSize: 40,
                                               icon: Icon(
                                                 Icons.delete,
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .customColor3,
+                                                color: Color(0xFFDF3F3F),
                                                 size: 30,
                                               ),
                                               onPressed: () {
