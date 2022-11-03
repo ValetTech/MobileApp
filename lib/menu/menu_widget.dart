@@ -626,6 +626,9 @@ class _MenuWidgetState extends State<MenuWidget> with TickerProviderStateMixin {
                                 EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
                             child: FFButtonWidget(
                               onPressed: () async {
+                                if (Navigator.of(context).canPop()) {
+                                  context.pop();
+                                }
                                 context.pushNamed('NewReservation');
                               },
                               text: 'New Order',

@@ -31,7 +31,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
       child: Stack(
         children: [
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
+            padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -102,9 +102,12 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                   color: FlutterFlowTheme.of(context).grayLines,
                 ),
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 16),
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 16),
                   child: InkWell(
                     onTap: () async {
+                      if (Navigator.of(context).canPop()) {
+                        context.pop();
+                      }
                       context.pushNamed('Dashboard');
                     },
                     child: Row(
@@ -138,6 +141,9 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 8),
                   child: InkWell(
                     onTap: () async {
+                      if (Navigator.of(context).canPop()) {
+                        context.pop();
+                      }
                       context.pushNamed('NewReservation');
                     },
                     child: Row(
@@ -164,6 +170,9 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 8),
                   child: InkWell(
                     onTap: () async {
+                      if (Navigator.of(context).canPop()) {
+                        context.pop();
+                      }
                       context.pushNamed('ViewReservation');
                     },
                     child: Row(
@@ -218,6 +227,9 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 16),
                   child: InkWell(
                     onTap: () async {
+                      if (Navigator.of(context).canPop()) {
+                        context.pop();
+                      }
                       context.pushNamed('Seating');
                     },
                     child: Row(
@@ -251,6 +263,9 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 8),
                   child: InkWell(
                     onTap: () async {
+                      if (Navigator.of(context).canPop()) {
+                        context.pop();
+                      }
                       context.pushNamed('Orders');
                     },
                     child: Row(
@@ -298,6 +313,9 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 16),
                   child: InkWell(
                     onTap: () async {
+                      if (Navigator.of(context).canPop()) {
+                        context.pop();
+                      }
                       context.pushNamed('Menu');
                     },
                     child: Row(
@@ -333,7 +351,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
           Align(
             alignment: AlignmentDirectional(-1, 1),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 60),
+              padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 60),
               child: InkWell(
                 onTap: () async {
                   GoRouter.of(context).prepareAuthEvent();

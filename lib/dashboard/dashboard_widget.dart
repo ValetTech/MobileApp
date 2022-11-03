@@ -168,6 +168,10 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                           children: [
                                             FFButtonWidget(
                                               onPressed: () async {
+                                                if (Navigator.of(context)
+                                                    .canPop()) {
+                                                  context.pop();
+                                                }
                                                 context.pushNamed(
                                                     'NewReservation');
                                               },

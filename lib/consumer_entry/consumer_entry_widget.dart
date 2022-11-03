@@ -37,18 +37,17 @@ class _ConsumerEntryWidgetState extends State<ConsumerEntryWidget> {
               children: [
                 Column(
                   mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Expanded(
-                      flex: 1,
-                      child: FlutterFlowVideoPlayer(
-                        path: 'assets/videos/video.webm',
-                        videoType: VideoType.asset,
-                        autoPlay: true,
-                        looping: true,
-                        showControls: false,
-                        allowFullScreen: true,
-                        allowPlaybackSpeedMenu: false,
-                      ),
+                    FlutterFlowVideoPlayer(
+                      path: 'assets/videos/Valet.mp4',
+                      videoType: VideoType.asset,
+                      width: MediaQuery.of(context).size.width,
+                      autoPlay: true,
+                      looping: true,
+                      showControls: false,
+                      allowFullScreen: true,
+                      allowPlaybackSpeedMenu: false,
                     ),
                   ],
                 ),

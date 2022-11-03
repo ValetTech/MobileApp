@@ -507,7 +507,7 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                     padding:
                                                         EdgeInsetsDirectional
                                                             .fromSTEB(
-                                                                2, 0, 0, 0),
+                                                                4, 0, 0, 0),
                                                     child: InkWell(
                                                       onTap: () async {
                                                         if (FFAppState()
