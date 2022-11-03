@@ -1,10 +1,12 @@
 import '../backend/api_requests/api_calls.dart';
 import '../components/end_drawer_container_widget.dart';
+import '../components/page_name_widget.dart';
 import '../flutter_flow/flutter_flow_drop_down.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
+import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/foundation.dart';
@@ -27,12 +29,13 @@ class EditReservationWidget extends StatefulWidget {
 }
 
 class _EditReservationWidgetState extends State<EditReservationWidget> {
+  Completer<ApiCallResponse>? _apiRequestCompleter;
   DateTime? datePicked;
   TextEditingController? textController5;
-  String? sittingsValue1;
+  String? sittingsValue;
   TextEditingController? textController6;
   TextEditingController? notesController;
-  String? sittingsValue2;
+  String? sourceValue;
   TextEditingController? firstController;
   TextEditingController? lastController;
   TextEditingController? textController3;
@@ -139,19 +142,21 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                   backgroundColor:
                       FlutterFlowTheme.of(context).primaryBackground,
                   automaticallyImplyLeading: false,
-                  leading: FlutterFlowIconButton(
-                    borderColor: Colors.transparent,
-                    borderRadius: 30,
-                    borderWidth: 1,
-                    buttonSize: 60,
-                    icon: Icon(
-                      Icons.arrow_back_rounded,
-                      color: FlutterFlowTheme.of(context).iconGray,
-                      size: 30,
+                  title: Container(
+                    width: 100,
+                    height: 60,
+                    decoration: BoxDecoration(),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
+                          child: PageNameWidget(
+                            pageName: 'Edit Reservation',
+                          ),
+                        ),
+                      ],
                     ),
-                    onPressed: () async {
-                      context.pop();
-                    },
                   ),
                   actions: [
                     FlutterFlowIconButton(
@@ -169,23 +174,7 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                       },
                     ),
                   ],
-                  flexibleSpace: FlexibleSpaceBar(
-                    title: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
-                      child: Text(
-                        'Edit Details',
-                        textAlign: TextAlign.start,
-                        style: GoogleFonts.getFont(
-                          'Overpass',
-                          color: FlutterFlowTheme.of(context).secondaryColor,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 32,
-                        ),
-                      ),
-                    ),
-                    centerTitle: true,
-                    expandedTitleScale: 1.0,
-                  ),
+                  centerTitle: false,
                   toolbarHeight: 60,
                   elevation: 6,
                 ),
@@ -1262,7 +1251,7 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                                               .data!;
                                                                       return FlutterFlowDropDown(
                                                                         initialOption:
-                                                                            sittingsValue1 ??=
+                                                                            sittingsValue ??=
                                                                                 getJsonField(
                                                                           widget
                                                                               .resDetailsEdiit,
@@ -1285,9 +1274,9 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                                         onChanged:
                                                                             (val) async {
                                                                           setState(() =>
-                                                                              sittingsValue1 = val);
+                                                                              sittingsValue = val);
                                                                           setState(() =>
-                                                                              FFAppState().resSitting = sittingsValue1!);
+                                                                              FFAppState().resSitting = sittingsValue!);
                                                                         },
                                                                         width:
                                                                             130,
@@ -1654,10 +1643,10 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                                             ),
                                                                           );
                                                                         }
-                                                                        final sittingsGETSittingTypesByDateResponse =
+                                                                        final sourceGETSittingTypesByDateResponse =
                                                                             snapshot.data!;
                                                                         return FlutterFlowDropDown(
-                                                                          initialOption: sittingsValue2 ??=
+                                                                          initialOption: sourceValue ??=
                                                                               getJsonField(
                                                                             widget.resDetailsEdiit,
                                                                             r'''$.source''',
@@ -1666,7 +1655,7 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                                               .sourceOptions
                                                                               .toList(),
                                                                           onChanged: (val) =>
-                                                                              setState(() => sittingsValue2 = val),
+                                                                              setState(() => sourceValue = val),
                                                                           width: MediaQuery.of(context)
                                                                               .size
                                                                               .width,
@@ -1827,12 +1816,20 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                                     ],
                                                                   ),
                                                                 ),
-                                                                Icon(
-                                                                  Icons
-                                                                      .check_circle_outlined,
-                                                                  color: Color(
-                                                                      0xFF005F73),
-                                                                  size: 30,
+                                                                InkWell(
+                                                                  onTap:
+                                                                      () async {
+                                                                    setState(() =>
+                                                                        FFAppState().resStatus =
+                                                                            'Confirmed');
+                                                                  },
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .check_circle_outlined,
+                                                                    color: Color(
+                                                                        0xFF005F73),
+                                                                    size: 30,
+                                                                  ),
                                                                 ),
                                                               ],
                                                             ),
@@ -2046,21 +2043,163 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                     mainAxisSize:
                                                         MainAxisSize.max,
                                                     children: [
-                                                      FlutterFlowIconButton(
-                                                        borderColor:
-                                                            Colors.transparent,
-                                                        borderRadius: 30,
-                                                        borderWidth: 1,
-                                                        buttonSize: 40,
-                                                        icon: Icon(
-                                                          Icons.save,
-                                                          color:
-                                                              Color(0xFF57636C),
-                                                          size: 30,
-                                                        ),
-                                                        onPressed: () {
-                                                          print(
-                                                              'IconButton pressed ...');
+                                                      FutureBuilder<
+                                                          ApiCallResponse>(
+                                                        future: (_apiRequestCompleter ??=
+                                                                Completer<
+                                                                    ApiCallResponse>()
+                                                                  ..complete(
+                                                                      ValetAPIGroup
+                                                                          .updateReservationCall
+                                                                          .call(
+                                                                    reservationId:
+                                                                        getJsonField(
+                                                                      widget
+                                                                          .resDetailsEdiit,
+                                                                      r'''$.id''',
+                                                                    ),
+                                                                    customerId:
+                                                                        getJsonField(
+                                                                      widget
+                                                                          .resDetailsEdiit,
+                                                                      r'''$.customerId''',
+                                                                    ),
+                                                                    firstName:
+                                                                        firstController!
+                                                                            .text,
+                                                                    lastName:
+                                                                        lastController!
+                                                                            .text,
+                                                                    email:
+                                                                        textController4!
+                                                                            .text,
+                                                                    phone:
+                                                                        textController3!
+                                                                            .text,
+                                                                    isVip: FFAppState()
+                                                                        .isVIP,
+                                                                    sittingId:
+                                                                        getJsonField(
+                                                                      widget
+                                                                          .resDetailsEdiit,
+                                                                      r'''$.sittingId''',
+                                                                    ),
+                                                                    sittingType:
+                                                                        sittingsValue,
+                                                                    dateTime: functions
+                                                                        .formatDateTimeForPOST(
+                                                                            FFAppState().resDate!),
+                                                                    duration: int.parse(
+                                                                        textController5!
+                                                                            .text),
+                                                                    noGuests: int.parse(
+                                                                        textController6!
+                                                                            .text),
+                                                                    source:
+                                                                        sourceValue,
+                                                                    notes:
+                                                                        notesController!
+                                                                            .text,
+                                                                    status: FFAppState().resStatus ==
+                                                                                null ||
+                                                                            FFAppState().resStatus ==
+                                                                                ''
+                                                                        ? getJsonField(
+                                                                            widget.resDetailsEdiit,
+                                                                            r'''$.status''',
+                                                                          )
+                                                                            .toString()
+                                                                        : FFAppState()
+                                                                            .resStatus,
+                                                                  )))
+                                                            .future,
+                                                        builder: (context,
+                                                            snapshot) {
+                                                          // Customize what your widget looks like when it's loading.
+                                                          if (!snapshot
+                                                              .hasData) {
+                                                            return Center(
+                                                              child: SizedBox(
+                                                                width: 40,
+                                                                height: 40,
+                                                                child:
+                                                                    SpinKitRipple(
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryColor,
+                                                                  size: 40,
+                                                                ),
+                                                              ),
+                                                            );
+                                                          }
+                                                          final saveIconUpdateReservationResponse =
+                                                              snapshot.data!;
+                                                          return InkWell(
+                                                            onTap: () async {
+                                                              setState(() =>
+                                                                  _apiRequestCompleter =
+                                                                      null);
+                                                              await waitForApiRequestCompleter();
+                                                              if (saveIconUpdateReservationResponse
+                                                                  .succeeded) {
+                                                                ScaffoldMessenger.of(
+                                                                        context)
+                                                                    .showSnackBar(
+                                                                  SnackBar(
+                                                                    content:
+                                                                        Text(
+                                                                      saveIconUpdateReservationResponse
+                                                                          .succeeded
+                                                                          .toString(),
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .primaryText,
+                                                                      ),
+                                                                    ),
+                                                                    duration: Duration(
+                                                                        milliseconds:
+                                                                            4000),
+                                                                    backgroundColor:
+                                                                        Color(
+                                                                            0x00000000),
+                                                                  ),
+                                                                );
+                                                              } else {
+                                                                ScaffoldMessenger.of(
+                                                                        context)
+                                                                    .showSnackBar(
+                                                                  SnackBar(
+                                                                    content:
+                                                                        Text(
+                                                                      saveIconUpdateReservationResponse
+                                                                          .statusCode
+                                                                          .toString(),
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .primaryText,
+                                                                      ),
+                                                                    ),
+                                                                    duration: Duration(
+                                                                        milliseconds:
+                                                                            4000),
+                                                                    backgroundColor:
+                                                                        Color(
+                                                                            0x00000000),
+                                                                  ),
+                                                                );
+                                                              }
+                                                            },
+                                                            child: Icon(
+                                                              Icons
+                                                                  .save_outlined,
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .primaryText,
+                                                              size: 30,
+                                                            ),
+                                                          );
                                                         },
                                                       ),
                                                       Text(
@@ -2131,5 +2270,20 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
             ));
       },
     );
+  }
+
+  Future waitForApiRequestCompleter({
+    double minWait = 0,
+    double maxWait = double.infinity,
+  }) async {
+    final stopwatch = Stopwatch()..start();
+    while (true) {
+      await Future.delayed(Duration(milliseconds: 50));
+      final timeElapsed = stopwatch.elapsedMilliseconds;
+      final requestComplete = _apiRequestCompleter?.isCompleted ?? false;
+      if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
+        break;
+      }
+    }
   }
 }

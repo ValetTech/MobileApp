@@ -123,15 +123,21 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'NewReservation',
               path: 'newReservation',
-              builder: (context, params) => NewReservationWidget(
-                resDetails: params.getParam('resDetails', ParamType.JSON),
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: NewReservationWidget(
+                  resDetails: params.getParam('resDetails', ParamType.JSON),
+                ),
               ),
             ),
             FFRoute(
               name: 'ViewReservation',
               path: 'viewReservation',
-              builder: (context, params) => ViewReservationWidget(
-                resDetails: params.getParam('resDetails', ParamType.JSON),
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: ViewReservationWidget(
+                  resDetails: params.getParam('resDetails', ParamType.JSON),
+                ),
               ),
             ),
             FFRoute(
@@ -142,14 +148,20 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'Menu',
               path: 'menu',
-              builder: (context, params) => MenuWidget(),
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: MenuWidget(),
+              ),
             ),
             FFRoute(
               name: 'EditReservation',
               path: 'editReservation',
-              builder: (context, params) => EditReservationWidget(
-                resDetailsEdiit:
-                    params.getParam('resDetailsEdiit', ParamType.JSON),
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: EditReservationWidget(
+                  resDetailsEdiit:
+                      params.getParam('resDetailsEdiit', ParamType.JSON),
+                ),
               ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),

@@ -1,6 +1,7 @@
 import '../backend/api_requests/api_calls.dart';
 import '../backend/backend.dart';
 import '../components/end_drawer_container_widget.dart';
+import '../components/page_name_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_calendar.dart';
 import '../flutter_flow/flutter_flow_choice_chips.dart';
@@ -107,20 +108,21 @@ class _OrdersWidgetState extends State<OrdersWidget>
               automaticallyImplyLeading: false,
               title: Container(
                 width: MediaQuery.of(context).size.width,
+                height: 60,
                 decoration: BoxDecoration(),
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
-                  child: Text(
-                    'Orders',
-                    textAlign: TextAlign.start,
-                    style: GoogleFonts.getFont(
-                      'Overpass',
-                      color: FlutterFlowTheme.of(context).secondaryColor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 32,
-                      fontStyle: FontStyle.normal,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
+                        child: PageNameWidget(
+                          pageName: 'Orders',
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
               actions: [

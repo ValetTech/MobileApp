@@ -24,6 +24,7 @@ class ValetAPIGroup {
       GETAreasBySittingIDCall();
   static GETSittingTypesCall gETSittingTypesCall = GETSittingTypesCall();
   static GETTablesCall gETTablesCall = GETTablesCall();
+  static UpdateReservationCall updateReservationCall = UpdateReservationCall();
 }
 
 class NewAreaCall {
@@ -294,6 +295,65 @@ class GETTablesCall {
       );
 }
 
+class UpdateReservationCall {
+  Future<ApiCallResponse> call({
+    int? reservationId,
+    int? customerId,
+    String? firstName = '',
+    String? lastName = '',
+    String? email = '',
+    String? phone = '',
+    bool? isVip,
+    int? sittingId,
+    String? sittingType = '',
+    String? dateTime = '',
+    int? duration,
+    int? noGuests,
+    String? source = '',
+    String? status = '',
+    String? notes = '',
+  }) {
+    final body = '''
+{
+  "id": ${reservationId},
+  "customerId": ${customerId},
+  "areaId": 1,
+  "customer": {
+    "firstName": "${firstName}",
+    "lastName": "${lastName}",
+    "email": "${email}",
+    "phone": "${phone}",
+    "isVip": ${isVip}
+  },
+  "sittingId": ${sittingId},
+  "sitting": {
+    "type": "${sittingType}",
+    "venueId": 1
+  },
+  "dateTime": "${dateTime}",
+  "duration": ${duration},
+  "noGuests": ${noGuests},
+  "source": "${source}",
+  "venueId": 1,
+  "status": "${status}",
+  "notes": "${notes}"
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'Update Reservation',
+      apiUrl: '${ValetAPIGroup.baseUrl}/reservations/${reservationId}',
+      callType: ApiCallType.PUT,
+      headers: {
+        ...ValetAPIGroup.headers,
+        'accept': 'text/plain',
+      },
+      params: {},
+      body: body,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+    );
+  }
+}
+
 /// End Valet API Group Code
 
 class GETReservationsCall {
@@ -402,6 +462,18 @@ class GETReservationsCall {
         response,
         r'''$.reservations[:].tables''',
         true,
+      );
+  static dynamic reservationId(dynamic response) => getJsonField(
+        response,
+        r'''$.reservations[:].id''',
+      );
+  static dynamic customerId(dynamic response) => getJsonField(
+        response,
+        r'''$.reservations[:].customer.id''',
+      );
+  static dynamic sittingId(dynamic response) => getJsonField(
+        response,
+        r'''$.reservations[:].sittingId''',
       );
 }
 

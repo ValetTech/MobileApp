@@ -1,5 +1,6 @@
 import '../components/end_drawer_container_widget.dart';
 import '../components/new_reservation_page_view_widget.dart';
+import '../components/page_name_widget.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -49,19 +50,22 @@ class _NewReservationWidgetState extends State<NewReservationWidget> {
             child: AppBar(
               backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
               automaticallyImplyLeading: false,
-              leading: FlutterFlowIconButton(
-                borderColor: Colors.transparent,
-                borderRadius: 30,
-                borderWidth: 1,
-                buttonSize: 60,
-                icon: Icon(
-                  Icons.arrow_back_rounded,
-                  color: FlutterFlowTheme.of(context).iconGray,
-                  size: 30,
+              title: Container(
+                width: 100,
+                height: 60,
+                decoration: BoxDecoration(),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
+                      child: PageNameWidget(
+                        pageName: 'New Reservation',
+                      ),
+                    ),
+                  ],
                 ),
-                onPressed: () async {
-                  context.pop();
-                },
               ),
               actions: [
                 FlutterFlowIconButton(
@@ -79,22 +83,8 @@ class _NewReservationWidgetState extends State<NewReservationWidget> {
                   },
                 ),
               ],
-              flexibleSpace: FlexibleSpaceBar(
-                title: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
-                  child: Text(
-                    'New Reservation',
-                    style: GoogleFonts.getFont(
-                      'Overpass',
-                      color: FlutterFlowTheme.of(context).secondaryColor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 32,
-                    ),
-                  ),
-                ),
-                centerTitle: true,
-                expandedTitleScale: 1.0,
-              ),
+              centerTitle: false,
+              toolbarHeight: 60,
               elevation: 6,
             ),
           ),
@@ -152,126 +142,6 @@ class _NewReservationWidgetState extends State<NewReservationWidget> {
                                     decoration: BoxDecoration(),
                                     child: NewReservationPageViewWidget(),
                                   ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      FlutterFlowTheme.of(context)
-                                          .primaryBackground,
-                                      FlutterFlowTheme.of(context).grayLines
-                                    ],
-                                    stops: [0, 1],
-                                    begin: AlignmentDirectional(0, -1),
-                                    end: AlignmentDirectional(0, 1),
-                                  ),
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(12),
-                                    bottomRight: Radius.circular(12),
-                                    topLeft: Radius.circular(0),
-                                    topRight: Radius.circular(0),
-                                  ),
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          16, 12, 16, 12),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Available Actions',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyText1,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          16, 0, 16, 16),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          FlutterFlowIconButton(
-                                            borderColor: Colors.transparent,
-                                            borderRadius: 30,
-                                            borderWidth: 1,
-                                            buttonSize: 40,
-                                            icon: Icon(
-                                              Icons.group_add,
-                                              color: Color(0xFF57636C),
-                                              size: 30,
-                                            ),
-                                            onPressed: () {
-                                              print('IconButton pressed ...');
-                                            },
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    12, 0, 0, 0),
-                                            child: FlutterFlowIconButton(
-                                              borderColor: Colors.transparent,
-                                              borderRadius: 30,
-                                              borderWidth: 1,
-                                              buttonSize: 40,
-                                              icon: Icon(
-                                                Icons.edit_rounded,
-                                                color: Color(0xFF57636C),
-                                                size: 30,
-                                              ),
-                                              onPressed: () {
-                                                print('IconButton pressed ...');
-                                              },
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    12, 0, 0, 0),
-                                            child: FlutterFlowIconButton(
-                                              borderColor: Colors.transparent,
-                                              borderRadius: 30,
-                                              borderWidth: 1,
-                                              buttonSize: 40,
-                                              icon: Icon(
-                                                Icons.delete,
-                                                color: Color(0xFFDF3F3F),
-                                                size: 30,
-                                              ),
-                                              onPressed: () {
-                                                print('IconButton pressed ...');
-                                              },
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
                                 ),
                               ),
                             ),

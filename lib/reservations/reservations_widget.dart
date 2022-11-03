@@ -1,5 +1,6 @@
 import '../backend/api_requests/api_calls.dart';
 import '../components/end_drawer_container_widget.dart';
+import '../components/page_name_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_calendar.dart';
 import '../flutter_flow/flutter_flow_choice_chips.dart';
@@ -75,9 +76,10 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       resApiOutput = await GETReservationsCall.call(
-        date: functions.formatDateForPOST(
-            calendarPickerReservationsMainSelectedDay!.start),
+        date: functions.formatDateForPOST(FFAppState().selectedDate!),
       );
+      setState(() => FFAppState().selectedDate =
+          calendarPickerReservationsMainSelectedDay?.start);
       if ((resApiOutput?.succeeded ?? true)) {
         if (animationsMap['containerOnActionTriggerAnimation'] != null) {
           await animationsMap['containerOnActionTriggerAnimation']!
@@ -143,23 +145,21 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                   automaticallyImplyLeading: false,
                   title: Container(
                     width: MediaQuery.of(context).size.width,
+                    height: 60,
                     decoration: BoxDecoration(),
-                    child: Align(
-                      alignment: AlignmentDirectional(-1, 0),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
-                        child: Text(
-                          'Reservations',
-                          textAlign: TextAlign.start,
-                          style: GoogleFonts.getFont(
-                            'Overpass',
-                            color: FlutterFlowTheme.of(context).secondaryColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 32,
-                            fontStyle: FontStyle.normal,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
+                            child: PageNameWidget(
+                              pageName: 'Reservations',
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                   actions: [
@@ -257,6 +257,14 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                     newSelectedDate) async {
                                                   calendarPickerReservationsMainSelectedDay =
                                                       newSelectedDate;
+                                                  setState(() => FFAppState()
+                                                          .selectedDate =
+                                                      calendarPickerReservationsMainSelectedDay
+                                                          ?.start);
+                                                  setState(() =>
+                                                      _apiRequestCompleter =
+                                                          null);
+                                                  await waitForApiRequestCompleter();
                                                   setState(() =>
                                                       sittingChipsValues.value =
                                                           []);
@@ -265,10 +273,6 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                   setState(() => FFAppState()
                                                       .filtersOn = false);
                                                   setState(() => FFAppState()
-                                                          .selectedDate =
-                                                      calendarPickerReservationsMainSelectedDay
-                                                          ?.start);
-                                                  setState(() => FFAppState()
                                                           .resMinDate =
                                                       calendarPickerReservationsMainSelectedDay
                                                           ?.start);
@@ -276,10 +280,6 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                           .resMaxDate =
                                                       calendarPickerReservationsMainSelectedDay
                                                           ?.end);
-                                                  setState(() =>
-                                                      _apiRequestCompleter =
-                                                          null);
-                                                  await waitForApiRequestCompleter();
                                                   setState(() {});
                                                 },
                                                 titleStyle:
@@ -399,6 +399,12 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                           FFAppState()
                                                                   .filtersOn =
                                                               false);
+                                                      setState(() =>
+                                                          sittingChipsValues
+                                                              .value = []);
+                                                      setState(() =>
+                                                          areaChipsValues
+                                                              .value = []);
                                                     },
                                                     child: Icon(
                                                       Icons.cancel,
@@ -959,9 +965,24 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                                     .primaryText,
                                                                 size: 30,
                                                               ),
-                                                              onPressed: () {
-                                                                print(
-                                                                    'IconButton pressed ...');
+                                                              onPressed:
+                                                                  () async {
+                                                                context
+                                                                    .pushNamed(
+                                                                  'ViewReservation',
+                                                                  queryParams: {
+                                                                    'resDetails':
+                                                                        serializeParam(
+                                                                      getJsonField(
+                                                                        reservationsGETReservationsResponse
+                                                                            .jsonBody,
+                                                                        r'''$''',
+                                                                      ),
+                                                                      ParamType
+                                                                          .JSON,
+                                                                    ),
+                                                                  }.withoutNulls,
+                                                                );
                                                               },
                                                             ),
                                                           ],

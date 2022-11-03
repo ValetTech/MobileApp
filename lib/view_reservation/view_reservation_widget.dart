@@ -1,5 +1,6 @@
 import '../backend/api_requests/api_calls.dart';
 import '../components/end_drawer_container_widget.dart';
+import '../components/page_name_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -89,19 +90,22 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                   backgroundColor:
                       FlutterFlowTheme.of(context).primaryBackground,
                   automaticallyImplyLeading: false,
-                  leading: FlutterFlowIconButton(
-                    borderColor: Colors.transparent,
-                    borderRadius: 30,
-                    borderWidth: 1,
-                    buttonSize: 60,
-                    icon: Icon(
-                      Icons.arrow_back_rounded,
-                      color: FlutterFlowTheme.of(context).iconGray,
-                      size: 30,
+                  title: Container(
+                    width: 100,
+                    height: 60,
+                    decoration: BoxDecoration(),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
+                          child: PageNameWidget(
+                            pageName: 'View Reservation',
+                          ),
+                        ),
+                      ],
                     ),
-                    onPressed: () async {
-                      context.pop();
-                    },
                   ),
                   actions: [
                     FlutterFlowIconButton(
@@ -119,23 +123,7 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                       },
                     ),
                   ],
-                  flexibleSpace: FlexibleSpaceBar(
-                    title: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
-                      child: Text(
-                        'Details',
-                        textAlign: TextAlign.start,
-                        style: GoogleFonts.getFont(
-                          'Overpass',
-                          color: FlutterFlowTheme.of(context).secondaryColor,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 32,
-                        ),
-                      ),
-                    ),
-                    centerTitle: true,
-                    expandedTitleScale: 1.0,
-                  ),
+                  centerTitle: false,
                   toolbarHeight: 60,
                   elevation: 6,
                 ),

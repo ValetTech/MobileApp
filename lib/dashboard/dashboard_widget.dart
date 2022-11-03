@@ -167,8 +167,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                               CrossAxisAlignment.end,
                                           children: [
                                             FFButtonWidget(
-                                              onPressed: () {
-                                                print('Button pressed ...');
+                                              onPressed: () async {
+                                                context.pushNamed(
+                                                    'NewReservation');
                                               },
                                               text: 'New Reservation',
                                               icon: FaIcon(
@@ -372,8 +373,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                   style: FlutterFlowTheme.of(context).subtitle2,
                                 ),
                                 FFButtonWidget(
-                                  onPressed: () {
-                                    print('Button pressed ...');
+                                  onPressed: () async {
+                                    context.pushNamed('Seating');
                                   },
                                   text: 'Seating',
                                   icon: Icon(
@@ -468,8 +469,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0, 8, 0, 0),
                                   child: FFButtonWidget(
-                                    onPressed: () {
-                                      print('Button pressed ...');
+                                    onPressed: () async {
+                                      context.pushNamed('Orders');
                                     },
                                     text: 'View/Settle',
                                     icon: FaIcon(

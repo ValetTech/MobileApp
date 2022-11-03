@@ -81,6 +81,8 @@ class FFAppState {
   int resDuration = 0;
 
   List<String> sourceOptions = ['Website', 'In-person', 'Email', 'Phone'];
+
+  String resStatus = '';
 }
 
 LatLng? _latLngFromString(String? val) {
