@@ -56,32 +56,34 @@ class _OnboardWidgetState extends State<OnboardWidget>
     super.initState();
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      final local_auth = LocalAuthentication();
-      bool _isBiometricSupported = await local_auth.isDeviceSupported();
+      if (isAndroid == true) {
+        final local_auth = LocalAuthentication();
+        bool _isBiometricSupported = await local_auth.isDeviceSupported();
+        bool canCheckBiometrics = await local_auth.canCheckBiometrics;
+        if (_isBiometricSupported && canCheckBiometrics) {
+          biometriLoginResult = await local_auth.authenticate(
+              localizedReason:
+                  'Please authenticate with biometrics to access Valet',
+              options: const AuthenticationOptions(biometricOnly: true));
+          setState(() {});
+        }
 
-      if (_isBiometricSupported) {
-        biometriLoginResult = await local_auth.authenticate(
-            localizedReason:
-                'Please authenticate with biometrics to access Valet');
-        setState(() {});
-      }
-
-      if (biometriLoginResult!) {
-        context.goNamed('Dashboard');
-      } else {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              biometriLoginResult!.toString(),
-              style: TextStyle(
-                color: FlutterFlowTheme.of(context).primaryText,
+        if (biometriLoginResult!) {
+          context.goNamed('Dashboard');
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                biometriLoginResult!.toString(),
+                style: TextStyle(
+                  color: FlutterFlowTheme.of(context).primaryText,
+                ),
               ),
+              duration: Duration(milliseconds: 4000),
+              backgroundColor: Color(0x00000000),
             ),
-            duration: Duration(milliseconds: 4000),
-            backgroundColor: Color(0x00000000),
-          ),
-        );
+          );
+        }
       }
     });
 
