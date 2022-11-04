@@ -182,7 +182,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                                             },
                                             titleStyle:
                                                 FlutterFlowTheme.of(context)
-                                                    .subtitle1,
+                                                    .subtitle2,
                                             dayOfWeekStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .bodyText2,

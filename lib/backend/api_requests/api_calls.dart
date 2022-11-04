@@ -194,6 +194,11 @@ class GETSittingTypesByDateCall {
         r'''$.sittings[:].areas[:].id''',
         true,
       );
+  dynamic reservations(dynamic response) => getJsonField(
+        response,
+        r'''$.sittings[:].reservations''',
+        true,
+      );
 }
 
 class GETAreasBySittingIDCall {

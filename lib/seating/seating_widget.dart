@@ -195,7 +195,7 @@ class _SeatingWidgetState extends State<SeatingWidget> {
                                                 },
                                                 titleStyle:
                                                     FlutterFlowTheme.of(context)
-                                                        .subtitle1,
+                                                        .subtitle2,
                                                 dayOfWeekStyle:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyText2,
