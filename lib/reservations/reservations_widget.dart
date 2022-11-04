@@ -26,35 +26,14 @@ class ReservationsWidget extends StatefulWidget {
 
 class _ReservationsWidgetState extends State<ReservationsWidget>
     with TickerProviderStateMixin {
-  ApiCallResponse? resApiOutput;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  Completer<ApiCallResponse>? _apiRequestCompleter;
+  Completer<ApiCallResponse>? _apiRequestCompleter1;
+  Completer<ApiCallResponse>? _apiRequestCompleter2;
   DateTimeRange? calendarPickerReservationsMainSelectedDay;
   ValueNotifier<List<String>?> areaChipsValues = ValueNotifier(null);
   ValueNotifier<List<String>?> sittingChipsValues = ValueNotifier(null);
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   var hasIconTriggered = false;
   final animationsMap = {
-    'containerOnActionTriggerAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
-        VisibilityEffect(duration: 1.ms),
-        FadeEffect(
-          curve: Curves.easeIn,
-          delay: 0.ms,
-          duration: 300.ms,
-          begin: 0,
-          end: 1,
-        ),
-        MoveEffect(
-          curve: Curves.easeIn,
-          delay: 0.ms,
-          duration: 300.ms,
-          begin: Offset(0, 50),
-          end: Offset(0, 0),
-        ),
-      ],
-    ),
     'iconOnActionTriggerAnimation': AnimationInfo(
       trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: false,
@@ -73,26 +52,6 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
   @override
   void initState() {
     super.initState();
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      resApiOutput = await GETReservationsCall.call(
-        date: functions.formatDateForPOST(FFAppState().selectedDate!),
-      );
-      setState(() => FFAppState().selectedDate =
-          calendarPickerReservationsMainSelectedDay?.start);
-      if ((resApiOutput?.succeeded ?? true)) {
-        if (animationsMap['containerOnActionTriggerAnimation'] != null) {
-          await animationsMap['containerOnActionTriggerAnimation']!
-              .controller
-              .forward(from: 0.0);
-        }
-      }
-    });
-
-    calendarPickerReservationsMainSelectedDay = DateTimeRange(
-      start: DateTime.now().startOfDay,
-      end: DateTime.now().endOfDay,
-    );
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -100,93 +59,96 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
       this,
     );
 
+    calendarPickerReservationsMainSelectedDay = DateTimeRange(
+      start: DateTime.now().startOfDay,
+      end: DateTime.now().endOfDay,
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<ApiCallResponse>(
-      future: (_apiRequestCompleter ??= Completer<ApiCallResponse>()
-            ..complete(GETReservationsCall.call(
-              date: functions.formatDateForPOST(
-                  calendarPickerReservationsMainSelectedDay!.start),
-            )))
-          .future,
-      builder: (context, snapshot) {
-        // Customize what your widget looks like when it's loading.
-        if (!snapshot.hasData) {
-          return Center(
-            child: SizedBox(
-              width: 40,
-              height: 40,
-              child: SpinKitRipple(
-                color: FlutterFlowTheme.of(context).secondaryColor,
-                size: 40,
-              ),
-            ),
-          );
-        }
-        final reservationsGETReservationsResponse = snapshot.data!;
-        return Title(
-            title: 'Reservations',
-            color: FlutterFlowTheme.of(context).primaryColor,
-            child: Scaffold(
-              key: scaffoldKey,
+    return Title(
+        title: 'Reservations',
+        color: FlutterFlowTheme.of(context).primaryColor,
+        child: Scaffold(
+          key: scaffoldKey,
+          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+          endDrawer: Drawer(
+            elevation: 16,
+            child: EndDrawerContainerWidget(),
+          ),
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(60),
+            child: AppBar(
               backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-              endDrawer: Drawer(
-                elevation: 16,
-                child: EndDrawerContainerWidget(),
-              ),
-              appBar: PreferredSize(
-                preferredSize: Size.fromHeight(60),
-                child: AppBar(
-                  backgroundColor:
-                      FlutterFlowTheme.of(context).primaryBackground,
-                  automaticallyImplyLeading: false,
-                  title: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 60,
-                    decoration: BoxDecoration(),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
-                            child: PageNameWidget(
-                              pageName: 'Reservations',
-                            ),
-                          ),
+              automaticallyImplyLeading: false,
+              title: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+                decoration: BoxDecoration(),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
+                        child: PageNameWidget(
+                          pageName: 'Reservations',
                         ),
-                      ],
-                    ),
-                  ),
-                  actions: [
-                    FlutterFlowIconButton(
-                      borderColor: Colors.transparent,
-                      borderRadius: 0,
-                      borderWidth: 1,
-                      buttonSize: 60,
-                      icon: Icon(
-                        Icons.menu,
-                        color: FlutterFlowTheme.of(context).iconGray,
-                        size: 30,
                       ),
-                      onPressed: () async {
-                        scaffoldKey.currentState!.openEndDrawer();
-                      },
                     ),
                   ],
-                  centerTitle: false,
-                  toolbarHeight: 60,
-                  elevation: 6,
                 ),
               ),
-              body: SafeArea(
-                child: GestureDetector(
-                  onTap: () => FocusScope.of(context).unfocus(),
-                  child: Container(
+              actions: [
+                FlutterFlowIconButton(
+                  borderColor: Colors.transparent,
+                  borderRadius: 0,
+                  borderWidth: 1,
+                  buttonSize: 60,
+                  icon: Icon(
+                    Icons.menu,
+                    color: FlutterFlowTheme.of(context).iconGray,
+                    size: 30,
+                  ),
+                  onPressed: () async {
+                    scaffoldKey.currentState!.openEndDrawer();
+                  },
+                ),
+              ],
+              centerTitle: false,
+              toolbarHeight: 60,
+              elevation: 6,
+            ),
+          ),
+          body: SafeArea(
+            child: GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: FutureBuilder<ApiCallResponse>(
+                future: (_apiRequestCompleter2 ??= Completer<ApiCallResponse>()
+                      ..complete(GETReservationsCall.call(
+                        date: functions
+                            .formatDateForPOST(FFAppState().selectedDate!),
+                      )))
+                    .future,
+                builder: (context, snapshot) {
+                  // Customize what your widget looks like when it's loading.
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: SizedBox(
+                        width: 40,
+                        height: 40,
+                        child: SpinKitRipple(
+                          color: FlutterFlowTheme.of(context).secondaryColor,
+                          size: 40,
+                        ),
+                      ),
+                    );
+                  }
+                  final stackGETReservationsResponse = snapshot.data!;
+                  return Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 1,
                     child: Stack(
@@ -252,7 +214,7 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                 weekFormat: true,
                                                 weekStartsMonday: true,
                                                 initialDate:
-                                                    getCurrentTimestamp,
+                                                    FFAppState().selectedDate,
                                                 onChange: (DateTimeRange?
                                                     newSelectedDate) async {
                                                   calendarPickerReservationsMainSelectedDay =
@@ -262,9 +224,9 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                       calendarPickerReservationsMainSelectedDay
                                                           ?.start);
                                                   setState(() =>
-                                                      _apiRequestCompleter =
+                                                      _apiRequestCompleter2 =
                                                           null);
-                                                  await waitForApiRequestCompleter();
+                                                  await waitForApiRequestCompleter2();
                                                   setState(() =>
                                                       sittingChipsValues.value =
                                                           []);
@@ -711,162 +673,200 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                       ],
                                     ),
                                   ),
-                                ).animateOnActionTrigger(
-                                  animationsMap[
-                                      'containerOnActionTriggerAnimation']!,
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    16, 8, 16, 0),
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        blurRadius: 5,
-                                        color: Color(0x230E151B),
-                                        offset: Offset(0, 2),
-                                      )
-                                    ],
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Builder(
-                                    builder: (context) {
-                                      final resList =
-                                          GETReservationsCall.reservations(
-                                        reservationsGETReservationsResponse
-                                            .jsonBody,
-                                      ).toList();
-                                      if (resList.isEmpty) {
-                                        return Center(
-                                          child: Image.asset(
-                                            'assets/images/Screenshot_2022-10-21_at_10.24.55_pm.png',
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.5,
-                                          ),
-                                        );
-                                      }
-                                      return RefreshIndicator(
-                                        onRefresh: () async {
-                                          setState(() =>
-                                              _apiRequestCompleter = null);
-                                          await waitForApiRequestCompleter();
-                                        },
-                                        child: ListView.builder(
-                                          padding: EdgeInsets.zero,
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.vertical,
-                                          itemCount: resList.length,
-                                          itemBuilder: (context, resListIndex) {
-                                            final resListItem =
-                                                resList[resListIndex];
-                                            return Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(12, 4, 0, 4),
-                                              child: InkWell(
-                                                onTap: () async {
-                                                  if (Navigator.of(context)
-                                                      .canPop()) {
-                                                    context.pop();
-                                                  }
-                                                  context.pushNamed(
-                                                    'ViewReservation',
-                                                    queryParams: {
-                                                      'resDetails':
-                                                          serializeParam(
-                                                        getJsonField(
+                              if (FFAppState().filtersOn == false)
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      16, 8, 16, 0),
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 5,
+                                          color: Color(0x230E151B),
+                                          offset: Offset(0, 2),
+                                        )
+                                      ],
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Builder(
+                                      builder: (context) {
+                                        final resList =
+                                            GETReservationsCall.reservations(
+                                          stackGETReservationsResponse.jsonBody,
+                                        ).toList();
+                                        if (resList.isEmpty) {
+                                          return Center(
+                                            child: Image.asset(
+                                              'assets/images/Screenshot_2022-10-21_at_10.24.55_pm.png',
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.5,
+                                            ),
+                                          );
+                                        }
+                                        return RefreshIndicator(
+                                          onRefresh: () async {
+                                            setState(() =>
+                                                _apiRequestCompleter2 = null);
+                                            await waitForApiRequestCompleter2();
+                                          },
+                                          child: ListView.builder(
+                                            padding: EdgeInsets.zero,
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.vertical,
+                                            itemCount: resList.length,
+                                            itemBuilder:
+                                                (context, resListIndex) {
+                                              final resListItem =
+                                                  resList[resListIndex];
+                                              return Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(12, 4, 0, 4),
+                                                child: InkWell(
+                                                  onTap: () async {
+                                                    if (Navigator.of(context)
+                                                        .canPop()) {
+                                                      context.pop();
+                                                    }
+                                                    context.pushNamed(
+                                                      'ViewReservation',
+                                                      queryParams: {
+                                                        'resDetails':
+                                                            serializeParam(
                                                           resListItem,
-                                                          r'''$''',
+                                                          ParamType.JSON,
                                                         ),
-                                                        ParamType.JSON,
-                                                      ),
-                                                    }.withoutNulls,
-                                                  );
-                                                },
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    children: [
-                                                      Expanded(
-                                                        flex: 4,
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(12,
-                                                                      8, 0, 8),
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0,
-                                                                            0,
-                                                                            0,
-                                                                            4),
-                                                                child: Text(
-                                                                  getJsonField(
-                                                                    resListItem,
-                                                                    r'''$.customer.fullName''',
-                                                                  ).toString(),
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .subtitle1
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Overpass',
-                                                                        color: Color(
-                                                                            0xFF101213),
-                                                                        fontSize:
-                                                                            18,
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                        useGoogleFonts:
-                                                                            GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).subtitle1Family),
-                                                                      ),
+                                                      }.withoutNulls,
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      children: [
+                                                        Expanded(
+                                                          flex: 4,
+                                                          child: Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        12,
+                                                                        8,
+                                                                        0,
+                                                                        8),
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0,
+                                                                          0,
+                                                                          0,
+                                                                          4),
+                                                                  child: Text(
+                                                                    getJsonField(
+                                                                      resListItem,
+                                                                      r'''$.customer.fullName''',
+                                                                    ).toString(),
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .subtitle1
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Overpass',
+                                                                          color:
+                                                                              Color(0xFF101213),
+                                                                          fontSize:
+                                                                              18,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                          useGoogleFonts:
+                                                                              GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).subtitle1Family),
+                                                                        ),
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0,
+                                                                          0,
+                                                                          0,
+                                                                          4),
+                                                                  child: Row(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    children: [
+                                                                      Icon(
+                                                                        Icons
+                                                                            .access_time,
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .iconGray,
+                                                                        size:
+                                                                            16,
+                                                                      ),
+                                                                      Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            4,
                                                                             0,
                                                                             0,
-                                                                            0,
-                                                                            4),
-                                                                child: Row(
+                                                                            0),
+                                                                        child:
+                                                                            Text(
+                                                                          '${functions.formatReservationTime(getJsonField(
+                                                                            resListItem,
+                                                                            r'''$.dateTime''',
+                                                                          ).toString())} · ${getJsonField(
+                                                                            resListItem,
+                                                                            r'''$.duration''',
+                                                                          ).toString()} mins',
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyText2
+                                                                              .override(
+                                                                                fontFamily: 'Outfit',
+                                                                                color: FlutterFlowTheme.of(context).iconGray,
+                                                                                fontSize: 14,
+                                                                                fontWeight: FontWeight.w500,
+                                                                                useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText2Family),
+                                                                              ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Row(
                                                                   mainAxisSize:
                                                                       MainAxisSize
                                                                           .max,
                                                                   children: [
                                                                     Icon(
                                                                       Icons
-                                                                          .access_time,
+                                                                          .phone,
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
                                                                           .iconGray,
@@ -881,13 +881,10 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                                               0),
                                                                       child:
                                                                           Text(
-                                                                        '${functions.formatReservationTime(getJsonField(
+                                                                        getJsonField(
                                                                           resListItem,
-                                                                          r'''$.dateTime''',
-                                                                        ).toString())} · ${getJsonField(
-                                                                          resListItem,
-                                                                          r'''$.duration''',
-                                                                        ).toString()} mins',
+                                                                          r'''$.customer.phone''',
+                                                                        ).toString(),
                                                                         style: FlutterFlowTheme.of(context)
                                                                             .bodyText2
                                                                             .override(
@@ -901,114 +898,394 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                                     ),
                                                                   ],
                                                                 ),
-                                                              ),
-                                                              Row(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                children: [
-                                                                  Icon(
-                                                                    Icons.phone,
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .iconGray,
-                                                                    size: 16,
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            4,
-                                                                            0,
-                                                                            0,
-                                                                            0),
-                                                                    child: Text(
-                                                                      getJsonField(
-                                                                        resListItem,
-                                                                        r'''$.customer.phone''',
-                                                                      ).toString(),
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyText2
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Outfit',
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).iconGray,
-                                                                            fontSize:
-                                                                                14,
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
-                                                                            useGoogleFonts:
-                                                                                GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText2Family),
-                                                                          ),
-                                                                    ),
-                                                                  ),
-                                                                ],
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                          flex: 1,
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            children: [
+                                                              FlutterFlowIconButton(
+                                                                borderColor: Colors
+                                                                    .transparent,
+                                                                borderRadius:
+                                                                    30,
+                                                                borderWidth: 1,
+                                                                buttonSize: 60,
+                                                                icon: Icon(
+                                                                  Icons
+                                                                      .keyboard_arrow_right,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryText,
+                                                                  size: 30,
+                                                                ),
+                                                                onPressed:
+                                                                    () async {
+                                                                  if (Navigator.of(
+                                                                          context)
+                                                                      .canPop()) {
+                                                                    context
+                                                                        .pop();
+                                                                  }
+                                                                  context
+                                                                      .pushNamed(
+                                                                    'ViewReservation',
+                                                                    queryParams:
+                                                                        {
+                                                                      'resDetails':
+                                                                          serializeParam(
+                                                                        getJsonField(
+                                                                          stackGETReservationsResponse
+                                                                              .jsonBody,
+                                                                          r'''$''',
+                                                                        ),
+                                                                        ParamType
+                                                                            .JSON,
+                                                                      ),
+                                                                    }.withoutNulls,
+                                                                  );
+                                                                },
                                                               ),
                                                             ],
                                                           ),
                                                         ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: Column(
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              if (FFAppState().filtersOn)
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      16, 8, 16, 0),
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 5,
+                                          color: Color(0x230E151B),
+                                          offset: Offset(0, 2),
+                                        )
+                                      ],
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: FutureBuilder<ApiCallResponse>(
+                                      future: (_apiRequestCompleter1 ??=
+                                              Completer<ApiCallResponse>()
+                                                ..complete(ValetAPIGroup
+                                                    .gETSittingTypesByDateCall
+                                                    .call(
+                                                  date: functions
+                                                      .formatDateForPOST(
+                                                          FFAppState()
+                                                              .selectedDate!),
+                                                  sittingTypeList:
+                                                      sittingChipsValues.value,
+                                                  areaNameList:
+                                                      areaChipsValues.value,
+                                                )))
+                                          .future,
+                                      builder: (context, snapshot) {
+                                        // Customize what your widget looks like when it's loading.
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                            child: SizedBox(
+                                              width: 40,
+                                              height: 40,
+                                              child: SpinKitRipple(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondaryColor,
+                                                size: 40,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        final listViewSEARCHGETSittingTypesByDateResponse =
+                                            snapshot.data!;
+                                        return Builder(
+                                          builder: (context) {
+                                            final resList = GETReservationsCall
+                                                .reservations(
+                                              stackGETReservationsResponse
+                                                  .jsonBody,
+                                            ).toList();
+                                            if (resList.isEmpty) {
+                                              return Center(
+                                                child: Image.asset(
+                                                  'assets/images/Screenshot_2022-10-21_at_10.24.55_pm.png',
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.5,
+                                                ),
+                                              );
+                                            }
+                                            return RefreshIndicator(
+                                              onRefresh: () async {
+                                                setState(() =>
+                                                    _apiRequestCompleter1 =
+                                                        null);
+                                                await waitForApiRequestCompleter1();
+                                              },
+                                              child: ListView.builder(
+                                                padding: EdgeInsets.zero,
+                                                shrinkWrap: true,
+                                                scrollDirection: Axis.vertical,
+                                                itemCount: resList.length,
+                                                itemBuilder:
+                                                    (context, resListIndex) {
+                                                  final resListItem =
+                                                      resList[resListIndex];
+                                                  return Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                12, 4, 0, 4),
+                                                    child: InkWell(
+                                                      onTap: () async {
+                                                        if (Navigator.of(
+                                                                context)
+                                                            .canPop()) {
+                                                          context.pop();
+                                                        }
+                                                        context.pushNamed(
+                                                          'ViewReservation',
+                                                          queryParams: {
+                                                            'resDetails':
+                                                                serializeParam(
+                                                              resListItem,
+                                                              ParamType.JSON,
+                                                            ),
+                                                          }.withoutNulls,
+                                                        );
+                                                      },
+                                                      child: Container(
+                                                        width: double.infinity,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.white,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
+                                                        ),
+                                                        child: Row(
                                                           mainAxisSize:
                                                               MainAxisSize.max,
                                                           children: [
-                                                            FlutterFlowIconButton(
-                                                              borderColor: Colors
-                                                                  .transparent,
-                                                              borderRadius: 30,
-                                                              borderWidth: 1,
-                                                              buttonSize: 60,
-                                                              icon: Icon(
-                                                                Icons
-                                                                    .keyboard_arrow_right,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primaryText,
-                                                                size: 30,
-                                                              ),
-                                                              onPressed:
-                                                                  () async {
-                                                                if (Navigator.of(
-                                                                        context)
-                                                                    .canPop()) {
-                                                                  context.pop();
-                                                                }
-                                                                context
-                                                                    .pushNamed(
-                                                                  'ViewReservation',
-                                                                  queryParams: {
-                                                                    'resDetails':
-                                                                        serializeParam(
-                                                                      getJsonField(
-                                                                        reservationsGETReservationsResponse
-                                                                            .jsonBody,
-                                                                        r'''$''',
+                                                            Expanded(
+                                                              flex: 4,
+                                                              child: Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            12,
+                                                                            8,
+                                                                            0,
+                                                                            8),
+                                                                child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional
+                                                                          .fromSTEB(
+                                                                              0,
+                                                                              0,
+                                                                              0,
+                                                                              4),
+                                                                      child:
+                                                                          Text(
+                                                                        getJsonField(
+                                                                          resListItem,
+                                                                          r'''$.customer.fullName''',
+                                                                        ).toString(),
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .subtitle1
+                                                                            .override(
+                                                                              fontFamily: 'Overpass',
+                                                                              color: Color(0xFF101213),
+                                                                              fontSize: 18,
+                                                                              fontWeight: FontWeight.w500,
+                                                                              useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).subtitle1Family),
+                                                                            ),
                                                                       ),
-                                                                      ParamType
-                                                                          .JSON,
                                                                     ),
-                                                                  }.withoutNulls,
-                                                                );
-                                                              },
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional
+                                                                          .fromSTEB(
+                                                                              0,
+                                                                              0,
+                                                                              0,
+                                                                              4),
+                                                                      child:
+                                                                          Row(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: [
+                                                                          Icon(
+                                                                            Icons.access_time,
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).iconGray,
+                                                                            size:
+                                                                                16,
+                                                                          ),
+                                                                          Padding(
+                                                                            padding: EdgeInsetsDirectional.fromSTEB(
+                                                                                4,
+                                                                                0,
+                                                                                0,
+                                                                                0),
+                                                                            child:
+                                                                                Text(
+                                                                              '${functions.formatReservationTime(getJsonField(
+                                                                                resListItem,
+                                                                                r'''$.dateTime''',
+                                                                              ).toString())} · ${getJsonField(
+                                                                                resListItem,
+                                                                                r'''$.duration''',
+                                                                              ).toString()} mins',
+                                                                              style: FlutterFlowTheme.of(context).bodyText2.override(
+                                                                                    fontFamily: 'Outfit',
+                                                                                    color: FlutterFlowTheme.of(context).iconGray,
+                                                                                    fontSize: 14,
+                                                                                    fontWeight: FontWeight.w500,
+                                                                                    useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText2Family),
+                                                                                  ),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    Row(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      children: [
+                                                                        Icon(
+                                                                          Icons
+                                                                              .phone,
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).iconGray,
+                                                                          size:
+                                                                              16,
+                                                                        ),
+                                                                        Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                                                              4,
+                                                                              0,
+                                                                              0,
+                                                                              0),
+                                                                          child:
+                                                                              Text(
+                                                                            getJsonField(
+                                                                              resListItem,
+                                                                              r'''$.customer.phone''',
+                                                                            ).toString(),
+                                                                            style: FlutterFlowTheme.of(context).bodyText2.override(
+                                                                                  fontFamily: 'Outfit',
+                                                                                  color: FlutterFlowTheme.of(context).iconGray,
+                                                                                  fontSize: 14,
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                  useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText2Family),
+                                                                                ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Expanded(
+                                                              flex: 1,
+                                                              child: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                children: [
+                                                                  FlutterFlowIconButton(
+                                                                    borderColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    borderRadius:
+                                                                        30,
+                                                                    borderWidth:
+                                                                        1,
+                                                                    buttonSize:
+                                                                        60,
+                                                                    icon: Icon(
+                                                                      Icons
+                                                                          .keyboard_arrow_right,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryText,
+                                                                      size: 30,
+                                                                    ),
+                                                                    onPressed:
+                                                                        () async {
+                                                                      if (Navigator.of(
+                                                                              context)
+                                                                          .canPop()) {
+                                                                        context
+                                                                            .pop();
+                                                                      }
+                                                                      context
+                                                                          .pushNamed(
+                                                                        'ViewReservation',
+                                                                        queryParams:
+                                                                            {
+                                                                          'resDetails':
+                                                                              serializeParam(
+                                                                            resListItem,
+                                                                            ParamType.JSON,
+                                                                          ),
+                                                                        }.withoutNulls,
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                ],
+                                                              ),
                                                             ),
                                                           ],
                                                         ),
                                                       ),
-                                                    ],
-                                                  ),
-                                                ),
+                                                    ),
+                                                  );
+                                                },
                                               ),
                                             );
                                           },
-                                        ),
-                                      );
-                                    },
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
-                              ),
                             ],
                           ),
                         ),
@@ -1057,15 +1334,15 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                         ),
                       ],
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
-            ));
-      },
-    );
+            ),
+          ),
+        ));
   }
 
-  Future waitForApiRequestCompleter({
+  Future waitForApiRequestCompleter1({
     double minWait = 0,
     double maxWait = double.infinity,
   }) async {
@@ -1073,7 +1350,22 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
     while (true) {
       await Future.delayed(Duration(milliseconds: 50));
       final timeElapsed = stopwatch.elapsedMilliseconds;
-      final requestComplete = _apiRequestCompleter?.isCompleted ?? false;
+      final requestComplete = _apiRequestCompleter1?.isCompleted ?? false;
+      if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
+        break;
+      }
+    }
+  }
+
+  Future waitForApiRequestCompleter2({
+    double minWait = 0,
+    double maxWait = double.infinity,
+  }) async {
+    final stopwatch = Stopwatch()..start();
+    while (true) {
+      await Future.delayed(Duration(milliseconds: 50));
+      final timeElapsed = stopwatch.elapsedMilliseconds;
+      final requestComplete = _apiRequestCompleter2?.isCompleted ?? false;
       if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
         break;
       }

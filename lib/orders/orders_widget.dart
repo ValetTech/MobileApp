@@ -2,7 +2,6 @@ import '../backend/api_requests/api_calls.dart';
 import '../backend/backend.dart';
 import '../components/end_drawer_container_widget.dart';
 import '../components/page_name_widget.dart';
-import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_calendar.dart';
 import '../flutter_flow/flutter_flow_choice_chips.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
@@ -12,8 +11,6 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,30 +22,7 @@ class OrdersWidget extends StatefulWidget {
   _OrdersWidgetState createState() => _OrdersWidgetState();
 }
 
-class _OrdersWidgetState extends State<OrdersWidget>
-    with TickerProviderStateMixin {
-  final animationsMap = {
-    'containerOnActionTriggerAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeIn,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0,
-          end: 1,
-        ),
-        MoveEffect(
-          curve: Curves.easeIn,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0, 50),
-          end: Offset(0, 0),
-        ),
-      ],
-    ),
-  };
+class _OrdersWidgetState extends State<OrdersWidget> {
   Completer<List<OrdersRecord>>? _firestoreRequestCompleter;
   DateTimeRange? calendarPickerReservationsMainSelectedDay;
   List<String>? choiceChipsValues1;
@@ -58,13 +32,6 @@ class _OrdersWidgetState extends State<OrdersWidget>
   @override
   void initState() {
     super.initState();
-    setupAnimations(
-      animationsMap.values.where((anim) =>
-          anim.trigger == AnimationTrigger.onActionTrigger ||
-          !anim.applyInitialState),
-      this,
-    );
-
     calendarPickerReservationsMainSelectedDay = DateTimeRange(
       start: DateTime.now().startOfDay,
       end: DateTime.now().endOfDay,
@@ -82,23 +49,9 @@ class _OrdersWidgetState extends State<OrdersWidget>
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
           endDrawer: Drawer(
             elevation: 16,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                        child: EndDrawerContainerWidget(),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+            child: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+              child: EndDrawerContainerWidget(),
             ),
           ),
           appBar: PreferredSize(
@@ -211,7 +164,8 @@ class _OrdersWidgetState extends State<OrdersWidget>
                                                     .secondaryText,
                                             weekFormat: true,
                                             weekStartsMonday: true,
-                                            initialDate: getCurrentTimestamp,
+                                            initialDate:
+                                                FFAppState().selectedDate,
                                             onChange: (DateTimeRange?
                                                 newSelectedDate) async {
                                               calendarPickerReservationsMainSelectedDay =
@@ -605,9 +559,6 @@ class _OrdersWidgetState extends State<OrdersWidget>
                                   ],
                                 ),
                               ),
-                            ).animateOnActionTrigger(
-                              animationsMap[
-                                  'containerOnActionTriggerAnimation']!,
                             ),
                           ),
                           Padding(

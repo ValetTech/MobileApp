@@ -173,10 +173,10 @@ class _ConsumerEntryWidgetState extends State<ConsumerEntryWidget>
                         child: FFButtonWidget(
                           onPressed: () async {
                             if (animationsMap[
-                                    'containerOnActionTriggerAnimation2'] !=
+                                    'containerOnActionTriggerAnimation1'] !=
                                 null) {
                               animationsMap[
-                                      'containerOnActionTriggerAnimation2']!
+                                      'containerOnActionTriggerAnimation1']!
                                   .controller
                                   .forward(from: 0.0);
                             }

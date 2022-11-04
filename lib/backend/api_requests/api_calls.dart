@@ -100,24 +100,25 @@ class NewReservationCall {
     String? resDate = '',
     String? resMinDate = '',
     String? resMaxDate = '',
-    int? venue = 1,
+    int? venueId = 1,
     int? resSittingId,
     String? resTime = '',
+    int? customerId,
+    String? resDateTimeFormatted = '',
+    String? source = '',
   }) {
     final body = '''
 {
-  "customer": {
-    "firstName": "${resFirstName}",
-    "lastName": "${resLastName}",
-    "email": "${resEmail}",
-    "phone": "${resPhone}"
-  },
+  "customerId": ${customerId},
   "sittingId": ${resSittingId},
-  "dateTime": "${resDate}T${resTime}",
+  "areaId": 1,
+  "dateTime": "${resDateTimeFormatted}",
   "duration": 90,
   "noGuests": ${resNumPeople},
   "notes": "${resNotes}",
-  "venue": ${venue}
+  "venueId": 1,
+  "source": "Website",
+  "status": "Pending"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'NewReservation',
@@ -125,6 +126,8 @@ class NewReservationCall {
       callType: ApiCallType.POST,
       headers: {
         ...ValetAPIGroup.headers,
+        'accept': 'text/plain',
+        'Content-Type': 'application/json-patch+json',
       },
       params: {},
       body: body,
@@ -137,7 +140,12 @@ class NewReservationCall {
 class GETSittingTypesByDateCall {
   Future<ApiCallResponse> call({
     String? date = '',
+    List<String>? sittingTypeList,
+    List<String>? areaNameList,
   }) {
+    final sittingType = _serializeList(sittingTypeList);
+    final areaName = _serializeList(areaNameList);
+
     return ApiManager.instance.makeApiCall(
       callName: 'GET Sitting Types by Date',
       apiUrl: '${ValetAPIGroup.baseUrl}/sittings',
@@ -180,6 +188,11 @@ class GETSittingTypesByDateCall {
   dynamic areaNames(dynamic response) => getJsonField(
         response,
         r'''$.sittings[:].areas[:].name''',
+        true,
+      );
+  dynamic areasId(dynamic response) => getJsonField(
+        response,
+        r'''$.sittings[:].areas[:].id''',
         true,
       );
 }
@@ -291,6 +304,16 @@ class GETTablesCall {
   dynamic tableAreaId(dynamic response) => getJsonField(
         response,
         r'''$.tables[:].areaId''',
+        true,
+      );
+  dynamic xPosition(dynamic response) => getJsonField(
+        response,
+        r'''$.tables[:].xPosition''',
+        true,
+      );
+  dynamic yPosition(dynamic response) => getJsonField(
+        response,
+        r'''$.tables[:].yPosition''',
         true,
       );
 }

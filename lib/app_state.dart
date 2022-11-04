@@ -15,6 +15,9 @@ class FFAppState {
 
   Future initializePersistedState() async {
     prefs = await SharedPreferences.getInstance();
+    _selectedDate = prefs.containsKey('ff_selectedDate')
+        ? DateTime.fromMillisecondsSinceEpoch(prefs.getInt('ff_selectedDate')!)
+        : null;
   }
 
   late SharedPreferences prefs;
@@ -49,8 +52,6 @@ class FFAppState {
 
   String resNotes = '';
 
-  DateTime? selectedDate;
-
   List<String> sittingTypes = ['Breakfast', 'Lunch', 'Dinner', 'Custom'];
 
   int resSittingId = 0;
@@ -83,6 +84,16 @@ class FFAppState {
   List<String> sourceOptions = ['Website', 'In-person', 'Email', 'Phone'];
 
   String resStatus = '';
+
+  DateTime? _selectedDate;
+  DateTime? get selectedDate => _selectedDate;
+  set selectedDate(DateTime? _value) {
+    if (_value == null) {
+      return;
+    }
+    _selectedDate = _value;
+    prefs.setInt('ff_selectedDate', _value.millisecondsSinceEpoch);
+  }
 }
 
 LatLng? _latLngFromString(String? val) {

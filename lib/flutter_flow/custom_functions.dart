@@ -85,3 +85,17 @@ List<String> mapListToString(List<int>? listNumbers) {
   listNumbers ??= [];
   return listNumbers.map((e) => e.toString()).toList();
 }
+
+String formatDateTimestampsforNewResPOST(
+  DateTime? resDate,
+  String? resTime,
+) {
+  // convert the dateTime variable resDate into a string in the format  'yyyy-MM-dd'
+  String resDateStr = DateFormat('yyyy-MM-dd').format(resDate!);
+  // convert the string variable resTime from the format 'h:mm a' into a string in the format  'HH:mm:ss'
+  String resTimeStr =
+      DateFormat('HH:mm:ss').format(DateFormat('h:mm a').parse(resTime!));
+  // concatenate the two strings into one string in the format 'yyyy-MM-ddTHH:mm:ss'
+  String resDateTimeStr = resDateStr + 'T' + resTimeStr;
+  return resDateTimeStr;
+}

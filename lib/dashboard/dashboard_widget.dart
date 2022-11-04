@@ -1,12 +1,13 @@
-import '../components/calendar_picker_valet_widget.dart';
 import '../components/end_drawer_container_widget.dart';
 import '../components/header_widget.dart';
+import '../flutter_flow/flutter_flow_calendar.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,12 +21,21 @@ class DashboardWidget extends StatefulWidget {
 }
 
 class _DashboardWidgetState extends State<DashboardWidget> {
+  DateTimeRange? calendarPickerSelectedDay;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      setState(() => FFAppState().selectedDate = getCurrentTimestamp);
+    });
 
+    calendarPickerSelectedDay = DateTimeRange(
+      start: DateTime.now().startOfDay,
+      end: DateTime.now().endOfDay,
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -111,7 +121,52 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                             topRight: Radius.circular(0),
                           ),
                         ),
-                        child: CalendarPickerValetWidget(),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 6),
+                          child: FlutterFlowCalendar(
+                            color: FlutterFlowTheme.of(context).secondaryColor,
+                            iconColor:
+                                FlutterFlowTheme.of(context).secondaryText,
+                            weekFormat: true,
+                            weekStartsMonday: true,
+                            initialDate: getCurrentTimestamp,
+                            onChange: (DateTimeRange? newSelectedDate) async {
+                              calendarPickerSelectedDay = newSelectedDate;
+                              setState(() => FFAppState().selectedDate =
+                                  calendarPickerSelectedDay?.start);
+                              setState(() => FFAppState().resMinDate =
+                                  calendarPickerSelectedDay?.start);
+                              setState(() => FFAppState().resMaxDate =
+                                  calendarPickerSelectedDay?.end);
+                              setState(() {});
+                            },
+                            titleStyle: FlutterFlowTheme.of(context).subtitle2,
+                            dayOfWeekStyle:
+                                FlutterFlowTheme.of(context).bodyText2,
+                            dateStyle: FlutterFlowTheme.of(context).bodyText1,
+                            selectedDateStyle: FlutterFlowTheme.of(context)
+                                .subtitle2
+                                .override(
+                                  fontFamily: FlutterFlowTheme.of(context)
+                                      .subtitle2Family,
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryColor,
+                                  useGoogleFonts: GoogleFonts.asMap()
+                                      .containsKey(FlutterFlowTheme.of(context)
+                                          .subtitle2Family),
+                                ),
+                            inactiveDateStyle: FlutterFlowTheme.of(context)
+                                .bodyText2
+                                .override(
+                                  fontFamily: FlutterFlowTheme.of(context)
+                                      .bodyText2Family,
+                                  color: FlutterFlowTheme.of(context).iconGray,
+                                  useGoogleFonts: GoogleFonts.asMap()
+                                      .containsKey(FlutterFlowTheme.of(context)
+                                          .bodyText2Family),
+                                ),
+                          ),
+                        ),
                       ),
                     ),
                     Padding(

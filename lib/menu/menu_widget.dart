@@ -1,15 +1,12 @@
 import '../backend/backend.dart';
 import '../components/end_drawer_container_widget.dart';
 import '../components/page_name_widget.dart';
-import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_choice_chips.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,50 +18,13 @@ class MenuWidget extends StatefulWidget {
   _MenuWidgetState createState() => _MenuWidgetState();
 }
 
-class _MenuWidgetState extends State<MenuWidget> with TickerProviderStateMixin {
-  final animationsMap = {
-    'containerOnActionTriggerAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeIn,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0,
-          end: 1,
-        ),
-        MoveEffect(
-          curve: Curves.easeIn,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0, 50),
-          end: Offset(0, 0),
-        ),
-      ],
-    ),
-  };
+class _MenuWidgetState extends State<MenuWidget> {
   ValueNotifier<List<String>?> choiceChipsValues = ValueNotifier(null);
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      if (animationsMap['containerOnActionTriggerAnimation'] != null) {
-        await animationsMap['containerOnActionTriggerAnimation']!
-            .controller
-            .forward(from: 0.0);
-      }
-    });
-
-    setupAnimations(
-      animationsMap.values.where((anim) =>
-          anim.trigger == AnimationTrigger.onActionTrigger ||
-          !anim.applyInitialState),
-      this,
-    );
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -155,7 +115,7 @@ class _MenuWidgetState extends State<MenuWidget> with TickerProviderStateMixin {
                         size: 30,
                       ),
                       onPressed: () async {
-                        scaffoldKey.currentState!.openEndDrawer();
+                        scaffoldKey.currentState!.openDrawer();
                       },
                     ),
                   ],
@@ -319,9 +279,6 @@ class _MenuWidgetState extends State<MenuWidget> with TickerProviderStateMixin {
                                     ],
                                   ),
                                 ),
-                              ).animateOnActionTrigger(
-                                animationsMap[
-                                    'containerOnActionTriggerAnimation']!,
                               ),
                             ),
                             Expanded(

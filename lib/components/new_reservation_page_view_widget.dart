@@ -235,6 +235,7 @@ class _NewReservationPageViewWidgetState
                                     FlutterFlowTheme.of(context).secondaryText,
                                 weekFormat: false,
                                 weekStartsMonday: true,
+                                initialDate: FFAppState().selectedDate,
                                 rowHeight: 35,
                                 onChange:
                                     (DateTimeRange? newSelectedDate) async {
@@ -280,8 +281,39 @@ class _NewReservationPageViewWidgetState
                         ),
                         Row(
                           mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
+                            FFButtonWidget(
+                              onPressed: () async {
+                                context.pop();
+                              },
+                              text: 'Cancel',
+                              icon: Icon(
+                                Icons.cancel,
+                                size: 20,
+                              ),
+                              options: FFButtonOptions(
+                                height: 40,
+                                color: FlutterFlowTheme.of(context).white,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: FlutterFlowTheme.of(context)
+                                          .bodyText1Family,
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryColor,
+                                      useGoogleFonts: GoogleFonts.asMap()
+                                          .containsKey(
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyText1Family),
+                                    ),
+                                borderSide: BorderSide(
+                                  color: Color(0xFFEE305A),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
                             FFButtonWidget(
                               onPressed: () async {
                                 setState(() => FFAppState().resNumPeople =
@@ -431,23 +463,6 @@ class _NewReservationPageViewWidgetState
                                             ));
                                         setState(() => FFAppState().resSitting =
                                             sittChoiceValue!);
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                              functions.resSittingIdToString(
-                                                  FFAppState().resSittingId),
-                                              style: TextStyle(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                              ),
-                                            ),
-                                            duration:
-                                                Duration(milliseconds: 4000),
-                                            backgroundColor: Color(0x00000000),
-                                          ),
-                                        );
                                       },
                                       selectedChipStyle: ChipStyle(
                                         backgroundColor:
@@ -866,7 +881,12 @@ class _NewReservationPageViewWidgetState
                               options: FFButtonOptions(
                                 height: 40,
                                 color: valueOrDefault<Color>(
-                                  timeChoiceValue == 'true'
+                                  (sittChoiceValue != null &&
+                                              sittChoiceValue != '') &&
+                                          (areaChoiceValue != null &&
+                                              areaChoiceValue != '') &&
+                                          (timeChoiceValue != null &&
+                                              timeChoiceValue != '')
                                       ? FlutterFlowTheme.of(context)
                                           .secondaryColor
                                       : FlutterFlowTheme.of(context).iconGray,
@@ -1277,12 +1297,15 @@ class _NewReservationPageViewWidgetState
                                   resEmail: emailController!.text,
                                   resPhone: phoneController!.text,
                                   resNotes: notesController!.text,
-                                  resDate: functions.formatDateForPOST(
-                                      resCalendarPickerReservationsSelectedDay!
-                                          .start),
-                                  venue: 1,
+                                  resTime: functions
+                                      .formatDateTimestampsforNewResPOST(
+                                          FFAppState().resDate,
+                                          FFAppState().resTime),
                                   resSittingId: FFAppState().resSittingId,
-                                  resTime: FFAppState().resTime,
+                                  resDateTimeFormatted: functions
+                                      .formatDateTimestampsforNewResPOST(
+                                          FFAppState().resDate,
+                                          FFAppState().resTime),
                                 );
                                 if ((newResAPICallResult?.succeeded ?? true)) {
                                   Navigator.pop(context);
@@ -1300,17 +1323,23 @@ class _NewReservationPageViewWidgetState
                                     ),
                                   );
                                 } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Reservation Error',
-                                        style: TextStyle(
-                                          color: Color(0xFFDF3F3F),
-                                        ),
-                                      ),
-                                      duration: Duration(milliseconds: 4000),
-                                      backgroundColor: Color(0x00000000),
-                                    ),
+                                  await showDialog(
+                                    context: context,
+                                    builder: (alertDialogContext) {
+                                      return AlertDialog(
+                                        title: Text('API CALL FAILED'),
+                                        content: Text(
+                                            (newResAPICallResult?.jsonBody ??
+                                                '')),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(
+                                                alertDialogContext),
+                                            child: Text('Ok'),
+                                          ),
+                                        ],
+                                      );
+                                    },
                                   );
                                 }
 
@@ -1323,7 +1352,8 @@ class _NewReservationPageViewWidgetState
                               ),
                               options: FFButtonOptions(
                                 height: 40,
-                                color: phoneController!.text == 'true'
+                                color: firstNameController!.text != null &&
+                                        firstNameController!.text != ''
                                     ? FlutterFlowTheme.of(context)
                                         .secondaryColor
                                     : FlutterFlowTheme.of(context).iconGray,
