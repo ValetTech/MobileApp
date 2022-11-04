@@ -38,10 +38,8 @@ class _CalendarPickerValetWidgetState extends State<CalendarPickerValetWidget> {
         initialDate: getCurrentTimestamp,
         onChange: (DateTimeRange? newSelectedDate) async {
           calendarPickerSelectedDay = newSelectedDate;
-          setState(
-              () => FFAppState().resMinDate = calendarPickerSelectedDay?.start);
-          setState(
-              () => FFAppState().resMaxDate = calendarPickerSelectedDay?.end);
+          setState(() =>
+              FFAppState().selectedDate = calendarPickerSelectedDay?.start);
           setState(() {});
         },
         titleStyle: FlutterFlowTheme.of(context).subtitle2,

@@ -12,9 +12,7 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 
 class ValetAPIGroup {
   static String baseUrl = 'https://valetapi.azurewebsites.net/api';
-  static Map<String, String> headers = {
-    'content-type': 'application/json; charset=utf-8; v=1.0',
-  };
+  static Map<String, String> headers = {};
   static NewAreaCall newAreaCall = NewAreaCall();
   static NewSittingCall newSittingCall = NewSittingCall();
   static NewReservationCall newReservationCall = NewReservationCall();
@@ -152,9 +150,10 @@ class GETSittingTypesByDateCall {
       callType: ApiCallType.GET,
       headers: {
         ...ValetAPIGroup.headers,
+        'accept': 'text/plain',
       },
       params: {
-        'date': date,
+        'Date': date,
       },
       returnBody: true,
     );

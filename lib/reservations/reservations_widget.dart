@@ -234,14 +234,6 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                       .value = []);
                                                   setState(() => FFAppState()
                                                       .filtersOn = false);
-                                                  setState(() => FFAppState()
-                                                          .resMinDate =
-                                                      calendarPickerReservationsMainSelectedDay
-                                                          ?.start);
-                                                  setState(() => FFAppState()
-                                                          .resMaxDate =
-                                                      calendarPickerReservationsMainSelectedDay
-                                                          ?.end);
                                                   setState(() {});
                                                 },
                                                 titleStyle:

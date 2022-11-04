@@ -134,10 +134,6 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                               calendarPickerSelectedDay = newSelectedDate;
                               setState(() => FFAppState().selectedDate =
                                   calendarPickerSelectedDay?.start);
-                              setState(() => FFAppState().resMinDate =
-                                  calendarPickerSelectedDay?.start);
-                              setState(() => FFAppState().resMaxDate =
-                                  calendarPickerSelectedDay?.end);
                               setState(() {});
                             },
                             titleStyle: FlutterFlowTheme.of(context).subtitle2,

@@ -174,14 +174,6 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                                                       .selectedDate =
                                                   calendarPickerReservationsMainSelectedDay
                                                       ?.start);
-                                              setState(() => FFAppState()
-                                                      .resMinDate =
-                                                  calendarPickerReservationsMainSelectedDay
-                                                      ?.start);
-                                              setState(() => FFAppState()
-                                                      .resMaxDate =
-                                                  calendarPickerReservationsMainSelectedDay
-                                                      ?.end);
                                               setState(() =>
                                                   _firestoreRequestCompleter =
                                                       null);

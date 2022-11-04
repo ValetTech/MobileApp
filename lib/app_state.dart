@@ -22,10 +22,6 @@ class FFAppState {
 
   late SharedPreferences prefs;
 
-  DateTime? resMinDate;
-
-  DateTime? resMaxDate;
-
   int selectedSittingId = 0;
 
   String newAreaName = '';

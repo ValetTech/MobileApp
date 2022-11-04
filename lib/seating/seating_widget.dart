@@ -191,14 +191,6 @@ class _SeatingWidgetState extends State<SeatingWidget> {
                                                           .selectedDate =
                                                       calendarPickerSeatingSelectedDay
                                                           ?.start);
-                                                  setState(() => FFAppState()
-                                                          .resMinDate =
-                                                      calendarPickerSeatingSelectedDay
-                                                          ?.start);
-                                                  setState(() => FFAppState()
-                                                          .resMaxDate =
-                                                      calendarPickerSeatingSelectedDay
-                                                          ?.end);
                                                   setState(() {});
                                                 },
                                                 titleStyle:
