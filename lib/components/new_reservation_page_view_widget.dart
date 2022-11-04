@@ -1352,8 +1352,8 @@ class _NewReservationPageViewWidgetState
                               ),
                               options: FFButtonOptions(
                                 height: 40,
-                                color: firstNameController!.text != null &&
-                                        firstNameController!.text != ''
+                                color: FFAppState().resFirstName != null &&
+                                        FFAppState().resFirstName != ''
                                     ? FlutterFlowTheme.of(context)
                                         .secondaryColor
                                     : FlutterFlowTheme.of(context).iconGray,

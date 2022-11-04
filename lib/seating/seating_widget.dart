@@ -674,9 +674,6 @@ class _SeatingWidgetState extends State<SeatingWidget> {
                                 EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                if (Navigator.of(context).canPop()) {
-                                  context.pop();
-                                }
                                 context.pushNamed('NewReservation');
                               },
                               text: 'Allocate Table',

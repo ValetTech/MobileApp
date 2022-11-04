@@ -733,10 +733,6 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                     .fromSTEB(12, 4, 0, 4),
                                                 child: InkWell(
                                                   onTap: () async {
-                                                    if (Navigator.of(context)
-                                                        .canPop()) {
-                                                      context.pop();
-                                                    }
                                                     context.pushNamed(
                                                       'ViewReservation',
                                                       queryParams: {
@@ -926,12 +922,6 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                                 ),
                                                                 onPressed:
                                                                     () async {
-                                                                  if (Navigator.of(
-                                                                          context)
-                                                                      .canPop()) {
-                                                                    context
-                                                                        .pop();
-                                                                  }
                                                                   context
                                                                       .pushNamed(
                                                                     'ViewReservation',
@@ -1062,11 +1052,6 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                                 12, 4, 0, 4),
                                                     child: InkWell(
                                                       onTap: () async {
-                                                        if (Navigator.of(
-                                                                context)
-                                                            .canPop()) {
-                                                          context.pop();
-                                                        }
                                                         context.pushNamed(
                                                           'ViewReservation',
                                                           queryParams: {
@@ -1249,12 +1234,6 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                                     ),
                                                                     onPressed:
                                                                         () async {
-                                                                      if (Navigator.of(
-                                                                              context)
-                                                                          .canPop()) {
-                                                                        context
-                                                                            .pop();
-                                                                      }
                                                                       context
                                                                           .pushNamed(
                                                                         'ViewReservation',
@@ -1296,9 +1275,6 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                 EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                if (Navigator.of(context).canPop()) {
-                                  context.pop();
-                                }
                                 context.pushNamed('NewReservation');
                               },
                               text: 'New Reservation',

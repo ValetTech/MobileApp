@@ -105,9 +105,6 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 16),
                   child: InkWell(
                     onTap: () async {
-                      if (Navigator.of(context).canPop()) {
-                        context.pop();
-                      }
                       context.pushNamed('Dashboard');
                     },
                     child: Row(
@@ -141,9 +138,6 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 8),
                   child: InkWell(
                     onTap: () async {
-                      if (Navigator.of(context).canPop()) {
-                        context.pop();
-                      }
                       context.pushNamed('NewReservation');
                     },
                     child: Row(
@@ -227,9 +221,6 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 16),
                   child: InkWell(
                     onTap: () async {
-                      if (Navigator.of(context).canPop()) {
-                        context.pop();
-                      }
                       context.pushNamed('Seating');
                     },
                     child: Row(
@@ -263,9 +254,6 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 8),
                   child: InkWell(
                     onTap: () async {
-                      if (Navigator.of(context).canPop()) {
-                        context.pop();
-                      }
                       context.pushNamed('Orders');
                     },
                     child: Row(
@@ -313,9 +301,6 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 16),
                   child: InkWell(
                     onTap: () async {
-                      if (Navigator.of(context).canPop()) {
-                        context.pop();
-                      }
                       context.pushNamed('Menu');
                     },
                     child: Row(
