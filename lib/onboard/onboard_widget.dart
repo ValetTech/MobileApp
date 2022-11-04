@@ -67,7 +67,7 @@ class _OnboardWidgetState extends State<OnboardWidget>
       }
 
       if (biometriLoginResult!) {
-        context.pushNamed('Dashboard');
+        context.goNamed('Dashboard');
       } else {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(

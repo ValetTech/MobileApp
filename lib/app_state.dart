@@ -81,7 +81,7 @@ class FFAppState {
 
   String resStatus = '';
 
-  DateTime? _selectedDate;
+  DateTime? _selectedDate = DateTime.fromMillisecondsSinceEpoch(1667567100000);
   DateTime? get selectedDate => _selectedDate;
   set selectedDate(DateTime? _value) {
     if (_value == null) {
