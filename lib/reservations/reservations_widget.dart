@@ -130,7 +130,7 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
               onTap: () => FocusScope.of(context).unfocus(),
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                height: double.infinity,
+                height: MediaQuery.of(context).size.height * 1,
                 child: Stack(
                   children: [
                     SingleChildScrollView(
@@ -212,7 +212,7 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                             },
                                             titleStyle:
                                                 FlutterFlowTheme.of(context)
-                                                    .subtitle2,
+                                                    .subtitle1,
                                             dayOfWeekStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .bodyText2,
@@ -655,7 +655,6 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                   EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
-                                height: MediaQuery.of(context).size.height * 1,
                                 decoration: BoxDecoration(
                                   color: FlutterFlowTheme.of(context)
                                       .secondaryBackground,
