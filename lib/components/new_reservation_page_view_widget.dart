@@ -32,8 +32,8 @@ class _NewReservationPageViewWidgetState
   DateTimeRange? resCalendarPickerReservationsSelectedDay;
   int? resNumPeopleCountControllerValue;
   PageController? pageViewController;
-  String? areaChoiceValue;
-  String? sittChoiceValue;
+  String? areaChipsValue;
+  String? sittingChipsValue;
   String? timeChoiceValue;
   final formKey = GlobalKey<FormState>();
 
@@ -308,7 +308,8 @@ class _NewReservationPageViewWidgetState
                                                   .bodyText1Family),
                                     ),
                                 borderSide: BorderSide(
-                                  color: Color(0xFFEE305A),
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryColor,
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(8),
@@ -318,6 +319,8 @@ class _NewReservationPageViewWidgetState
                               onPressed: () async {
                                 setState(() => FFAppState().resNumPeople =
                                     resNumPeopleCountControllerValue!);
+                                setState(() => FFAppState().selectedDate =
+                                    FFAppState().selectedDate);
                                 await pageViewController?.nextPage(
                                   duration: Duration(milliseconds: 300),
                                   curve: Curves.ease,
@@ -359,374 +362,446 @@ class _NewReservationPageViewWidgetState
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        FutureBuilder<ApiCallResponse>(
-                          future: ValetAPIGroup.gETSittingTypesByDateCall.call(
-                            date: functions
-                                .formatDateForPOST(FFAppState().selectedDate!),
-                          ),
-                          builder: (context, snapshot) {
-                            // Customize what your widget looks like when it's loading.
-                            if (!snapshot.hasData) {
-                              return Center(
-                                child: SizedBox(
-                                  width: 40,
-                                  height: 40,
-                                  child: SpinKitRipple(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryColor,
-                                    size: 40,
+                        SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 0, 6),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 0, 16, 0),
+                                      child: Icon(
+                                        Icons.no_food_sharp,
+                                        color: Colors.black,
+                                        size: 30,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Sitting',
+                                      textAlign: TextAlign.center,
+                                      style: FlutterFlowTheme.of(context)
+                                          .subtitle2
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .subtitle2Family,
+                                            fontWeight: FontWeight.w500,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .subtitle2Family),
+                                          ),
+                                    ),
+                                    Text(
+                                      FFAppState().resSittingId.toString(),
+                                      textAlign: TextAlign.center,
+                                      style: FlutterFlowTheme.of(context)
+                                          .subtitle2
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .subtitle2Family,
+                                            fontWeight: FontWeight.w500,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .subtitle2Family),
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              FutureBuilder<ApiCallResponse>(
+                                future: ValetAPIGroup.gETSittingTypesByDateCall
+                                    .call(
+                                  date: functions.formatDateForPOST(
+                                      FFAppState().selectedDate!),
+                                ),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: CircularProgressIndicator(
+                                          color: Color(0x00023047),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  final sittingChipsGETSittingTypesByDateResponse =
+                                      snapshot.data!;
+                                  return FlutterFlowChoiceChips(
+                                    options: (ValetAPIGroup
+                                                    .gETSittingTypesByDateCall
+                                                    .sittings(
+                                                      sittingChipsGETSittingTypesByDateResponse
+                                                          .jsonBody,
+                                                    )
+                                                    .length >
+                                                0
+                                            ? (ValetAPIGroup
+                                                    .gETSittingTypesByDateCall
+                                                    .sittingType(
+                                                sittingChipsGETSittingTypesByDateResponse
+                                                    .jsonBody,
+                                              ) as List)
+                                                .map<String>(
+                                                    (s) => s.toString())
+                                                .toList()
+                                            : ["No Sittings"])
+                                        .map((label) => ChipData(label))
+                                        .toList(),
+                                    onChanged: (val) async {
+                                      setState(
+                                          () => sittingChipsValue = val?.first);
+                                      setState(
+                                          () => FFAppState().filtersOn = true);
+                                      setState(() => FFAppState().resSittingId =
+                                          functions.getSittingIdByType(
+                                              sittingChipsValue,
+                                              ValetAPIGroup
+                                                  .gETSittingTypesByDateCall
+                                                  .sittings(
+                                                    sittingChipsGETSittingTypesByDateResponse
+                                                        .jsonBody,
+                                                  )
+                                                  .toList()));
+                                    },
+                                    selectedChipStyle: ChipStyle(
+                                      backgroundColor:
+                                          FlutterFlowTheme.of(context)
+                                              .secondaryColor,
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyText1Family,
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryColor,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyText1Family),
+                                          ),
+                                      iconColor: FlutterFlowTheme.of(context)
+                                          .primaryColor,
+                                      iconSize: 14,
+                                      elevation: 4,
+                                    ),
+                                    unselectedChipStyle: ChipStyle(
+                                      backgroundColor: Colors.white,
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .bodyText2
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyText2Family,
+                                            color: FlutterFlowTheme.of(context)
+                                                .iconGray,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyText2Family),
+                                          ),
+                                      iconColor:
+                                          FlutterFlowTheme.of(context).iconGray,
+                                      iconSize: 14,
+                                      elevation: 4,
+                                    ),
+                                    chipSpacing: 8,
+                                    multiselect: false,
+                                    alignment: WrapAlignment.spaceEvenly,
+                                  );
+                                },
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 2,
+                                  decoration: BoxDecoration(
+                                    color:
+                                        FlutterFlowTheme.of(context).iconGray,
                                   ),
                                 ),
-                              );
-                            }
-                            final columnGETSittingTypesByDateResponse =
-                                snapshot.data!;
-                            return SingleChildScrollView(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 0, 6),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 0, 16, 0),
-                                          child: Icon(
-                                            Icons.no_food_sharp,
-                                            color: Colors.black,
-                                            size: 30,
-                                          ),
-                                        ),
-                                        Text(
-                                          'Sitting',
-                                          textAlign: TextAlign.center,
-                                          style: FlutterFlowTheme.of(context)
-                                              .subtitle2
-                                              .override(
-                                                fontFamily:
-                                                    FlutterFlowTheme.of(context)
-                                                        .subtitle2Family,
-                                                fontWeight: FontWeight.w500,
-                                                useGoogleFonts: GoogleFonts
-                                                        .asMap()
-                                                    .containsKey(
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .subtitle2Family),
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 0, 16),
-                                    child: FlutterFlowChoiceChips(
-                                      options: [
-                                        ChipData(
-                                            'Option 1', Icons.train_outlined)
-                                      ],
-                                      onChanged: (val) => setState(
-                                          () => sittChoiceValue = val?.first),
-                                      selectedChipStyle: ChipStyle(
-                                        backgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondaryColor,
-                                        textStyle: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyText1Family,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryColor,
-                                              useGoogleFonts:
-                                                  GoogleFonts.asMap()
-                                                      .containsKey(
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyText1Family),
-                                            ),
-                                        iconColor: FlutterFlowTheme.of(context)
-                                            .primaryColor,
-                                        iconSize: 14,
-                                        elevation: 4,
-                                      ),
-                                      unselectedChipStyle: ChipStyle(
-                                        backgroundColor:
-                                            FlutterFlowTheme.of(context).white,
-                                        textStyle: FlutterFlowTheme.of(context)
-                                            .bodyText2
-                                            .override(
-                                              fontFamily:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyText2Family,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .iconGray,
-                                              useGoogleFonts:
-                                                  GoogleFonts.asMap()
-                                                      .containsKey(
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyText2Family),
-                                            ),
-                                        iconColor: FlutterFlowTheme.of(context)
-                                            .iconGray,
-                                        iconSize: 18,
-                                        elevation: 4,
-                                      ),
-                                      chipSpacing: 8,
-                                      multiselect: false,
-                                      alignment: WrapAlignment.start,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 0, 16),
-                                    child: Container(
-                                      width: double.infinity,
-                                      height: 2,
-                                      decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
-                                            .iconGray,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 0, 6),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 0, 16, 0),
-                                          child: Icon(
-                                            Icons.location_on,
-                                            color: Colors.black,
-                                            size: 30,
-                                          ),
-                                        ),
-                                        Text(
-                                          'Area',
-                                          textAlign: TextAlign.center,
-                                          style: FlutterFlowTheme.of(context)
-                                              .subtitle2
-                                              .override(
-                                                fontFamily:
-                                                    FlutterFlowTheme.of(context)
-                                                        .subtitle2Family,
-                                                fontWeight: FontWeight.w500,
-                                                useGoogleFonts: GoogleFonts
-                                                        .asMap()
-                                                    .containsKey(
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .subtitle2Family),
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 0, 16),
-                                    child: FlutterFlowChoiceChips(
-                                      options: [
-                                        ChipData(
-                                            'Option 1', Icons.train_outlined)
-                                      ],
-                                      onChanged: (val) => setState(
-                                          () => areaChoiceValue = val?.first),
-                                      selectedChipStyle: ChipStyle(
-                                        backgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondaryColor,
-                                        textStyle: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyText1Family,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryColor,
-                                              useGoogleFonts:
-                                                  GoogleFonts.asMap()
-                                                      .containsKey(
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyText1Family),
-                                            ),
-                                        iconColor: FlutterFlowTheme.of(context)
-                                            .primaryColor,
-                                        iconSize: 14,
-                                        elevation: 4,
-                                      ),
-                                      unselectedChipStyle: ChipStyle(
-                                        backgroundColor:
-                                            FlutterFlowTheme.of(context).white,
-                                        textStyle: FlutterFlowTheme.of(context)
-                                            .bodyText2
-                                            .override(
-                                              fontFamily:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyText2Family,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .iconGray,
-                                              useGoogleFonts:
-                                                  GoogleFonts.asMap()
-                                                      .containsKey(
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyText2Family),
-                                            ),
-                                        iconColor: FlutterFlowTheme.of(context)
-                                            .iconGray,
-                                        iconSize: 18,
-                                        elevation: 4,
-                                      ),
-                                      chipSpacing: 8,
-                                      multiselect: false,
-                                      alignment: WrapAlignment.start,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 0, 16),
-                                    child: Container(
-                                      width: double.infinity,
-                                      height: 2,
-                                      decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
-                                            .iconGray,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 0, 6),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 0, 16, 0),
-                                          child: Icon(
-                                            Icons.access_time,
-                                            color: Colors.black,
-                                            size: 30,
-                                          ),
-                                        ),
-                                        Text(
-                                          'Available Times',
-                                          textAlign: TextAlign.center,
-                                          style: FlutterFlowTheme.of(context)
-                                              .subtitle2
-                                              .override(
-                                                fontFamily:
-                                                    FlutterFlowTheme.of(context)
-                                                        .subtitle2Family,
-                                                fontWeight: FontWeight.w500,
-                                                useGoogleFonts: GoogleFonts
-                                                        .asMap()
-                                                    .containsKey(
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .subtitle2Family),
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 0, 16),
-                                    child: FlutterFlowChoiceChips(
-                                      options: [
-                                        ChipData('09:00 AM'),
-                                        ChipData('11:30 AM'),
-                                        ChipData('06:00 PM'),
-                                        ChipData('01:30 PM')
-                                      ],
-                                      onChanged: (val) => setState(
-                                          () => timeChoiceValue = val?.first),
-                                      selectedChipStyle: ChipStyle(
-                                        backgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondaryColor,
-                                        textStyle: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyText1Family,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryColor,
-                                              useGoogleFonts:
-                                                  GoogleFonts.asMap()
-                                                      .containsKey(
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyText1Family),
-                                            ),
-                                        iconColor: FlutterFlowTheme.of(context)
-                                            .primaryColor,
-                                        iconSize: 14,
-                                        elevation: 4,
-                                      ),
-                                      unselectedChipStyle: ChipStyle(
-                                        backgroundColor:
-                                            FlutterFlowTheme.of(context).white,
-                                        textStyle: FlutterFlowTheme.of(context)
-                                            .bodyText2
-                                            .override(
-                                              fontFamily:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyText2Family,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .iconGray,
-                                              useGoogleFonts:
-                                                  GoogleFonts.asMap()
-                                                      .containsKey(
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyText2Family),
-                                            ),
-                                        iconColor: FlutterFlowTheme.of(context)
-                                            .iconGray,
-                                        iconSize: 18,
-                                        elevation: 4,
-                                      ),
-                                      chipSpacing: 8,
-                                      multiselect: false,
-                                      alignment: WrapAlignment.start,
-                                    ),
-                                  ),
-                                ],
                               ),
-                            );
-                          },
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 0, 6),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 0, 16, 0),
+                                      child: Icon(
+                                        Icons.location_on,
+                                        color: Colors.black,
+                                        size: 30,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Area',
+                                      textAlign: TextAlign.center,
+                                      style: FlutterFlowTheme.of(context)
+                                          .subtitle2
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .subtitle2Family,
+                                            fontWeight: FontWeight.w500,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .subtitle2Family),
+                                          ),
+                                    ),
+                                    Text(
+                                      FFAppState().resAreaId.toString(),
+                                      textAlign: TextAlign.center,
+                                      style: FlutterFlowTheme.of(context)
+                                          .subtitle2
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .subtitle2Family,
+                                            fontWeight: FontWeight.w500,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .subtitle2Family),
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              FutureBuilder<ApiCallResponse>(
+                                future:
+                                    ValetAPIGroup.gETAreasBySittingIDCall.call(
+                                  sittingId: FFAppState().resSittingId,
+                                ),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: CircularProgressIndicator(
+                                          color: Color(0x00023047),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  final areaChipsGETAreasBySittingIDResponse =
+                                      snapshot.data!;
+                                  return FlutterFlowChoiceChips(
+                                    options:
+                                        (ValetAPIGroup.gETAreasBySittingIDCall
+                                                        .areas(
+                                                          areaChipsGETAreasBySittingIDResponse
+                                                              .jsonBody,
+                                                        )
+                                                        .length >
+                                                    0
+                                                ? (ValetAPIGroup
+                                                        .gETAreasBySittingIDCall
+                                                        .areaName(
+                                                    areaChipsGETAreasBySittingIDResponse
+                                                        .jsonBody,
+                                                  ) as List)
+                                                    .map<String>(
+                                                        (s) => s.toString())
+                                                    .toList()
+                                                : ["No areas"])
+                                            .map((label) => ChipData(label))
+                                            .toList(),
+                                    onChanged: (val) async {
+                                      setState(
+                                          () => areaChipsValue = val?.first);
+                                      setState(
+                                          () => FFAppState().filtersOn = true);
+                                      setState(() => FFAppState().resAreaId =
+                                          functions.getAreaIdByName(
+                                              areaChipsValue,
+                                              ValetAPIGroup
+                                                  .gETAreasBySittingIDCall
+                                                  .areas(
+                                                    areaChipsGETAreasBySittingIDResponse
+                                                        .jsonBody,
+                                                  )
+                                                  .toList()));
+                                    },
+                                    selectedChipStyle: ChipStyle(
+                                      backgroundColor:
+                                          FlutterFlowTheme.of(context)
+                                              .secondaryColor,
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyText1Family,
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryColor,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyText1Family),
+                                          ),
+                                      iconColor: FlutterFlowTheme.of(context)
+                                          .primaryColor,
+                                      iconSize: 14,
+                                      elevation: 4,
+                                    ),
+                                    unselectedChipStyle: ChipStyle(
+                                      backgroundColor: Colors.white,
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .bodyText2
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyText2Family,
+                                            color: FlutterFlowTheme.of(context)
+                                                .iconGray,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyText2Family),
+                                          ),
+                                      iconColor:
+                                          FlutterFlowTheme.of(context).iconGray,
+                                      iconSize: 14,
+                                      elevation: 4,
+                                    ),
+                                    chipSpacing: 8,
+                                    multiselect: false,
+                                    alignment: WrapAlignment.spaceEvenly,
+                                  );
+                                },
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 2,
+                                  decoration: BoxDecoration(
+                                    color:
+                                        FlutterFlowTheme.of(context).iconGray,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 0, 6),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 0, 16, 0),
+                                      child: Icon(
+                                        Icons.access_time,
+                                        color: Colors.black,
+                                        size: 30,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Available Times',
+                                      textAlign: TextAlign.center,
+                                      style: FlutterFlowTheme.of(context)
+                                          .subtitle2
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .subtitle2Family,
+                                            fontWeight: FontWeight.w500,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .subtitle2Family),
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
+                                child: FlutterFlowChoiceChips(
+                                  options: [
+                                    ChipData('09:00 AM'),
+                                    ChipData('11:30 AM'),
+                                    ChipData('06:00 PM'),
+                                    ChipData('01:30 PM')
+                                  ],
+                                  onChanged: (val) => setState(
+                                      () => timeChoiceValue = val?.first),
+                                  selectedChipStyle: ChipStyle(
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context)
+                                            .secondaryColor,
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyText1Family,
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryColor,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyText1Family),
+                                        ),
+                                    iconColor: FlutterFlowTheme.of(context)
+                                        .primaryColor,
+                                    iconSize: 14,
+                                    elevation: 4,
+                                  ),
+                                  unselectedChipStyle: ChipStyle(
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context).white,
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .bodyText2
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyText2Family,
+                                          color: FlutterFlowTheme.of(context)
+                                              .iconGray,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyText2Family),
+                                        ),
+                                    iconColor:
+                                        FlutterFlowTheme.of(context).iconGray,
+                                    iconSize: 18,
+                                    elevation: 4,
+                                  ),
+                                  chipSpacing: 8,
+                                  multiselect: false,
+                                  alignment: WrapAlignment.start,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         Row(
                           mainAxisSize: MainAxisSize.max,
@@ -783,18 +858,8 @@ class _NewReservationPageViewWidgetState
                               ),
                               options: FFButtonOptions(
                                 height: 40,
-                                color: valueOrDefault<Color>(
-                                  (sittChoiceValue != null &&
-                                              sittChoiceValue != '') &&
-                                          (areaChoiceValue != null &&
-                                              areaChoiceValue != '') &&
-                                          (timeChoiceValue != null &&
-                                              timeChoiceValue != '')
-                                      ? FlutterFlowTheme.of(context)
-                                          .secondaryColor
-                                      : FlutterFlowTheme.of(context).iconGray,
-                                  FlutterFlowTheme.of(context).iconGray,
-                                ),
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryColor,
                                 textStyle: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
@@ -1232,6 +1297,7 @@ class _NewReservationPageViewWidgetState
                                       .formatDateTimestampsforNewResPOST(
                                           FFAppState().resDate,
                                           FFAppState().resTime),
+                                  resAreaId: FFAppState().resAreaId,
                                 );
                                 if ((newResAPICallResult?.succeeded ?? true)) {
                                   Navigator.pop(context);
@@ -1254,9 +1320,10 @@ class _NewReservationPageViewWidgetState
                                     builder: (alertDialogContext) {
                                       return AlertDialog(
                                         title: Text('API CALL FAILED'),
-                                        content: Text(
-                                            (newResAPICallResult?.jsonBody ??
-                                                '')),
+                                        content: Text(getJsonField(
+                                          (newResAPICallResult?.jsonBody ?? ''),
+                                          r'''$.detail''',
+                                        ).toString()),
                                         actions: [
                                           TextButton(
                                             onPressed: () => Navigator.pop(

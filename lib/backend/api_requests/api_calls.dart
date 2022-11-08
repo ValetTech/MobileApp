@@ -104,12 +104,18 @@ class NewReservationCall {
     int? customerId,
     String? resDateTimeFormatted = '',
     String? source = '',
+    int? resAreaId,
   }) {
     final body = '''
 {
-  "customerId": ${customerId},
+  "customer": {
+    "firstName": "${resFirstName}",
+    "lastName": "${resLastName}",
+    "email": "${resEmail}",
+    "phone": "${resPhone}"
+  },
   "sittingId": ${resSittingId},
-  "areaId": 1,
+  "areaId": ${resAreaId},
   "dateTime": "${resDateTimeFormatted}",
   "duration": 90,
   "noGuests": ${resNumPeople},
@@ -138,10 +144,9 @@ class NewReservationCall {
 class GETSittingTypesByDateCall {
   Future<ApiCallResponse> call({
     String? date = '',
-    List<String>? sittingTypeList,
+    String? sittingType = '',
     List<String>? areaNameList,
   }) {
-    final sittingType = _serializeList(sittingTypeList);
     final areaName = _serializeList(areaNameList);
 
     return ApiManager.instance.makeApiCall(
@@ -242,6 +247,11 @@ class GETAreasBySittingIDCall {
   dynamic areas(dynamic response) => getJsonField(
         response,
         r'''$.areas''',
+        true,
+      );
+  dynamic id(dynamic response) => getJsonField(
+        response,
+        r'''$.areas[:].id''',
         true,
       );
 }

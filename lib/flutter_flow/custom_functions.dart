@@ -99,3 +99,27 @@ String formatDateTimestampsforNewResPOST(
   String resDateTimeStr = resDateStr + 'T' + resTimeStr;
   return resDateTimeStr;
 }
+
+int stringToInt(String? value) {
+  // Add your function code here!
+  return int.tryParse(value ?? "-1") ?? -1;
+}
+
+int getSittingIdByType(
+  String? type,
+  List<dynamic> sittings,
+) {
+  // Add your function code here!
+  var sitting =
+      sittings.firstWhere((s) => s["type"] == type, orElse: () => null);
+  return sitting["id"] ?? -1;
+}
+
+int getAreaIdByName(
+  String? name,
+  List<dynamic> areas,
+) {
+  // Add your function code here!
+  var area = areas.firstWhere((s) => s["name"] == name, orElse: () => null);
+  return area["id"] ?? -1;
+}

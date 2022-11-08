@@ -440,510 +440,526 @@ class _ConsumerEntryWidgetState extends State<ConsumerEntryWidget>
                           width: 4,
                         ),
                       ),
-                      child: NewReservationPageViewWidget(),
+                      child: Stack(
+                        children: [
+                          NewReservationPageViewWidget(),
+                        ],
+                      ),
                     ),
                   ).animateOnActionTrigger(
                     animationsMap['containerOnActionTriggerAnimation1']!,
                   ),
                 ),
-                Align(
-                  alignment: AlignmentDirectional(0.4, 0),
-                  child: Material(
-                    color: Colors.transparent,
-                    elevation: 6,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Container(
-                      width: 300,
-                      height: 700,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 4,
-                            color: Color(0x33000000),
-                            offset: Offset(0, 2),
-                          )
-                        ],
+                if (isWeb)
+                  Align(
+                    alignment: AlignmentDirectional(0.4, 0),
+                    child: Material(
+                      color: Colors.transparent,
+                      elevation: 6,
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: FlutterFlowTheme.of(context).secondaryColor,
-                          width: 4,
-                        ),
                       ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    FlutterFlowTheme.of(context)
-                                        .primaryBackground,
-                                    FlutterFlowTheme.of(context).grayLines
-                                  ],
-                                  stops: [0, 1],
-                                  begin: AlignmentDirectional(0, -1),
-                                  end: AlignmentDirectional(0, 1),
-                                ),
-                                borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(12),
-                                  bottomRight: Radius.circular(12),
-                                  topLeft: Radius.circular(0),
-                                  topRight: Radius.circular(0),
-                                ),
-                              ),
-                              child: Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
-                                child: Wrap(
-                                  spacing: 8,
-                                  runSpacing: 8,
-                                  alignment: WrapAlignment.start,
-                                  crossAxisAlignment: WrapCrossAlignment.start,
-                                  direction: Axis.horizontal,
-                                  runAlignment: WrapAlignment.start,
-                                  verticalDirection: VerticalDirection.down,
-                                  clipBehavior: Clip.none,
-                                  children: [
-                                    FutureBuilder<List<CategoriesRecord>>(
-                                      future: queryCategoriesRecordOnce(
-                                        queryBuilder: (categoriesRecord) =>
-                                            categoriesRecord.orderBy('id'),
-                                      ),
-                                      builder: (context, snapshot) {
-                                        // Customize what your widget looks like when it's loading.
-                                        if (!snapshot.hasData) {
-                                          return Center(
-                                            child: SizedBox(
-                                              width: 40,
-                                              height: 40,
-                                              child: CircularProgressIndicator(
-                                                color: Color(0x00023047),
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                        List<CategoriesRecord>
-                                            choiceChipsCategoriesRecordList =
-                                            snapshot.data!;
-                                        return FlutterFlowChoiceChips(
-                                          options:
-                                              choiceChipsCategoriesRecordList
-                                                  .map((e) => e.title!)
-                                                  .toList()
-                                                  .map((label) =>
-                                                      ChipData(label))
-                                                  .toList(),
-                                          onChanged: (val) async {
-                                            setState(
-                                                () => choiceChipsValues = val);
-                                            setState(() =>
-                                                FFAppState().filtersOn = true);
-                                          },
-                                          selectedChipStyle: ChipStyle(
-                                            backgroundColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .secondaryColor,
-                                            textStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyText1
-                                                    .override(
-                                                      fontFamily:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyText1Family,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryColor,
-                                                      useGoogleFonts: GoogleFonts
-                                                              .asMap()
-                                                          .containsKey(
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyText1Family),
-                                                    ),
-                                            iconColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .primaryColor,
-                                            iconSize: 14,
-                                            elevation: 4,
-                                          ),
-                                          unselectedChipStyle: ChipStyle(
-                                            backgroundColor: Colors.white,
-                                            textStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyText2
-                                                    .override(
-                                                      fontFamily:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyText2Family,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .iconGray,
-                                                      useGoogleFonts: GoogleFonts
-                                                              .asMap()
-                                                          .containsKey(
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyText2Family),
-                                                    ),
-                                            iconColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .iconGray,
-                                            iconSize: 14,
-                                            elevation: 4,
-                                          ),
-                                          chipSpacing: 8,
-                                          multiselect: true,
-                                          initialized:
-                                              choiceChipsValues != null,
-                                          alignment: WrapAlignment.start,
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ).animateOnActionTrigger(
-                              animationsMap[
-                                  'containerOnActionTriggerAnimation3']!,
-                            ),
+                      child: Container(
+                        width: 300,
+                        height: 700,
+                        decoration: BoxDecoration(
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 4,
+                              color: Color(0x33000000),
+                              offset: Offset(0, 2),
+                            )
+                          ],
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: FlutterFlowTheme.of(context).secondaryColor,
+                            width: 4,
                           ),
-                          Expanded(
-                            child: Padding(
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
-                              child: FutureBuilder<List<CategoriesRecord>>(
-                                future: queryCategoriesRecordOnce(
-                                  queryBuilder: (categoriesRecord) =>
-                                      categoriesRecord.orderBy('id'),
+                                  EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      FlutterFlowTheme.of(context)
+                                          .primaryBackground,
+                                      FlutterFlowTheme.of(context).grayLines
+                                    ],
+                                    stops: [0, 1],
+                                    begin: AlignmentDirectional(0, -1),
+                                    end: AlignmentDirectional(0, 1),
+                                  ),
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(12),
+                                    bottomRight: Radius.circular(12),
+                                    topLeft: Radius.circular(0),
+                                    topRight: Radius.circular(0),
+                                  ),
                                 ),
-                                builder: (context, snapshot) {
-                                  // Customize what your widget looks like when it's loading.
-                                  if (!snapshot.hasData) {
-                                    return Center(
-                                      child: SizedBox(
-                                        width: 40,
-                                        height: 40,
-                                        child: SpinKitRipple(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryColor,
-                                          size: 40,
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      8, 8, 0, 0),
+                                  child: Wrap(
+                                    spacing: 8,
+                                    runSpacing: 8,
+                                    alignment: WrapAlignment.start,
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.start,
+                                    direction: Axis.horizontal,
+                                    runAlignment: WrapAlignment.start,
+                                    verticalDirection: VerticalDirection.down,
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      FutureBuilder<List<CategoriesRecord>>(
+                                        future: queryCategoriesRecordOnce(
+                                          queryBuilder: (categoriesRecord) =>
+                                              categoriesRecord.orderBy('id'),
                                         ),
+                                        builder: (context, snapshot) {
+                                          // Customize what your widget looks like when it's loading.
+                                          if (!snapshot.hasData) {
+                                            return Center(
+                                              child: SizedBox(
+                                                width: 40,
+                                                height: 40,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: Color(0x00023047),
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                          List<CategoriesRecord>
+                                              choiceChipsCategoriesRecordList =
+                                              snapshot.data!;
+                                          return FlutterFlowChoiceChips(
+                                            options:
+                                                choiceChipsCategoriesRecordList
+                                                    .map((e) => e.title!)
+                                                    .toList()
+                                                    .map((label) =>
+                                                        ChipData(label))
+                                                    .toList(),
+                                            onChanged: (val) async {
+                                              setState(() =>
+                                                  choiceChipsValues = val);
+                                              setState(() => FFAppState()
+                                                  .filtersOn = true);
+                                            },
+                                            selectedChipStyle: ChipStyle(
+                                              backgroundColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryColor,
+                                              textStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyText1
+                                                      .override(
+                                                        fontFamily:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyText1Family,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                        useGoogleFonts: GoogleFonts
+                                                                .asMap()
+                                                            .containsKey(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyText1Family),
+                                                      ),
+                                              iconColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryColor,
+                                              iconSize: 14,
+                                              elevation: 4,
+                                            ),
+                                            unselectedChipStyle: ChipStyle(
+                                              backgroundColor: Colors.white,
+                                              textStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyText2
+                                                      .override(
+                                                        fontFamily:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyText2Family,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .iconGray,
+                                                        useGoogleFonts: GoogleFonts
+                                                                .asMap()
+                                                            .containsKey(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyText2Family),
+                                                      ),
+                                              iconColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .iconGray,
+                                              iconSize: 14,
+                                              elevation: 4,
+                                            ),
+                                            chipSpacing: 8,
+                                            multiselect: true,
+                                            initialized:
+                                                choiceChipsValues != null,
+                                            alignment: WrapAlignment.start,
+                                          );
+                                        },
                                       ),
-                                    );
-                                  }
-                                  List<CategoriesRecord>
-                                      containerMenuListViewCategoriesRecordList =
-                                      snapshot.data!;
-                                  return Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          blurRadius: 5,
-                                          color: Color(0x230E151B),
-                                          offset: Offset(0, 2),
-                                        )
-                                      ],
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Builder(
-                                            builder: (context) {
-                                              final categoryListView =
-                                                  containerMenuListViewCategoriesRecordList
-                                                      .map((e) => e.title!)
-                                                      .toList();
-                                              return ListView.builder(
-                                                padding: EdgeInsets.zero,
-                                                shrinkWrap: true,
-                                                scrollDirection: Axis.vertical,
-                                                itemCount:
-                                                    categoryListView.length,
-                                                itemBuilder: (context,
-                                                    categoryListViewIndex) {
-                                                  final categoryListViewItem =
-                                                      categoryListView[
-                                                          categoryListViewIndex];
-                                                  return Stack(
-                                                    children: [
-                                                      if (choiceChipsValues
-                                                              ?.contains(
-                                                                  categoryListViewItem) ??
-                                                          true)
-                                                        Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(4,
-                                                                      4, 0, 0),
-                                                          child: Text(
-                                                            categoryListViewItem,
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .subtitle1,
-                                                          ),
-                                                        ),
-                                                      if (choiceChipsValues
-                                                              ?.contains(
-                                                                  categoryListViewItem) ??
-                                                          true)
-                                                        Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(0,
-                                                                      18, 0, 0),
-                                                          child: StreamBuilder<
-                                                              List<MenuRecord>>(
-                                                            stream:
-                                                                queryMenuRecord(
-                                                              queryBuilder: (menuRecord) => menuRecord
-                                                                  .where(
-                                                                      'category',
-                                                                      isEqualTo:
-                                                                          categoryListViewItem)
-                                                                  .whereIn(
-                                                                      'category',
-                                                                      choiceChipsValues)
-                                                                  .orderBy(
-                                                                      'price'),
+                                    ],
+                                  ),
+                                ),
+                              ).animateOnActionTrigger(
+                                animationsMap[
+                                    'containerOnActionTriggerAnimation3']!,
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    16, 8, 16, 0),
+                                child: FutureBuilder<List<CategoriesRecord>>(
+                                  future: queryCategoriesRecordOnce(
+                                    queryBuilder: (categoriesRecord) =>
+                                        categoriesRecord.orderBy('id'),
+                                  ),
+                                  builder: (context, snapshot) {
+                                    // Customize what your widget looks like when it's loading.
+                                    if (!snapshot.hasData) {
+                                      return Center(
+                                        child: SizedBox(
+                                          width: 40,
+                                          height: 40,
+                                          child: SpinKitRipple(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryColor,
+                                            size: 40,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    List<CategoriesRecord>
+                                        containerMenuListViewCategoriesRecordList =
+                                        snapshot.data!;
+                                    return Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryBackground,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            blurRadius: 5,
+                                            color: Color(0x230E151B),
+                                            offset: Offset(0, 2),
+                                          )
+                                        ],
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            Builder(
+                                              builder: (context) {
+                                                final categoryListView =
+                                                    containerMenuListViewCategoriesRecordList
+                                                        .map((e) => e.title!)
+                                                        .toList();
+                                                return ListView.builder(
+                                                  padding: EdgeInsets.zero,
+                                                  shrinkWrap: true,
+                                                  scrollDirection:
+                                                      Axis.vertical,
+                                                  itemCount:
+                                                      categoryListView.length,
+                                                  itemBuilder: (context,
+                                                      categoryListViewIndex) {
+                                                    final categoryListViewItem =
+                                                        categoryListView[
+                                                            categoryListViewIndex];
+                                                    return Stack(
+                                                      children: [
+                                                        if (choiceChipsValues
+                                                                ?.contains(
+                                                                    categoryListViewItem) ??
+                                                            true)
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        4,
+                                                                        4,
+                                                                        0,
+                                                                        0),
+                                                            child: Text(
+                                                              categoryListViewItem,
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .subtitle1,
                                                             ),
-                                                            builder: (context,
-                                                                snapshot) {
-                                                              // Customize what your widget looks like when it's loading.
-                                                              if (!snapshot
-                                                                  .hasData) {
-                                                                return Center(
-                                                                  child:
-                                                                      SizedBox(
-                                                                    width: 40,
-                                                                    height: 40,
+                                                          ),
+                                                        if (choiceChipsValues
+                                                                ?.contains(
+                                                                    categoryListViewItem) ??
+                                                            true)
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        0,
+                                                                        18,
+                                                                        0,
+                                                                        0),
+                                                            child: StreamBuilder<
+                                                                List<
+                                                                    MenuRecord>>(
+                                                              stream:
+                                                                  queryMenuRecord(
+                                                                queryBuilder: (menuRecord) => menuRecord
+                                                                    .where(
+                                                                        'category',
+                                                                        isEqualTo:
+                                                                            categoryListViewItem)
+                                                                    .whereIn(
+                                                                        'category',
+                                                                        choiceChipsValues)
+                                                                    .orderBy(
+                                                                        'price'),
+                                                              ),
+                                                              builder: (context,
+                                                                  snapshot) {
+                                                                // Customize what your widget looks like when it's loading.
+                                                                if (!snapshot
+                                                                    .hasData) {
+                                                                  return Center(
                                                                     child:
-                                                                        SpinKitRipple(
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .secondaryColor,
-                                                                      size: 40,
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              }
-                                                              List<MenuRecord>
-                                                                  menuListViewMenuRecordList =
-                                                                  snapshot
-                                                                      .data!;
-                                                              if (menuListViewMenuRecordList
-                                                                  .isEmpty) {
-                                                                return Center(
-                                                                  child: Image
-                                                                      .asset(
-                                                                    'assets/images/Screenshot_2022-10-21_at_10.24.55_pm.png',
-                                                                    width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width,
-                                                                    height: MediaQuery.of(context)
-                                                                            .size
-                                                                            .height *
-                                                                        0.5,
-                                                                  ),
-                                                                );
-                                                              }
-                                                              return ListView
-                                                                  .builder(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .zero,
-                                                                shrinkWrap:
-                                                                    true,
-                                                                scrollDirection:
-                                                                    Axis.vertical,
-                                                                itemCount:
-                                                                    menuListViewMenuRecordList
-                                                                        .length,
-                                                                itemBuilder:
-                                                                    (context,
-                                                                        menuListViewIndex) {
-                                                                  final menuListViewMenuRecord =
-                                                                      menuListViewMenuRecordList[
-                                                                          menuListViewIndex];
-                                                                  return Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            12,
-                                                                            4,
-                                                                            0,
-                                                                            4),
-                                                                    child:
-                                                                        Container(
-                                                                      width: double
-                                                                          .infinity,
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(8),
-                                                                      ),
+                                                                        SizedBox(
+                                                                      width: 40,
+                                                                      height:
+                                                                          40,
                                                                       child:
-                                                                          Column(
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.max,
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
-                                                                        children: [
-                                                                          Column(
-                                                                            mainAxisSize:
-                                                                                MainAxisSize.max,
-                                                                            children: [
-                                                                              Row(
-                                                                                mainAxisSize: MainAxisSize.max,
-                                                                                children: [
-                                                                                  ClipRRect(
-                                                                                    borderRadius: BorderRadius.circular(12),
-                                                                                    child: Image.network(
-                                                                                      menuListViewMenuRecord.image!,
-                                                                                      width: 100,
-                                                                                      height: 66,
-                                                                                      fit: BoxFit.cover,
+                                                                          SpinKitRipple(
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .secondaryColor,
+                                                                        size:
+                                                                            40,
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                }
+                                                                List<MenuRecord>
+                                                                    menuListViewMenuRecordList =
+                                                                    snapshot
+                                                                        .data!;
+                                                                if (menuListViewMenuRecordList
+                                                                    .isEmpty) {
+                                                                  return Center(
+                                                                    child: Image
+                                                                        .asset(
+                                                                      'assets/images/Screenshot_2022-10-21_at_10.24.55_pm.png',
+                                                                      width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width,
+                                                                      height: MediaQuery.of(context)
+                                                                              .size
+                                                                              .height *
+                                                                          0.5,
+                                                                    ),
+                                                                  );
+                                                                }
+                                                                return ListView
+                                                                    .builder(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .zero,
+                                                                  shrinkWrap:
+                                                                      true,
+                                                                  scrollDirection:
+                                                                      Axis.vertical,
+                                                                  itemCount:
+                                                                      menuListViewMenuRecordList
+                                                                          .length,
+                                                                  itemBuilder:
+                                                                      (context,
+                                                                          menuListViewIndex) {
+                                                                    final menuListViewMenuRecord =
+                                                                        menuListViewMenuRecordList[
+                                                                            menuListViewIndex];
+                                                                    return Padding(
+                                                                      padding: EdgeInsetsDirectional
+                                                                          .fromSTEB(
+                                                                              12,
+                                                                              4,
+                                                                              0,
+                                                                              4),
+                                                                      child:
+                                                                          Container(
+                                                                        width: double
+                                                                            .infinity,
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(8),
+                                                                        ),
+                                                                        child:
+                                                                            Column(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.max,
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Column(
+                                                                              mainAxisSize: MainAxisSize.max,
+                                                                              children: [
+                                                                                Row(
+                                                                                  mainAxisSize: MainAxisSize.max,
+                                                                                  children: [
+                                                                                    ClipRRect(
+                                                                                      borderRadius: BorderRadius.circular(12),
+                                                                                      child: Image.network(
+                                                                                        menuListViewMenuRecord.image!,
+                                                                                        width: 100,
+                                                                                        height: 66,
+                                                                                        fit: BoxFit.cover,
+                                                                                      ),
                                                                                     ),
-                                                                                  ),
-                                                                                  Expanded(
-                                                                                    flex: 4,
-                                                                                    child: Padding(
-                                                                                      padding: EdgeInsetsDirectional.fromSTEB(12, 8, 0, 8),
-                                                                                      child: Column(
-                                                                                        mainAxisSize: MainAxisSize.max,
-                                                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                        children: [
-                                                                                          Padding(
-                                                                                            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
-                                                                                            child: Text(
-                                                                                              menuListViewMenuRecord.name!,
-                                                                                              style: FlutterFlowTheme.of(context).subtitle2,
+                                                                                    Expanded(
+                                                                                      flex: 4,
+                                                                                      child: Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(12, 8, 0, 8),
+                                                                                        child: Column(
+                                                                                          mainAxisSize: MainAxisSize.max,
+                                                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                          children: [
+                                                                                            Padding(
+                                                                                              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
+                                                                                              child: Text(
+                                                                                                menuListViewMenuRecord.name!,
+                                                                                                style: FlutterFlowTheme.of(context).subtitle2,
+                                                                                              ),
                                                                                             ),
-                                                                                          ),
-                                                                                          Padding(
-                                                                                            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
-                                                                                            child: Row(
-                                                                                              mainAxisSize: MainAxisSize.max,
-                                                                                              children: [
-                                                                                                Icon(
-                                                                                                  Icons.attach_money_rounded,
-                                                                                                  color: FlutterFlowTheme.of(context).iconGray,
-                                                                                                  size: 16,
-                                                                                                ),
-                                                                                                Text(
-                                                                                                  menuListViewMenuRecord.price!.toString(),
-                                                                                                  style: FlutterFlowTheme.of(context).bodyText2.override(
-                                                                                                        fontFamily: 'Outfit',
-                                                                                                        color: FlutterFlowTheme.of(context).iconGray,
-                                                                                                        fontSize: 14,
-                                                                                                        fontWeight: FontWeight.w500,
-                                                                                                        useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText2Family),
-                                                                                                      ),
-                                                                                                ),
-                                                                                              ],
-                                                                                            ),
-                                                                                          ),
-                                                                                          Row(
-                                                                                            mainAxisSize: MainAxisSize.max,
-                                                                                            children: [
-                                                                                              Expanded(
-                                                                                                child: Padding(
-                                                                                                  padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
-                                                                                                  child: Text(
-                                                                                                    menuListViewMenuRecord.description!,
-                                                                                                    maxLines: 3,
+                                                                                            Padding(
+                                                                                              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
+                                                                                              child: Row(
+                                                                                                mainAxisSize: MainAxisSize.max,
+                                                                                                children: [
+                                                                                                  Icon(
+                                                                                                    Icons.attach_money_rounded,
+                                                                                                    color: FlutterFlowTheme.of(context).iconGray,
+                                                                                                    size: 16,
+                                                                                                  ),
+                                                                                                  Text(
+                                                                                                    menuListViewMenuRecord.price!.toString(),
                                                                                                     style: FlutterFlowTheme.of(context).bodyText2.override(
                                                                                                           fontFamily: 'Outfit',
                                                                                                           color: FlutterFlowTheme.of(context).iconGray,
-                                                                                                          fontSize: 12,
-                                                                                                          fontWeight: FontWeight.w300,
+                                                                                                          fontSize: 14,
+                                                                                                          fontWeight: FontWeight.w500,
                                                                                                           useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText2Family),
                                                                                                         ),
                                                                                                   ),
-                                                                                                ),
+                                                                                                ],
                                                                                               ),
-                                                                                            ],
+                                                                                            ),
+                                                                                            Row(
+                                                                                              mainAxisSize: MainAxisSize.max,
+                                                                                              children: [
+                                                                                                Expanded(
+                                                                                                  child: Padding(
+                                                                                                    padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
+                                                                                                    child: Text(
+                                                                                                      menuListViewMenuRecord.description!,
+                                                                                                      maxLines: 3,
+                                                                                                      style: FlutterFlowTheme.of(context).bodyText2.override(
+                                                                                                            fontFamily: 'Outfit',
+                                                                                                            color: FlutterFlowTheme.of(context).iconGray,
+                                                                                                            fontSize: 12,
+                                                                                                            fontWeight: FontWeight.w300,
+                                                                                                            useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText2Family),
+                                                                                                          ),
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                ),
+                                                                                              ],
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                    Expanded(
+                                                                                      flex: 1,
+                                                                                      child: Column(
+                                                                                        mainAxisSize: MainAxisSize.max,
+                                                                                        children: [
+                                                                                          FlutterFlowIconButton(
+                                                                                            borderColor: Colors.transparent,
+                                                                                            borderRadius: 30,
+                                                                                            borderWidth: 1,
+                                                                                            buttonSize: 60,
+                                                                                            icon: Icon(
+                                                                                              Icons.keyboard_arrow_right,
+                                                                                              color: FlutterFlowTheme.of(context).primaryText,
+                                                                                              size: 30,
+                                                                                            ),
+                                                                                            onPressed: () {
+                                                                                              print('IconButton pressed ...');
+                                                                                            },
                                                                                           ),
                                                                                         ],
                                                                                       ),
                                                                                     ),
-                                                                                  ),
-                                                                                  Expanded(
-                                                                                    flex: 1,
-                                                                                    child: Column(
-                                                                                      mainAxisSize: MainAxisSize.max,
-                                                                                      children: [
-                                                                                        FlutterFlowIconButton(
-                                                                                          borderColor: Colors.transparent,
-                                                                                          borderRadius: 30,
-                                                                                          borderWidth: 1,
-                                                                                          buttonSize: 60,
-                                                                                          icon: Icon(
-                                                                                            Icons.keyboard_arrow_right,
-                                                                                            color: FlutterFlowTheme.of(context).primaryText,
-                                                                                            size: 30,
-                                                                                          ),
-                                                                                          onPressed: () {
-                                                                                            print('IconButton pressed ...');
-                                                                                          },
-                                                                                        ),
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ],
+                                                                                  ],
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ],
+                                                                        ),
                                                                       ),
-                                                                    ),
-                                                                  );
-                                                                },
-                                                              );
-                                                            },
+                                                                    );
+                                                                  },
+                                                                );
+                                                              },
+                                                            ),
                                                           ),
-                                                        ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            },
-                                          ),
-                                        ],
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
+                                    );
+                                  },
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
+                    ).animateOnActionTrigger(
+                      animationsMap['containerOnActionTriggerAnimation2']!,
                     ),
-                  ).animateOnActionTrigger(
-                    animationsMap['containerOnActionTriggerAnimation2']!,
                   ),
-                ),
               ],
             ),
           ),

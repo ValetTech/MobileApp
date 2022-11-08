@@ -90,6 +90,10 @@ class FFAppState {
     _selectedDate = _value;
     prefs.setInt('ff_selectedDate', _value.millisecondsSinceEpoch);
   }
+
+  int resAreaId = 0;
+
+  String selectedChipString = '';
 }
 
 LatLng? _latLngFromString(String? val) {
