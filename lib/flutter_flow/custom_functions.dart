@@ -96,7 +96,7 @@ String formatDateTimestampsforNewResPOST(
   String resTimeStr =
       DateFormat('HH:mm:ss').format(DateFormat('h:mm a').parse(resTime!));
   // concatenate the two strings into one string in the format 'yyyy-MM-ddTHH:mm:ss'
-  String resDateTimeStr = resDateStr + 'T' + resTimeStr;
+  String resDateTimeStr = resDateStr + 'T' + resTimeStr + 'Z';
   return resDateTimeStr;
 }
 

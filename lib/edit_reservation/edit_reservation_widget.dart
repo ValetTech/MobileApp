@@ -6,7 +6,6 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
-import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/foundation.dart';
@@ -29,7 +28,8 @@ class EditReservationWidget extends StatefulWidget {
 }
 
 class _EditReservationWidgetState extends State<EditReservationWidget> {
-  Completer<ApiCallResponse>? _apiRequestCompleter;
+  ApiCallResponse? aPIUpdateCustomer;
+  ApiCallResponse? aPIUpdateReservationResult;
   DateTime? datePicked;
   TextEditingController? textController5;
   String? sittingsValue;
@@ -1268,7 +1268,7 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                                               ) as List)
                                                                                 .map<String>((s) => s.toString())
                                                                                 .toList()
-                                                                                .where((e) => datePicked == FFAppState().resDate)
+                                                                                .where((e) => datePicked == FFAppState().selectedDate)
                                                                                 .toList()
                                                                             : ["No Sittings"].toList(),
                                                                         onChanged:
@@ -2043,164 +2043,220 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                     mainAxisSize:
                                                         MainAxisSize.max,
                                                     children: [
-                                                      FutureBuilder<
-                                                          ApiCallResponse>(
-                                                        future: (_apiRequestCompleter ??=
-                                                                Completer<
-                                                                    ApiCallResponse>()
-                                                                  ..complete(
-                                                                      ValetAPIGroup
-                                                                          .updateReservationCall
-                                                                          .call(
-                                                                    reservationId:
-                                                                        getJsonField(
-                                                                      widget
-                                                                          .resDetailsEdiit,
-                                                                      r'''$.id''',
-                                                                    ),
-                                                                    customerId:
-                                                                        getJsonField(
-                                                                      widget
-                                                                          .resDetailsEdiit,
-                                                                      r'''$.customerId''',
-                                                                    ),
-                                                                    firstName:
-                                                                        firstController!
-                                                                            .text,
-                                                                    lastName:
-                                                                        lastController!
-                                                                            .text,
-                                                                    email:
-                                                                        textController4!
-                                                                            .text,
-                                                                    phone:
-                                                                        textController3!
-                                                                            .text,
-                                                                    isVip: FFAppState()
-                                                                        .isVIP,
-                                                                    sittingId:
-                                                                        getJsonField(
-                                                                      widget
-                                                                          .resDetailsEdiit,
-                                                                      r'''$.sittingId''',
-                                                                    ),
-                                                                    sittingType:
-                                                                        sittingsValue,
-                                                                    dateTime: functions
-                                                                        .formatDateTimeForPOST(
-                                                                            FFAppState().resDate!),
-                                                                    duration: int.parse(
-                                                                        textController5!
-                                                                            .text),
-                                                                    noGuests: int.parse(
-                                                                        textController6!
-                                                                            .text),
-                                                                    source:
-                                                                        sourceValue,
-                                                                    notes:
-                                                                        notesController!
-                                                                            .text,
-                                                                    status: FFAppState().resStatus ==
-                                                                                null ||
-                                                                            FFAppState().resStatus ==
-                                                                                ''
-                                                                        ? getJsonField(
-                                                                            widget.resDetailsEdiit,
-                                                                            r'''$.status''',
-                                                                          )
-                                                                            .toString()
-                                                                        : FFAppState()
-                                                                            .resStatus,
-                                                                  )))
-                                                            .future,
-                                                        builder: (context,
-                                                            snapshot) {
-                                                          // Customize what your widget looks like when it's loading.
-                                                          if (!snapshot
-                                                              .hasData) {
-                                                            return Center(
-                                                              child: SizedBox(
-                                                                width: 40,
-                                                                height: 40,
-                                                                child:
-                                                                    SpinKitRipple(
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .secondaryColor,
-                                                                  size: 40,
-                                                                ),
+                                                      InkWell(
+                                                        onTap: () async {
+                                                          if ((FFAppState().resFirstName != null && FFAppState().resFirstName != '') ||
+                                                              (FFAppState()
+                                                                      .isVIP !=
+                                                                  null) ||
+                                                              (FFAppState()
+                                                                          .resEmail !=
+                                                                      null &&
+                                                                  FFAppState()
+                                                                          .resEmail !=
+                                                                      '') ||
+                                                              (FFAppState()
+                                                                          .resPhone !=
+                                                                      null &&
+                                                                  FFAppState()
+                                                                          .resPhone !=
+                                                                      '') ||
+                                                              (FFAppState()
+                                                                          .resLastName !=
+                                                                      null &&
+                                                                  FFAppState()
+                                                                          .resLastName !=
+                                                                      '')) {
+                                                            aPIUpdateCustomer =
+                                                                await ValetAPIGroup
+                                                                    .updateCustomerCall
+                                                                    .call(
+                                                              customerId:
+                                                                  getJsonField(
+                                                                widget
+                                                                    .resDetailsEdiit,
+                                                                r'''$.customer.id''',
                                                               ),
+                                                              firstName:
+                                                                  FFAppState()
+                                                                      .resFirstName,
+                                                              lastName:
+                                                                  FFAppState()
+                                                                      .resLastName,
+                                                              email:
+                                                                  FFAppState()
+                                                                      .resEmail,
+                                                              phone:
+                                                                  FFAppState()
+                                                                      .resPhone,
+                                                              isVip:
+                                                                  FFAppState()
+                                                                      .isVIP,
                                                             );
-                                                          }
-                                                          final saveIconUpdateReservationResponse =
-                                                              snapshot.data!;
-                                                          return InkWell(
-                                                            onTap: () async {
-                                                              setState(() =>
-                                                                  _apiRequestCompleter =
-                                                                      null);
-                                                              await waitForApiRequestCompleter();
-                                                              if (saveIconUpdateReservationResponse
-                                                                  .succeeded) {
-                                                                ScaffoldMessenger.of(
-                                                                        context)
-                                                                    .showSnackBar(
-                                                                  SnackBar(
-                                                                    content:
-                                                                        Text(
-                                                                      saveIconUpdateReservationResponse
-                                                                          .succeeded
-                                                                          .toString(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .primaryText,
-                                                                      ),
-                                                                    ),
-                                                                    duration: Duration(
-                                                                        milliseconds:
-                                                                            4000),
-                                                                    backgroundColor:
-                                                                        Color(
-                                                                            0x00000000),
-                                                                  ),
-                                                                );
-                                                              } else {
-                                                                ScaffoldMessenger.of(
-                                                                        context)
-                                                                    .showSnackBar(
-                                                                  SnackBar(
-                                                                    content:
-                                                                        Text(
-                                                                      saveIconUpdateReservationResponse
-                                                                          .statusCode
-                                                                          .toString(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .primaryText,
-                                                                      ),
-                                                                    ),
-                                                                    duration: Duration(
-                                                                        milliseconds:
-                                                                            4000),
-                                                                    backgroundColor:
-                                                                        Color(
-                                                                            0x00000000),
-                                                                  ),
-                                                                );
-                                                              }
-                                                            },
-                                                            child: Icon(
-                                                              Icons
-                                                                  .save_outlined,
-                                                              color: FlutterFlowTheme
+                                                            if ((aPIUpdateCustomer
+                                                                    ?.succeeded ??
+                                                                true)) {
+                                                              ScaffoldMessenger
                                                                       .of(context)
-                                                                  .primaryText,
-                                                              size: 30,
-                                                            ),
-                                                          );
+                                                                  .showSnackBar(
+                                                                SnackBar(
+                                                                  content: Text(
+                                                                    'Customer Successfully Updated',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryText,
+                                                                    ),
+                                                                  ),
+                                                                  duration: Duration(
+                                                                      milliseconds:
+                                                                          4000),
+                                                                  backgroundColor:
+                                                                      Color(
+                                                                          0x00000000),
+                                                                ),
+                                                              );
+                                                            } else {
+                                                              await showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (alertDialogContext) {
+                                                                  return AlertDialog(
+                                                                    content: Text(
+                                                                        getJsonField(
+                                                                      (aPIUpdateCustomer
+                                                                              ?.jsonBody ??
+                                                                          ''),
+                                                                      r'''$.detail''',
+                                                                    ).toString()),
+                                                                    actions: [
+                                                                      TextButton(
+                                                                        onPressed:
+                                                                            () =>
+                                                                                Navigator.pop(alertDialogContext),
+                                                                        child: Text(
+                                                                            'Ok'),
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                },
+                                                              );
+                                                            }
+                                                          } else {
+                                                            setState(() =>
+                                                                FFAppState()
+                                                                        .resCustomerId =
+                                                                    getJsonField(
+                                                                  widget
+                                                                      .resDetailsEdiit,
+                                                                  r'''$.customer.id''',
+                                                                ));
+                                                            aPIUpdateReservationResult =
+                                                                await ValetAPIGroup
+                                                                    .updateReservationCall
+                                                                    .call(
+                                                              reservationId:
+                                                                  getJsonField(
+                                                                widget
+                                                                    .resDetailsEdiit,
+                                                                r'''$.id''',
+                                                              ),
+                                                              customerId:
+                                                                  FFAppState()
+                                                                      .resCustomerId,
+                                                              sittingId:
+                                                                  getJsonField(
+                                                                widget
+                                                                    .resDetailsEdiit,
+                                                                r'''$.sittingId''',
+                                                              ),
+                                                              duration: int.parse(
+                                                                  textController5!
+                                                                      .text),
+                                                              noGuests: int.parse(
+                                                                  textController6!
+                                                                      .text),
+                                                              source:
+                                                                  sourceValue,
+                                                              status:
+                                                                  sourceValue,
+                                                              notes:
+                                                                  notesController!
+                                                                      .text,
+                                                              areaId:
+                                                                  getJsonField(
+                                                                widget
+                                                                    .resDetailsEdiit,
+                                                                r'''$.area.id''',
+                                                              ),
+                                                              dateTime: functions
+                                                                  .formatDateTimeForPOST(
+                                                                      datePicked!),
+                                                            );
+                                                            if ((aPIUpdateReservationResult
+                                                                    ?.succeeded ??
+                                                                true)) {
+                                                              ScaffoldMessenger
+                                                                      .of(context)
+                                                                  .showSnackBar(
+                                                                SnackBar(
+                                                                  content: Text(
+                                                                    'Reservation Updated Successfully',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryText,
+                                                                    ),
+                                                                  ),
+                                                                  duration: Duration(
+                                                                      milliseconds:
+                                                                          4000),
+                                                                  backgroundColor:
+                                                                      Color(
+                                                                          0x00000000),
+                                                                ),
+                                                              );
+                                                            } else {
+                                                              await showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (alertDialogContext) {
+                                                                  return AlertDialog(
+                                                                    content: Text(
+                                                                        getJsonField(
+                                                                      (aPIUpdateReservationResult
+                                                                              ?.jsonBody ??
+                                                                          ''),
+                                                                      r'''$.detail''',
+                                                                    ).toString()),
+                                                                    actions: [
+                                                                      TextButton(
+                                                                        onPressed:
+                                                                            () =>
+                                                                                Navigator.pop(alertDialogContext),
+                                                                        child: Text(
+                                                                            'Ok'),
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                },
+                                                              );
+                                                            }
+                                                          }
+
+                                                          setState(() {});
                                                         },
+                                                        child: Icon(
+                                                          Icons.save_outlined,
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryText,
+                                                          size: 30,
+                                                        ),
                                                       ),
                                                       Text(
                                                         'Save',
@@ -2270,20 +2326,5 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
             ));
       },
     );
-  }
-
-  Future waitForApiRequestCompleter({
-    double minWait = 0,
-    double maxWait = double.infinity,
-  }) async {
-    final stopwatch = Stopwatch()..start();
-    while (true) {
-      await Future.delayed(Duration(milliseconds: 50));
-      final timeElapsed = stopwatch.elapsedMilliseconds;
-      final requestComplete = _apiRequestCompleter?.isCompleted ?? false;
-      if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
-        break;
-      }
-    }
   }
 }

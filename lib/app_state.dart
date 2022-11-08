@@ -18,6 +18,9 @@ class FFAppState {
     _selectedDate = prefs.containsKey('ff_selectedDate')
         ? DateTime.fromMillisecondsSinceEpoch(prefs.getInt('ff_selectedDate')!)
         : null;
+    _resDate = prefs.containsKey('ff_resDate')
+        ? DateTime.fromMillisecondsSinceEpoch(prefs.getInt('ff_resDate')!)
+        : null;
   }
 
   late SharedPreferences prefs;
@@ -33,8 +36,6 @@ class FFAppState {
   int newAreaTableCap = 0;
 
   int resNumPeople = 0;
-
-  DateTime? resDate = DateTime.fromMillisecondsSinceEpoch(1666224960000);
 
   String resArea = '';
 
@@ -94,6 +95,20 @@ class FFAppState {
   int resAreaId = 0;
 
   String selectedChipString = '';
+
+  DateTime? _resDate = DateTime.fromMillisecondsSinceEpoch(1667871540000);
+  DateTime? get resDate => _resDate;
+  set resDate(DateTime? _value) {
+    if (_value == null) {
+      return;
+    }
+    _resDate = _value;
+    prefs.setInt('ff_resDate', _value.millisecondsSinceEpoch);
+  }
+
+  List<String> Filters = [];
+
+  int resCustomerId = 0;
 }
 
 LatLng? _latLngFromString(String? val) {

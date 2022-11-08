@@ -237,13 +237,10 @@ class _NewReservationPageViewWidgetState
                                 weekStartsMonday: true,
                                 initialDate: FFAppState().selectedDate,
                                 rowHeight: 35,
-                                onChange:
-                                    (DateTimeRange? newSelectedDate) async {
-                                  resCalendarPickerReservationsSelectedDay =
-                                      newSelectedDate;
-                                  setState(() => FFAppState().resDate =
-                                      FFAppState().resDate);
-                                  setState(() {});
+                                onChange: (DateTimeRange? newSelectedDate) {
+                                  setState(() =>
+                                      resCalendarPickerReservationsSelectedDay =
+                                          newSelectedDate);
                                 },
                                 titleStyle:
                                     FlutterFlowTheme.of(context).subtitle2,
@@ -464,8 +461,6 @@ class _NewReservationPageViewWidgetState
                                     onChanged: (val) async {
                                       setState(
                                           () => sittingChipsValue = val?.first);
-                                      setState(
-                                          () => FFAppState().filtersOn = true);
                                       setState(() => FFAppState().resSittingId =
                                           functions.getSittingIdByType(
                                               sittingChipsValue,
@@ -632,8 +627,6 @@ class _NewReservationPageViewWidgetState
                                     onChanged: (val) async {
                                       setState(
                                           () => areaChipsValue = val?.first);
-                                      setState(
-                                          () => FFAppState().filtersOn = true);
                                       setState(() => FFAppState().resAreaId =
                                           functions.getAreaIdByName(
                                               areaChipsValue,
@@ -1295,7 +1288,7 @@ class _NewReservationPageViewWidgetState
                                   resSittingId: FFAppState().resSittingId,
                                   resDateTimeFormatted: functions
                                       .formatDateTimestampsforNewResPOST(
-                                          FFAppState().resDate,
+                                          FFAppState().selectedDate,
                                           FFAppState().resTime),
                                   resAreaId: FFAppState().resAreaId,
                                 );

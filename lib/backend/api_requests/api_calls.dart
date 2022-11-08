@@ -23,6 +23,7 @@ class ValetAPIGroup {
   static GETSittingTypesCall gETSittingTypesCall = GETSittingTypesCall();
   static GETTablesCall gETTablesCall = GETTablesCall();
   static UpdateReservationCall updateReservationCall = UpdateReservationCall();
+  static UpdateCustomerCall updateCustomerCall = UpdateCustomerCall();
 }
 
 class NewAreaCall {
@@ -336,37 +337,22 @@ class UpdateReservationCall {
   Future<ApiCallResponse> call({
     int? reservationId,
     int? customerId,
-    String? firstName = '',
-    String? lastName = '',
-    String? email = '',
-    String? phone = '',
-    bool? isVip,
+    bool? isVip = false,
     int? sittingId,
-    String? sittingType = '',
     String? dateTime = '',
     int? duration,
     int? noGuests,
     String? source = '',
     String? status = '',
     String? notes = '',
+    int? areaId,
   }) {
     final body = '''
 {
   "id": ${reservationId},
   "customerId": ${customerId},
-  "areaId": 1,
-  "customer": {
-    "firstName": "${firstName}",
-    "lastName": "${lastName}",
-    "email": "${email}",
-    "phone": "${phone}",
-    "isVip": ${isVip}
-  },
   "sittingId": ${sittingId},
-  "sitting": {
-    "type": "${sittingType}",
-    "venueId": 1
-  },
+  "areaId": ${areaId},
   "dateTime": "${dateTime}",
   "duration": ${duration},
   "noGuests": ${noGuests},
@@ -382,6 +368,39 @@ class UpdateReservationCall {
       headers: {
         ...ValetAPIGroup.headers,
         'accept': 'text/plain',
+      },
+      params: {},
+      body: body,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+    );
+  }
+}
+
+class UpdateCustomerCall {
+  Future<ApiCallResponse> call({
+    int? customerId,
+    String? firstName = '',
+    String? lastName = '',
+    String? email = '',
+    String? phone = '',
+    bool? isVip,
+  }) {
+    final body = '''
+{
+  "id": ${customerId},
+  "firstName": "${firstName}",
+  "lastName": "${lastName}",
+  "email": "${email}",
+  "phone": "${phone}",
+  "isVip": ${isVip}
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'Update Customer',
+      apiUrl: '${ValetAPIGroup.baseUrl}/${customerId}',
+      callType: ApiCallType.PUT,
+      headers: {
+        ...ValetAPIGroup.headers,
       },
       params: {},
       body: body,
@@ -503,14 +522,22 @@ class GETReservationsCall {
   static dynamic reservationId(dynamic response) => getJsonField(
         response,
         r'''$.reservations[:].id''',
+        true,
       );
   static dynamic customerId(dynamic response) => getJsonField(
         response,
         r'''$.reservations[:].customer.id''',
+        true,
       );
   static dynamic sittingId(dynamic response) => getJsonField(
         response,
         r'''$.reservations[:].sittingId''',
+        true,
+      );
+  static dynamic areaId(dynamic response) => getJsonField(
+        response,
+        r'''$.reservations[:].area.id''',
+        true,
       );
 }
 
