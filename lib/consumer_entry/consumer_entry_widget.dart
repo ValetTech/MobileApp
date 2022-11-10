@@ -960,6 +960,45 @@ class _ConsumerEntryWidgetState extends State<ConsumerEntryWidget>
                       animationsMap['containerOnActionTriggerAnimation2']!,
                     ),
                   ),
+                Align(
+                  alignment: AlignmentDirectional(0.55, -0.9),
+                  child: FlutterFlowIconButton(
+                    borderColor: Colors.transparent,
+                    borderRadius: 30,
+                    borderWidth: 0,
+                    buttonSize: 40,
+                    fillColor: FlutterFlowTheme.of(context).secondaryColor,
+                    icon: Icon(
+                      Icons.cancel_outlined,
+                      color: FlutterFlowTheme.of(context).primaryBackground,
+                      size: 20,
+                    ),
+                    onPressed: () async {
+                      if (animationsMap['containerOnActionTriggerAnimation1'] !=
+                          null) {
+                        await animationsMap[
+                                'containerOnActionTriggerAnimation1']!
+                            .controller
+                            .forward(from: 0.0)
+                            .whenComplete(animationsMap[
+                                    'containerOnActionTriggerAnimation1']!
+                                .controller
+                                .reverse);
+                      }
+                      if (animationsMap['containerOnActionTriggerAnimation2'] !=
+                          null) {
+                        await animationsMap[
+                                'containerOnActionTriggerAnimation2']!
+                            .controller
+                            .forward(from: 0.0)
+                            .whenComplete(animationsMap[
+                                    'containerOnActionTriggerAnimation2']!
+                                .controller
+                                .reverse);
+                      }
+                    },
+                  ),
+                ),
               ],
             ),
           ),

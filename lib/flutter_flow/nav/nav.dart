@@ -163,6 +163,17 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                       params.getParam('resDetailsEdit', ParamType.JSON),
                 ),
               ),
+            ),
+            FFRoute(
+              name: 'EditReservationJamie',
+              path: 'editReservationJamie',
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: EditReservationJamieWidget(
+                  resDetailsEdit:
+                      params.getParam('resDetailsEdit', ParamType.JSON),
+                ),
+              ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),

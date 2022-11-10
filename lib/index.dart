@@ -14,3 +14,5 @@ export 'new_sitting_or_area/new_sitting_or_area_widget.dart'
 export 'menu/menu_widget.dart' show MenuWidget;
 export 'edit_reservation/edit_reservation_widget.dart'
     show EditReservationWidget;
+export 'edit_reservation_jamie/edit_reservation_jamie_widget.dart'
+    show EditReservationJamieWidget;

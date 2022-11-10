@@ -127,7 +127,6 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
               onTap: () => FocusScope.of(context).unfocus(),
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 1,
                 child: Stack(
                   children: [
                     FutureBuilder<ApiCallResponse>(
@@ -136,8 +135,10 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                 ..complete(GETReservationsCall.call(
                                   date: functions.formatDateForPOST(
                                       FFAppState().selectedDate!),
-                                  sittingList: sittingChipsValues.value,
-                                  areaList: areaChipsValues.value,
+                                  area: functions.listJoin(
+                                      areaChipsValues.value?.toList()),
+                                  sitting: functions.listJoin(
+                                      sittingChipsValues.value?.toList()),
                                 )))
                               .future,
                       builder: (context, snapshot) {
@@ -383,6 +384,9 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                         setState(() =>
                                                             areaChipsValues
                                                                 .value = []);
+                                                        setState(() =>
+                                                            _apiRequestCompleter =
+                                                                null);
                                                       },
                                                       child: Icon(
                                                         Icons.cancel,
@@ -696,8 +700,6 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                       16, 8, 16, 0),
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
-                                    height:
-                                        MediaQuery.of(context).size.height * 1,
                                     decoration: BoxDecoration(
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryBackground,

@@ -123,3 +123,19 @@ int getAreaIdByName(
   var area = areas.firstWhere((s) => s["name"] == name, orElse: () => null);
   return area["id"] ?? -1;
 }
+
+String listJoin(List<String>? values) {
+  // Add your function code here!
+  return values?.join(',') ?? "";
+}
+
+dynamic updateJson(
+  String? path,
+  String? value,
+  dynamic json,
+) {
+  // Add your function code here!
+  var newJson = json;
+  newJson[path ?? ""] = value ?? "";
+  return newJson;
+}

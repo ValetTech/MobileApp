@@ -107,6 +107,10 @@ class FFAppState {
   }
 
   int resCustomerId = 0;
+
+  dynamic editReservation;
+
+  dynamic editCustomer;
 }
 
 LatLng? _latLngFromString(String? val) {

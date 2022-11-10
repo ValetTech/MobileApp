@@ -12,7 +12,11 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 
 class ValetAPIGroup {
   static String baseUrl = 'https://valetapi.azurewebsites.net/api';
-  static Map<String, String> headers = {};
+  static Map<String, String> headers = {
+    'Authorization':
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiZmUxZGUyZDQtNjUyYy00ZDkwLWFjMzMtZmMzMzBmNzMzNjk2IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE2OTk1MDg2NDYsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDIwMCJ9.mt02vmMb0Jm7cnwm8pl5Tf2DQamROOhW9whRqQ4NIiQ',
+    'X-Version': '2',
+  };
   static NewAreaCall newAreaCall = NewAreaCall();
   static NewSittingCall newSittingCall = NewSittingCall();
   static NewReservationCall newReservationCall = NewReservationCall();
@@ -133,7 +137,6 @@ class NewReservationCall {
       callType: ApiCallType.POST,
       headers: {
         ...ValetAPIGroup.headers,
-        'accept': 'text/plain',
         'Content-Type': 'application/json-patch+json',
       },
       params: {},
@@ -159,7 +162,6 @@ class GETSittingTypesByDateCall {
       callType: ApiCallType.GET,
       headers: {
         ...ValetAPIGroup.headers,
-        'accept': 'text/plain',
       },
       params: {
         'Date': date,
@@ -374,7 +376,6 @@ class UpdateReservationCall {
       callType: ApiCallType.PUT,
       headers: {
         ...ValetAPIGroup.headers,
-        'accept': 'text/plain',
       },
       params: {},
       body: body,
@@ -405,7 +406,7 @@ class UpdateCustomerCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'Update Customer',
-      apiUrl: '${ValetAPIGroup.baseUrl}/${customerId}',
+      apiUrl: '${ValetAPIGroup.baseUrl}/customers/${customerId}',
       callType: ApiCallType.PUT,
       headers: {
         ...ValetAPIGroup.headers,
@@ -423,29 +424,26 @@ class UpdateCustomerCall {
 
 class GETReservationsCall {
   static Future<ApiCallResponse> call({
-    String? minDate = '',
-    String? maxDate = '',
     String? date = '',
     int? page,
     int? size,
-    List<String>? areaList,
-    List<String>? sittingList,
+    String? area = '',
+    String? sitting = '',
   }) {
-    final area = _serializeList(areaList);
-    final sitting = _serializeList(sittingList);
-
     return ApiManager.instance.makeApiCall(
       callName: 'GET Reservations',
       apiUrl: 'https://valetapi.azurewebsites.net/api/reservations',
       callType: ApiCallType.GET,
       headers: {
         'content-type': 'application/json',
-        'X-Version': '1',
+        'X-Version': '2',
         'Authorization':
             'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiZmUxZGUyZDQtNjUyYy00ZDkwLWFjMzMtZmMzMzBmNzMzNjk2IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE2OTk1MDg2NDYsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDIwMCJ9.mt02vmMb0Jm7cnwm8pl5Tf2DQamROOhW9whRqQ4NIiQ',
       },
       params: {
         'Date': date,
+        'Areas': area,
+        'Sittings': sitting,
       },
       returnBody: true,
       cache: false,
@@ -560,6 +558,7 @@ class GETReservationsCall {
   static dynamic resAreaName(dynamic response) => getJsonField(
         response,
         r'''$.reservations[:].area.name''',
+        true,
       );
 }
 
@@ -574,6 +573,9 @@ class GETTablesAvailableBySittingIDCall {
       callType: ApiCallType.GET,
       headers: {
         'content-type': 'application/json; charset=utf-8; v=1.0',
+        'X-Version': '2',
+        'Authorization':
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiZmUxZGUyZDQtNjUyYy00ZDkwLWFjMzMtZmMzMzBmNzMzNjk2IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE2OTk1MDg2NDYsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDIwMCJ9.mt02vmMb0Jm7cnwm8pl5Tf2DQamROOhW9whRqQ4NIiQ',
       },
       params: {},
       returnBody: true,

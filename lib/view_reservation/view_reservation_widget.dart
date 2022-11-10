@@ -216,18 +216,10 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                                                                     .title3Family),
                                                       ),
                                                 ),
-                                                if (getJsonField(
-                                                      widget.resDetails,
-                                                      r'''$.isVip''',
-                                                    ) !=
-                                                    null)
-                                                  Icon(
-                                                    Icons.stars,
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryColor,
-                                                    size: 30,
-                                                  ),
+                                                Icon(
+                                                  Icons.stars,
+                                                  size: 30,
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -1086,7 +1078,11 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                                                           queryParams: {
                                                             'resDetailsEdit':
                                                                 serializeParam(
-                                                              widget.resDetails,
+                                                              getJsonField(
+                                                                widget
+                                                                    .resDetails,
+                                                                r'''$''',
+                                                              ),
                                                               ParamType.JSON,
                                                             ),
                                                           }.withoutNulls,
