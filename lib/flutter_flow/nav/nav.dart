@@ -159,8 +159,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => NavBarPage(
                 initialPage: '',
                 page: EditReservationWidget(
-                  resDetailsEdiit:
-                      params.getParam('resDetailsEdiit', ParamType.JSON),
+                  resDetailsEdit:
+                      params.getParam('resDetailsEdit', ParamType.JSON),
                 ),
               ),
             )

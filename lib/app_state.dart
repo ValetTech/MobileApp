@@ -106,8 +106,6 @@ class FFAppState {
     prefs.setInt('ff_resDate', _value.millisecondsSinceEpoch);
   }
 
-  List<String> Filters = [];
-
   int resCustomerId = 0;
 }
 

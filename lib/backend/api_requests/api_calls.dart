@@ -52,6 +52,7 @@ class NewAreaCall {
       body: body,
       bodyType: BodyType.JSON,
       returnBody: true,
+      cache: false,
     );
   }
 }
@@ -82,6 +83,7 @@ class NewSittingCall {
       body: body,
       bodyType: BodyType.JSON,
       returnBody: true,
+      cache: false,
     );
   }
 }
@@ -138,6 +140,7 @@ class NewReservationCall {
       body: body,
       bodyType: BodyType.JSON,
       returnBody: true,
+      cache: false,
     );
   }
 }
@@ -162,6 +165,7 @@ class GETSittingTypesByDateCall {
         'Date': date,
       },
       returnBody: true,
+      cache: false,
     );
   }
 
@@ -222,6 +226,7 @@ class GETAreasBySittingIDCall {
         'sittingId': sittingId,
       },
       returnBody: true,
+      cache: false,
     );
   }
 
@@ -272,6 +277,7 @@ class GETSittingTypesCall {
         'date': date,
       },
       returnBody: true,
+      cache: false,
     );
   }
 
@@ -293,6 +299,7 @@ class GETTablesCall {
       },
       params: {},
       returnBody: true,
+      cache: false,
     );
   }
 
@@ -373,6 +380,7 @@ class UpdateReservationCall {
       body: body,
       bodyType: BodyType.JSON,
       returnBody: true,
+      cache: false,
     );
   }
 }
@@ -406,6 +414,7 @@ class UpdateCustomerCall {
       body: body,
       bodyType: BodyType.JSON,
       returnBody: true,
+      cache: false,
     );
   }
 }
@@ -419,18 +428,27 @@ class GETReservationsCall {
     String? date = '',
     int? page,
     int? size,
+    List<String>? areaList,
+    List<String>? sittingList,
   }) {
+    final area = _serializeList(areaList);
+    final sitting = _serializeList(sittingList);
+
     return ApiManager.instance.makeApiCall(
       callName: 'GET Reservations',
       apiUrl: 'https://valetapi.azurewebsites.net/api/reservations',
       callType: ApiCallType.GET,
       headers: {
-        'content-type': 'application/json; charset=utf-8; v=1.0',
+        'content-type': 'application/json',
+        'X-Version': '1',
+        'Authorization':
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiZmUxZGUyZDQtNjUyYy00ZDkwLWFjMzMtZmMzMzBmNzMzNjk2IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE2OTk1MDg2NDYsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDIwMCJ9.mt02vmMb0Jm7cnwm8pl5Tf2DQamROOhW9whRqQ4NIiQ',
       },
       params: {
         'Date': date,
       },
       returnBody: true,
+      cache: false,
     );
   }
 
@@ -539,6 +557,10 @@ class GETReservationsCall {
         r'''$.reservations[:].area.id''',
         true,
       );
+  static dynamic resAreaName(dynamic response) => getJsonField(
+        response,
+        r'''$.reservations[:].area.name''',
+      );
 }
 
 class GETTablesAvailableBySittingIDCall {
@@ -555,6 +577,7 @@ class GETTablesAvailableBySittingIDCall {
       },
       params: {},
       returnBody: true,
+      cache: false,
     );
   }
 

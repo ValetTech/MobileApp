@@ -1084,7 +1084,7 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                                                         context.pushNamed(
                                                           'EditReservation',
                                                           queryParams: {
-                                                            'resDetailsEdiit':
+                                                            'resDetailsEdit':
                                                                 serializeParam(
                                                               widget.resDetails,
                                                               ParamType.JSON,
@@ -1098,7 +1098,7 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                                                         context.pushNamed(
                                                           'EditReservation',
                                                           queryParams: {
-                                                            'resDetailsEdiit':
+                                                            'resDetailsEdit':
                                                                 serializeParam(
                                                               widget.resDetails,
                                                               ParamType.JSON,
