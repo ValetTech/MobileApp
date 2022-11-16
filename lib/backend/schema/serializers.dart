@@ -20,6 +20,7 @@ const kDocumentReferenceField = 'Document__Reference__Field';
   CategoriesRecord,
   OrdersRecord,
   CatagoryStruct,
+  OrderItemStruct,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..add(DocumentReferenceSerializer())

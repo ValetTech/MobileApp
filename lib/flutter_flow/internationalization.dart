@@ -29,8 +29,14 @@ class FFLocalizationsDelegate extends LocalizationsDelegate<FFLocalizations> {
   const FFLocalizationsDelegate();
 
   @override
-  bool isSupported(Locale locale) =>
-      FFLocalizations.languages().contains(locale.toString());
+  bool isSupported(Locale locale) {
+    final language = locale.toString();
+    return FFLocalizations.languages().contains(
+      language.endsWith('_')
+          ? language.substring(0, language.length - 1)
+          : language,
+    );
+  }
 
   @override
   Future<FFLocalizations> load(Locale locale) =>

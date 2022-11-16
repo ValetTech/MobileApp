@@ -1,6 +1,6 @@
+import '../auth/auth_util.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/random_data_util.dart' as random_data;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -43,17 +43,19 @@ class _HeaderWidgetState extends State<HeaderWidget> {
         ),
         Padding(
           padding: EdgeInsetsDirectional.fromSTEB(2, 0, 16, 0),
-          child: Text(
-            random_data.randomName(true, false),
-            textAlign: TextAlign.start,
-            style: FlutterFlowTheme.of(context).title1.override(
-                  fontFamily: 'Overpass',
-                  color: FlutterFlowTheme.of(context).secondaryColor,
-                  fontSize: 32,
-                  fontWeight: FontWeight.w600,
-                  useGoogleFonts: GoogleFonts.asMap()
-                      .containsKey(FlutterFlowTheme.of(context).title1Family),
-                ),
+          child: AuthUserStreamWidget(
+            child: Text(
+              currentUserDisplayName,
+              textAlign: TextAlign.start,
+              style: FlutterFlowTheme.of(context).title1.override(
+                    fontFamily: 'Overpass',
+                    color: FlutterFlowTheme.of(context).secondaryColor,
+                    fontSize: 32,
+                    fontWeight: FontWeight.w600,
+                    useGoogleFonts: GoogleFonts.asMap()
+                        .containsKey(FlutterFlowTheme.of(context).title1Family),
+                  ),
+            ),
           ),
         ),
       ],

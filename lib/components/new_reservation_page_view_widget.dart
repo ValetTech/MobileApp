@@ -278,7 +278,7 @@ class _NewReservationPageViewWidgetState
                         ),
                         Row(
                           mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             FFButtonWidget(
                               onPressed: () async {
@@ -290,6 +290,7 @@ class _NewReservationPageViewWidgetState
                                 size: 20,
                               ),
                               options: FFButtonOptions(
+                                width: 126,
                                 height: 40,
                                 color: FlutterFlowTheme.of(context).white,
                                 textStyle: FlutterFlowTheme.of(context)
@@ -329,6 +330,7 @@ class _NewReservationPageViewWidgetState
                                 size: 20,
                               ),
                               options: FFButtonOptions(
+                                width: 126,
                                 height: 40,
                                 color:
                                     FlutterFlowTheme.of(context).secondaryColor,

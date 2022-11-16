@@ -10,29 +10,22 @@ abstract class OrdersRecord
     implements Built<OrdersRecord, OrdersRecordBuilder> {
   static Serializer<OrdersRecord> get serializer => _$ordersRecordSerializer;
 
-  String? get name;
+  int? get tableId;
 
-  double? get amount;
+  BuiltList<OrderItemStruct>? get items;
 
   String? get status;
 
-  double? get tax;
-
-  @BuiltValueField(wireName: 'created_at')
-  DateTime? get createdAt;
-
-  int? get tableId;
+  DateTime? get date;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
 
   static void _initializeBuilder(OrdersRecordBuilder builder) => builder
-    ..name = ''
-    ..amount = 0.0
-    ..status = ''
-    ..tax = 0.0
-    ..tableId = 0;
+    ..tableId = 0
+    ..items = ListBuilder()
+    ..status = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('orders');
@@ -56,23 +49,18 @@ abstract class OrdersRecord
 }
 
 Map<String, dynamic> createOrdersRecordData({
-  String? name,
-  double? amount,
-  String? status,
-  double? tax,
-  DateTime? createdAt,
   int? tableId,
+  String? status,
+  DateTime? date,
 }) {
   final firestoreData = serializers.toFirestore(
     OrdersRecord.serializer,
     OrdersRecord(
       (o) => o
-        ..name = name
-        ..amount = amount
+        ..tableId = tableId
+        ..items = null
         ..status = status
-        ..tax = tax
-        ..createdAt = createdAt
-        ..tableId = tableId,
+        ..date = date,
     ),
   );
 

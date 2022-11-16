@@ -139,3 +139,12 @@ dynamic updateJson(
   newJson[path ?? ""] = value ?? "";
   return newJson;
 }
+
+int getTableIdByType(
+  String? type,
+  List<dynamic> tables,
+) {
+  // Add your function code here!
+  return tables.where((table) => table["type"] == (type ?? "")).first["id"] ??
+      0;
+}

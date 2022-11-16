@@ -160,121 +160,173 @@ class _MenuWidgetState extends State<MenuWidget> {
                                     topRight: Radius.circular(0),
                                   ),
                                 ),
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      8, 8, 0, 0),
-                                  child: Wrap(
-                                    spacing: 8,
-                                    runSpacing: 8,
-                                    alignment: WrapAlignment.start,
-                                    crossAxisAlignment:
-                                        WrapCrossAlignment.start,
-                                    direction: Axis.horizontal,
-                                    runAlignment: WrapAlignment.start,
-                                    verticalDirection: VerticalDirection.down,
-                                    clipBehavior: Clip.none,
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
                                     children: [
-                                      FutureBuilder<List<CategoriesRecord>>(
-                                        future: queryCategoriesRecordOnce(
-                                          queryBuilder: (categoriesRecord) =>
-                                              categoriesRecord.orderBy('id'),
+                                      if (FFAppState().filtersOn == false)
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  4, 0, 4, 0),
+                                          child: Icon(
+                                            Icons.filter_alt_rounded,
+                                            color: FlutterFlowTheme.of(context)
+                                                .iconGray,
+                                            size: 24,
+                                          ),
                                         ),
-                                        builder: (context, snapshot) {
-                                          // Customize what your widget looks like when it's loading.
-                                          if (!snapshot.hasData) {
-                                            return Center(
-                                              child: SizedBox(
-                                                width: 40,
-                                                height: 40,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: Color(0x00023047),
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                          List<CategoriesRecord>
-                                              choiceChipsCategoriesRecordList =
-                                              snapshot.data!;
-                                          return FlutterFlowChoiceChips(
-                                            options:
-                                                choiceChipsCategoriesRecordList
-                                                    .map((e) => e.title!)
-                                                    .toList()
-                                                    .map((label) =>
-                                                        ChipData(label))
-                                                    .toList(),
-                                            onChanged: (val) async {
-                                              setState(() => choiceChipsValues
-                                                  .value = val);
+                                      if (FFAppState().filtersOn == true)
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  4, 0, 4, 0),
+                                          child: InkWell(
+                                            onTap: () async {
                                               setState(() => FFAppState()
-                                                  .filtersOn = true);
+                                                  .filtersOn = false);
+                                              setState(() =>
+                                                  choiceChipsValues.value = []);
                                             },
-                                            selectedChipStyle: ChipStyle(
-                                              backgroundColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryColor,
-                                              textStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyText1
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyText1Family,
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyText1Family),
-                                                      ),
-                                              iconColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryColor,
-                                              iconSize: 14,
-                                              elevation: 4,
+                                            child: Icon(
+                                              Icons.cancel,
+                                              color: Color(0xFFDF3F3F),
+                                              size: 24,
                                             ),
-                                            unselectedChipStyle: ChipStyle(
-                                              backgroundColor: Colors.white,
-                                              textStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyText2
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyText2Family,
+                                          ),
+                                        ),
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            8, 8, 0, 0),
+                                        child: Wrap(
+                                          spacing: 8,
+                                          runSpacing: 8,
+                                          alignment: WrapAlignment.start,
+                                          crossAxisAlignment:
+                                              WrapCrossAlignment.start,
+                                          direction: Axis.vertical,
+                                          runAlignment: WrapAlignment.start,
+                                          verticalDirection:
+                                              VerticalDirection.down,
+                                          clipBehavior: Clip.antiAlias,
+                                          children: [
+                                            FutureBuilder<
+                                                List<CategoriesRecord>>(
+                                              future: queryCategoriesRecordOnce(
+                                                queryBuilder:
+                                                    (categoriesRecord) =>
+                                                        categoriesRecord
+                                                            .orderBy('id'),
+                                              ),
+                                              builder: (context, snapshot) {
+                                                // Customize what your widget looks like when it's loading.
+                                                if (!snapshot.hasData) {
+                                                  return Center(
+                                                    child: SizedBox(
+                                                      width: 40,
+                                                      height: 40,
+                                                      child:
+                                                          CircularProgressIndicator(
                                                         color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .iconGray,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyText2Family),
+                                                            Color(0x00023047),
                                                       ),
-                                              iconColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .iconGray,
-                                              iconSize: 14,
-                                              elevation: 4,
+                                                    ),
+                                                  );
+                                                }
+                                                List<CategoriesRecord>
+                                                    choiceChipsCategoriesRecordList =
+                                                    snapshot.data!;
+                                                return FlutterFlowChoiceChips(
+                                                  options:
+                                                      choiceChipsCategoriesRecordList
+                                                          .map((e) => e.title!)
+                                                          .toList()
+                                                          .map((label) =>
+                                                              ChipData(label))
+                                                          .toList(),
+                                                  onChanged: (val) async {
+                                                    setState(() =>
+                                                        choiceChipsValues
+                                                            .value = val);
+                                                    setState(() => FFAppState()
+                                                        .filtersOn = true);
+                                                  },
+                                                  selectedChipStyle: ChipStyle(
+                                                    backgroundColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .secondaryColor,
+                                                    textStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyText1
+                                                            .override(
+                                                              fontFamily:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyText1Family,
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .primaryColor,
+                                                              useGoogleFonts: GoogleFonts
+                                                                      .asMap()
+                                                                  .containsKey(
+                                                                      FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyText1Family),
+                                                            ),
+                                                    iconColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .primaryColor,
+                                                    iconSize: 14,
+                                                    elevation: 4,
+                                                  ),
+                                                  unselectedChipStyle:
+                                                      ChipStyle(
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    textStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyText2
+                                                            .override(
+                                                              fontFamily:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyText2Family,
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .iconGray,
+                                                              useGoogleFonts: GoogleFonts
+                                                                      .asMap()
+                                                                  .containsKey(
+                                                                      FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyText2Family),
+                                                            ),
+                                                    iconColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .iconGray,
+                                                    iconSize: 14,
+                                                    elevation: 4,
+                                                  ),
+                                                  chipSpacing: 8,
+                                                  multiselect: true,
+                                                  initialized:
+                                                      choiceChipsValues.value !=
+                                                          null,
+                                                  alignment:
+                                                      WrapAlignment.start,
+                                                  selectedValuesVariable:
+                                                      choiceChipsValues,
+                                                );
+                                              },
                                             ),
-                                            chipSpacing: 8,
-                                            multiselect: true,
-                                            initialized:
-                                                choiceChipsValues.value != null,
-                                            alignment: WrapAlignment.start,
-                                            selectedValuesVariable:
-                                                choiceChipsValues,
-                                          );
-                                        },
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -583,7 +635,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                                 EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                context.pushNamed('NewReservation');
+                                context.pushNamed('NewOrder');
                               },
                               text: 'New Order',
                               icon: Icon(
@@ -616,32 +668,6 @@ class _MenuWidgetState extends State<MenuWidget> {
                             ),
                           ),
                         ),
-                        if (FFAppState().filtersOn)
-                          Align(
-                            alignment: AlignmentDirectional(0.95, -0.7),
-                            child: InkWell(
-                              onTap: () async {
-                                setState(() => choiceChipsValues.value = []);
-                                setState(() => FFAppState().filtersOn = false);
-
-                                context.pushNamed(
-                                  'Menu',
-                                  extra: <String, dynamic>{
-                                    kTransitionInfoKey: TransitionInfo(
-                                      hasTransition: true,
-                                      transitionType: PageTransitionType.fade,
-                                      duration: Duration(milliseconds: 0),
-                                    ),
-                                  },
-                                );
-                              },
-                              child: Icon(
-                                Icons.cancel,
-                                color: Color(0xFFDF3F3F),
-                                size: 30,
-                              ),
-                            ),
-                          ),
                       ],
                     ),
                   ),

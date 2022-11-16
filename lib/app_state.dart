@@ -21,6 +21,15 @@ class FFAppState {
     _resDate = prefs.containsKey('ff_resDate')
         ? DateTime.fromMillisecondsSinceEpoch(prefs.getInt('ff_resDate')!)
         : null;
+    _currentUserToken =
+        prefs.getString('ff_currentUserToken') ?? _currentUserToken;
+    _currentUserEmail =
+        prefs.getString('ff_currentUserEmail') ?? _currentUserEmail;
+    _currentUserName =
+        prefs.getString('ff_currentUserName') ?? _currentUserName;
+    _currentUserRoles =
+        prefs.getStringList('ff_currentUserRoles') ?? _currentUserRoles;
+    _apiToken = prefs.getString('ff_apiToken') ?? _apiToken;
   }
 
   late SharedPreferences prefs;
@@ -111,6 +120,54 @@ class FFAppState {
   dynamic editReservation;
 
   dynamic editCustomer;
+
+  String _currentUserToken = '';
+  String get currentUserToken => _currentUserToken;
+  set currentUserToken(String _value) {
+    _currentUserToken = _value;
+    prefs.setString('ff_currentUserToken', _value);
+  }
+
+  String _currentUserEmail = '';
+  String get currentUserEmail => _currentUserEmail;
+  set currentUserEmail(String _value) {
+    _currentUserEmail = _value;
+    prefs.setString('ff_currentUserEmail', _value);
+  }
+
+  String _currentUserName = '';
+  String get currentUserName => _currentUserName;
+  set currentUserName(String _value) {
+    _currentUserName = _value;
+    prefs.setString('ff_currentUserName', _value);
+  }
+
+  List<String> _currentUserRoles = [];
+  List<String> get currentUserRoles => _currentUserRoles;
+  set currentUserRoles(List<String> _value) {
+    _currentUserRoles = _value;
+    prefs.setStringList('ff_currentUserRoles', _value);
+  }
+
+  void addToCurrentUserRoles(String _value) {
+    _currentUserRoles.add(_value);
+    prefs.setStringList('ff_currentUserRoles', _currentUserRoles);
+  }
+
+  void removeFromCurrentUserRoles(String _value) {
+    _currentUserRoles.remove(_value);
+    prefs.setStringList('ff_currentUserRoles', _currentUserRoles);
+  }
+
+  int selectedOrderTable = 0;
+
+  String _apiToken =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiNDQxMzA4NTEtMGRhMi00YTdmLThmMzYtMTJlMTJlYWI4NzI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE3MDAwMTc3NTgsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLXhxcmgxQG9uZS1idXR0b24tNjNmZjkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCJ9._hDXDG7CNocdMoX8BvP7n2f92XiAGFJj_dbZMJzXSaU';
+  String get apiToken => _apiToken;
+  set apiToken(String _value) {
+    _apiToken = _value;
+    prefs.setString('ff_apiToken', _value);
+  }
 }
 
 LatLng? _latLngFromString(String? val) {

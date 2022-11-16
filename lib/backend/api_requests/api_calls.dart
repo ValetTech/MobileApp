@@ -13,8 +13,6 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 class ValetAPIGroup {
   static String baseUrl = 'https://valetapi.azurewebsites.net/api';
   static Map<String, String> headers = {
-    'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiZmUxZGUyZDQtNjUyYy00ZDkwLWFjMzMtZmMzMzBmNzMzNjk2IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE2OTk1MDg2NDYsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDIwMCJ9.mt02vmMb0Jm7cnwm8pl5Tf2DQamROOhW9whRqQ4NIiQ',
     'X-Version': '2',
   };
   static NewAreaCall newAreaCall = NewAreaCall();
@@ -27,7 +25,12 @@ class ValetAPIGroup {
   static GETSittingTypesCall gETSittingTypesCall = GETSittingTypesCall();
   static GETTablesCall gETTablesCall = GETTablesCall();
   static UpdateReservationCall updateReservationCall = UpdateReservationCall();
+  static UpdateReservationStatusCall updateReservationStatusCall =
+      UpdateReservationStatusCall();
   static UpdateCustomerCall updateCustomerCall = UpdateCustomerCall();
+  static LoginUserCall loginUserCall = LoginUserCall();
+  static PatchReservationCall patchReservationCall = PatchReservationCall();
+  static PatchCustomerCall patchCustomerCall = PatchCustomerCall();
 }
 
 class NewAreaCall {
@@ -36,6 +39,8 @@ class NewAreaCall {
     String? areaDescription = '',
     int? areaNumTables,
     int? areaTableCap,
+    String? authToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiNDQxMzA4NTEtMGRhMi00YTdmLThmMzYtMTJlMTJlYWI4NzI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE3MDAwMTc3NTgsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLXhxcmgxQG9uZS1idXR0b24tNjNmZjkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCJ9._hDXDG7CNocdMoX8BvP7n2f92XiAGFJj_dbZMJzXSaU',
   }) {
     final body = '''
 {
@@ -51,6 +56,7 @@ class NewAreaCall {
       callType: ApiCallType.POST,
       headers: {
         ...ValetAPIGroup.headers,
+        'Authorization': 'Bearer ${authToken}',
       },
       params: {},
       body: body,
@@ -67,6 +73,8 @@ class NewSittingCall {
     String? sittingStartTime = '',
     String? sittingEndTime = '',
     int? sittingCapacity,
+    String? authToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiNDQxMzA4NTEtMGRhMi00YTdmLThmMzYtMTJlMTJlYWI4NzI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE3MDAwMTc3NTgsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLXhxcmgxQG9uZS1idXR0b24tNjNmZjkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCJ9._hDXDG7CNocdMoX8BvP7n2f92XiAGFJj_dbZMJzXSaU',
   }) {
     final body = '''
 {
@@ -82,6 +90,7 @@ class NewSittingCall {
       callType: ApiCallType.POST,
       headers: {
         ...ValetAPIGroup.headers,
+        'Authorization': 'Bearer ${authToken}',
       },
       params: {},
       body: body,
@@ -112,6 +121,8 @@ class NewReservationCall {
     String? resDateTimeFormatted = '',
     String? source = '',
     int? resAreaId,
+    String? authToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiNDQxMzA4NTEtMGRhMi00YTdmLThmMzYtMTJlMTJlYWI4NzI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE3MDAwMTc3NTgsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLXhxcmgxQG9uZS1idXR0b24tNjNmZjkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCJ9._hDXDG7CNocdMoX8BvP7n2f92XiAGFJj_dbZMJzXSaU',
   }) {
     final body = '''
 {
@@ -137,7 +148,7 @@ class NewReservationCall {
       callType: ApiCallType.POST,
       headers: {
         ...ValetAPIGroup.headers,
-        'Content-Type': 'application/json-patch+json',
+        'Authorization': 'Bearer ${authToken}',
       },
       params: {},
       body: body,
@@ -153,6 +164,9 @@ class GETSittingTypesByDateCall {
     String? date = '',
     String? sittingType = '',
     List<String>? areaNameList,
+    int? sittingId,
+    String? authToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiNDQxMzA4NTEtMGRhMi00YTdmLThmMzYtMTJlMTJlYWI4NzI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE3MDAwMTc3NTgsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLXhxcmgxQG9uZS1idXR0b24tNjNmZjkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCJ9._hDXDG7CNocdMoX8BvP7n2f92XiAGFJj_dbZMJzXSaU',
   }) {
     final areaName = _serializeList(areaNameList);
 
@@ -162,6 +176,7 @@ class GETSittingTypesByDateCall {
       callType: ApiCallType.GET,
       headers: {
         ...ValetAPIGroup.headers,
+        'Authorization': 'Bearer ${authToken}',
       },
       params: {
         'Date': date,
@@ -216,6 +231,8 @@ class GETSittingTypesByDateCall {
 class GETAreasBySittingIDCall {
   Future<ApiCallResponse> call({
     int? sittingId,
+    String? authToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiNDQxMzA4NTEtMGRhMi00YTdmLThmMzYtMTJlMTJlYWI4NzI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE3MDAwMTc3NTgsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLXhxcmgxQG9uZS1idXR0b24tNjNmZjkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCJ9._hDXDG7CNocdMoX8BvP7n2f92XiAGFJj_dbZMJzXSaU',
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'GET Areas by Sitting ID',
@@ -223,6 +240,7 @@ class GETAreasBySittingIDCall {
       callType: ApiCallType.GET,
       headers: {
         ...ValetAPIGroup.headers,
+        'Authorization': 'Bearer ${authToken}',
       },
       params: {
         'sittingId': sittingId,
@@ -267,6 +285,8 @@ class GETAreasBySittingIDCall {
 class GETSittingTypesCall {
   Future<ApiCallResponse> call({
     String? date = '',
+    String? authToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiNDQxMzA4NTEtMGRhMi00YTdmLThmMzYtMTJlMTJlYWI4NzI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE3MDAwMTc3NTgsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLXhxcmgxQG9uZS1idXR0b24tNjNmZjkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCJ9._hDXDG7CNocdMoX8BvP7n2f92XiAGFJj_dbZMJzXSaU',
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'GET Sitting Types',
@@ -274,6 +294,7 @@ class GETSittingTypesCall {
       callType: ApiCallType.GET,
       headers: {
         ...ValetAPIGroup.headers,
+        'Authorization': 'Bearer ${authToken}',
       },
       params: {
         'date': date,
@@ -291,13 +312,17 @@ class GETSittingTypesCall {
 }
 
 class GETTablesCall {
-  Future<ApiCallResponse> call() {
+  Future<ApiCallResponse> call({
+    String? authToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiNDQxMzA4NTEtMGRhMi00YTdmLThmMzYtMTJlMTJlYWI4NzI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE3MDAwMTc3NTgsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLXhxcmgxQG9uZS1idXR0b24tNjNmZjkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCJ9._hDXDG7CNocdMoX8BvP7n2f92XiAGFJj_dbZMJzXSaU',
+  }) {
     return ApiManager.instance.makeApiCall(
       callName: 'GET Tables',
       apiUrl: '${ValetAPIGroup.baseUrl}/tables',
       callType: ApiCallType.GET,
       headers: {
         ...ValetAPIGroup.headers,
+        'Authorization': 'Bearer ${authToken}',
       },
       params: {},
       returnBody: true,
@@ -355,6 +380,8 @@ class UpdateReservationCall {
     String? status = '',
     String? notes = '',
     int? areaId,
+    String? authToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiNDQxMzA4NTEtMGRhMi00YTdmLThmMzYtMTJlMTJlYWI4NzI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE3MDAwMTc3NTgsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLXhxcmgxQG9uZS1idXR0b24tNjNmZjkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCJ9._hDXDG7CNocdMoX8BvP7n2f92XiAGFJj_dbZMJzXSaU',
   }) {
     final body = '''
 {
@@ -376,6 +403,47 @@ class UpdateReservationCall {
       callType: ApiCallType.PUT,
       headers: {
         ...ValetAPIGroup.headers,
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      body: body,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      cache: false,
+    );
+  }
+}
+
+class UpdateReservationStatusCall {
+  Future<ApiCallResponse> call({
+    int? reservationId,
+    int? customerId,
+    int? areaId,
+    int? sittingId,
+    String? dateTime = '',
+    int? noGuests,
+    String? status = '',
+    String? authToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiNDQxMzA4NTEtMGRhMi00YTdmLThmMzYtMTJlMTJlYWI4NzI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE3MDAwMTc3NTgsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLXhxcmgxQG9uZS1idXR0b24tNjNmZjkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCJ9._hDXDG7CNocdMoX8BvP7n2f92XiAGFJj_dbZMJzXSaU',
+  }) {
+    final body = '''
+{
+  "id": ${reservationId},
+  "customerId": ${customerId},
+  "sittingId": ${sittingId},
+  "dateTime": "${dateTime}",
+  "noGuests": ${noGuests},
+  "venueId": 1,
+  "areaId": ${areaId},
+  "status": "${status}"
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'Update Reservation Status',
+      apiUrl: '${ValetAPIGroup.baseUrl}/reservations/${reservationId}',
+      callType: ApiCallType.PUT,
+      headers: {
+        ...ValetAPIGroup.headers,
+        'Authorization': 'Bearer ${authToken}',
       },
       params: {},
       body: body,
@@ -394,6 +462,8 @@ class UpdateCustomerCall {
     String? email = '',
     String? phone = '',
     bool? isVip,
+    String? authToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiNDQxMzA4NTEtMGRhMi00YTdmLThmMzYtMTJlMTJlYWI4NzI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE3MDAwMTc3NTgsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLXhxcmgxQG9uZS1idXR0b24tNjNmZjkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCJ9._hDXDG7CNocdMoX8BvP7n2f92XiAGFJj_dbZMJzXSaU',
   }) {
     final body = '''
 {
@@ -410,6 +480,110 @@ class UpdateCustomerCall {
       callType: ApiCallType.PUT,
       headers: {
         ...ValetAPIGroup.headers,
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      body: body,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      cache: false,
+    );
+  }
+}
+
+class LoginUserCall {
+  Future<ApiCallResponse> call({
+    String? email = '',
+    String? password = '',
+  }) {
+    final body = '''
+{
+  "email": "${email}",
+  "password": "${password}"
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'Login user',
+      apiUrl: '${ValetAPIGroup.baseUrl}/auth/login',
+      callType: ApiCallType.POST,
+      headers: {
+        ...ValetAPIGroup.headers,
+      },
+      params: {},
+      body: body,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      cache: false,
+    );
+  }
+
+  dynamic jWTToken(dynamic response) => getJsonField(
+        response,
+        r'''$.token''',
+      );
+  dynamic jWTExpiration(dynamic response) => getJsonField(
+        response,
+        r'''$.expiration''',
+      );
+}
+
+class PatchReservationCall {
+  Future<ApiCallResponse> call({
+    int? id,
+    String? authToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiNDQxMzA4NTEtMGRhMi00YTdmLThmMzYtMTJlMTJlYWI4NzI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE3MDAwMTc3NTgsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLXhxcmgxQG9uZS1idXR0b24tNjNmZjkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCJ9._hDXDG7CNocdMoX8BvP7n2f92XiAGFJj_dbZMJzXSaU',
+    String? value = '',
+    String? path = '',
+    String? operation = 'replace',
+  }) {
+    final body = '''
+[
+  {
+    "value": "${value}",
+    "path": "${path}",
+    "op": "${operation}"
+  }
+]''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'Patch Reservation',
+      apiUrl: '${ValetAPIGroup.baseUrl}/reservations/${id}',
+      callType: ApiCallType.PATCH,
+      headers: {
+        ...ValetAPIGroup.headers,
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {},
+      body: body,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      cache: false,
+    );
+  }
+}
+
+class PatchCustomerCall {
+  Future<ApiCallResponse> call({
+    String? authToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiNDQxMzA4NTEtMGRhMi00YTdmLThmMzYtMTJlMTJlYWI4NzI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE3MDAwMTc3NTgsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLXhxcmgxQG9uZS1idXR0b24tNjNmZjkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCJ9._hDXDG7CNocdMoX8BvP7n2f92XiAGFJj_dbZMJzXSaU',
+    String? value = '',
+    String? path = '',
+    String? operation = 'replace',
+    int? id,
+  }) {
+    final body = '''
+[
+  {
+    "value": "${value}",
+    "path": "${path}",
+    "op": "${operation}"
+  }
+]''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'Patch Customer',
+      apiUrl: '${ValetAPIGroup.baseUrl}/customers/${id}',
+      callType: ApiCallType.PATCH,
+      headers: {
+        ...ValetAPIGroup.headers,
+        'Authorization': 'Bearer ${authToken}',
       },
       params: {},
       body: body,
@@ -429,6 +603,8 @@ class GETReservationsCall {
     int? size,
     String? area = '',
     String? sitting = '',
+    String? authToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiNDQxMzA4NTEtMGRhMi00YTdmLThmMzYtMTJlMTJlYWI4NzI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE3MDAwMTc3NTgsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLXhxcmgxQG9uZS1idXR0b24tNjNmZjkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCJ9._hDXDG7CNocdMoX8BvP7n2f92XiAGFJj_dbZMJzXSaU',
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'GET Reservations',
@@ -437,8 +613,7 @@ class GETReservationsCall {
       headers: {
         'content-type': 'application/json',
         'X-Version': '2',
-        'Authorization':
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiZmUxZGUyZDQtNjUyYy00ZDkwLWFjMzMtZmMzMzBmNzMzNjk2IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE2OTk1MDg2NDYsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDIwMCJ9.mt02vmMb0Jm7cnwm8pl5Tf2DQamROOhW9whRqQ4NIiQ',
+        'Authorization': 'Bearer ${authToken}',
       },
       params: {
         'Date': date,
@@ -565,6 +740,8 @@ class GETReservationsCall {
 class GETTablesAvailableBySittingIDCall {
   static Future<ApiCallResponse> call({
     int? selectedSittingId,
+    String? authToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiNDQxMzA4NTEtMGRhMi00YTdmLThmMzYtMTJlMTJlYWI4NzI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE3MDAwMTc3NTgsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLXhxcmgxQG9uZS1idXR0b24tNjNmZjkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCJ9._hDXDG7CNocdMoX8BvP7n2f92XiAGFJj_dbZMJzXSaU',
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'GET Tables Available By Sitting ID',
@@ -572,10 +749,9 @@ class GETTablesAvailableBySittingIDCall {
           'https://valetapi.azurewebsites.net/api/sittings/${selectedSittingId}/tables?Available=true',
       callType: ApiCallType.GET,
       headers: {
-        'content-type': 'application/json; charset=utf-8; v=1.0',
+        'content-type': 'application/json; charset=utf-8;',
         'X-Version': '2',
-        'Authorization':
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiZmUxZGUyZDQtNjUyYy00ZDkwLWFjMzMtZmMzMzBmNzMzNjk2IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE2OTk1MDg2NDYsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDIwMCJ9.mt02vmMb0Jm7cnwm8pl5Tf2DQamROOhW9whRqQ4NIiQ',
+        'Authorization': 'Bearer ${authToken}',
       },
       params: {},
       returnBody: true,

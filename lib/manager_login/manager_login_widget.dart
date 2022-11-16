@@ -1,4 +1,5 @@
 import '../auth/auth_util.dart';
+import '../backend/api_requests/api_calls.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -15,6 +16,7 @@ class ManagerLoginWidget extends StatefulWidget {
 }
 
 class _ManagerLoginWidgetState extends State<ManagerLoginWidget> {
+  ApiCallResponse? apiResulthxs;
   TextEditingController? emailAddressController;
   TextEditingController? passwordLoginController;
 
@@ -312,18 +314,65 @@ class _ManagerLoginWidgetState extends State<ManagerLoginWidget> {
                                 EdgeInsetsDirectional.fromSTEB(0, 44, 0, 0),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                GoRouter.of(context).prepareAuthEvent();
-
-                                final user = await signInWithEmail(
-                                  context,
-                                  emailAddressController!.text,
-                                  passwordLoginController!.text,
+                                var _shouldSetState = false;
+                                Function() _navigate = () {};
+                                apiResulthxs =
+                                    await ValetAPIGroup.loginUserCall.call(
+                                  email: emailAddressController!.text,
+                                  password: passwordLoginController!.text,
                                 );
-                                if (user == null) {
+                                _shouldSetState = true;
+                                if ((apiResulthxs?.succeeded ?? true)) {
+                                  GoRouter.of(context).prepareAuthEvent();
+                                  final user = await signInWithJwtToken(
+                                    context,
+                                    getJsonField(
+                                      (apiResulthxs?.jsonBody ?? ''),
+                                      r'''$.token''',
+                                    ).toString(),
+                                  );
+                                  if (user == null) {
+                                    return;
+                                  }
+
+                                  _navigate = () =>
+                                      context.goNamedAuth('Dashboard', mounted);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Logged In.',
+                                        style: TextStyle(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                        ),
+                                      ),
+                                      duration: Duration(milliseconds: 4000),
+                                      backgroundColor: Color(0x00000000),
+                                    ),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        getJsonField(
+                                          (apiResulthxs?.jsonBody ?? ''),
+                                          r'''$.title''',
+                                        ).toString(),
+                                        style: TextStyle(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                        ),
+                                      ),
+                                      duration: Duration(milliseconds: 4000),
+                                      backgroundColor: Color(0x00000000),
+                                    ),
+                                  );
+                                  if (_shouldSetState) setState(() {});
                                   return;
                                 }
 
-                                context.goNamedAuth('Dashboard', mounted);
+                                _navigate();
+                                if (_shouldSetState) setState(() {});
                               },
                               text: 'Login',
                               icon: Icon(

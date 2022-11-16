@@ -16,11 +16,11 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
 
   String? get uid;
 
-  @BuiltValueField(wireName: 'created_time')
-  DateTime? get createdTime;
-
   @BuiltValueField(wireName: 'photo_url')
   String? get photoUrl;
+
+  @BuiltValueField(wireName: 'created_time')
+  DateTime? get createdTime;
 
   @BuiltValueField(wireName: 'phone_number')
   String? get phoneNumber;
@@ -61,8 +61,8 @@ Map<String, dynamic> createUsersRecordData({
   String? email,
   String? displayName,
   String? uid,
-  DateTime? createdTime,
   String? photoUrl,
+  DateTime? createdTime,
   String? phoneNumber,
 }) {
   final firestoreData = serializers.toFirestore(
@@ -72,8 +72,8 @@ Map<String, dynamic> createUsersRecordData({
         ..email = email
         ..displayName = displayName
         ..uid = uid
-        ..createdTime = createdTime
         ..photoUrl = photoUrl
+        ..createdTime = createdTime
         ..phoneNumber = phoneNumber,
     ),
   );

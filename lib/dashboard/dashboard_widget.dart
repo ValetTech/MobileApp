@@ -494,8 +494,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                   style: FlutterFlowTheme.of(context).subtitle2,
                                 ),
                                 FFButtonWidget(
-                                  onPressed: () {
-                                    print('Button pressed ...');
+                                  onPressed: () async {
+                                    context.pushNamed('NewOrder');
                                   },
                                   text: 'New Order',
                                   icon: FaIcon(

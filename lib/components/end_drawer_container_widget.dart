@@ -254,7 +254,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 8),
                   child: InkWell(
                     onTap: () async {
-                      context.pushNamed('Orders');
+                      context.pushNamed('NewOrder');
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -278,23 +278,28 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 8),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
-                        child: Icon(
-                          Icons.payment_rounded,
-                          color: FlutterFlowTheme.of(context).iconGray,
-                          size: 24,
+                  child: InkWell(
+                    onTap: () async {
+                      context.pushNamed('Orders');
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
+                          child: Icon(
+                            Icons.payment_rounded,
+                            color: FlutterFlowTheme.of(context).iconGray,
+                            size: 24,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'View/Modify Open Orders',
-                        style: FlutterFlowTheme.of(context).bodyText1,
-                      ),
-                    ],
+                        Text(
+                          'View/Modify Open Orders',
+                          style: FlutterFlowTheme.of(context).bodyText1,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Padding(

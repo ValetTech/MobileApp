@@ -410,148 +410,142 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                       VerticalDirection.down,
                                                   clipBehavior: Clip.none,
                                                   children: [
-                                                    FutureBuilder<
-                                                        ApiCallResponse>(
-                                                      future: ValetAPIGroup
-                                                          .gETSittingTypesByDateCall
-                                                          .call(
-                                                        date: functions
-                                                            .formatDateForPOST(
-                                                                FFAppState()
-                                                                    .selectedDate!),
-                                                      ),
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        // Customize what your widget looks like when it's loading.
-                                                        if (!snapshot.hasData) {
-                                                          return Center(
-                                                            child: SizedBox(
-                                                              width: 40,
-                                                              height: 40,
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                color: Color(
-                                                                    0x00023047),
+                                                    Visibility(
+                                                      visible:
+                                                          true /* Warning: Trying to access variable not yet defined. */,
+                                                      child: FutureBuilder<
+                                                          ApiCallResponse>(
+                                                        future: ValetAPIGroup
+                                                            .gETSittingTypesByDateCall
+                                                            .call(
+                                                          date: functions
+                                                              .formatDateForPOST(
+                                                                  FFAppState()
+                                                                      .selectedDate!),
+                                                        ),
+                                                        builder: (context,
+                                                            snapshot) {
+                                                          // Customize what your widget looks like when it's loading.
+                                                          if (!snapshot
+                                                              .hasData) {
+                                                            return Center(
+                                                              child: SizedBox(
+                                                                width: 40,
+                                                                height: 40,
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  color: Color(
+                                                                      0x00023047),
+                                                                ),
                                                               ),
+                                                            );
+                                                          }
+                                                          final sittingChipsGETSittingTypesByDateResponse =
+                                                              snapshot.data!;
+                                                          return FlutterFlowChoiceChips(
+                                                            options: (ValetAPIGroup
+                                                                            .gETSittingTypesByDateCall
+                                                                            .sittings(
+                                                                              sittingChipsGETSittingTypesByDateResponse.jsonBody,
+                                                                            )
+                                                                            .length >
+                                                                        0
+                                                                    ? (ValetAPIGroup
+                                                                            .gETSittingTypesByDateCall
+                                                                            .sittingType(
+                                                                        sittingChipsGETSittingTypesByDateResponse
+                                                                            .jsonBody,
+                                                                      ) as List)
+                                                                        .map<String>((s) => s
+                                                                            .toString())
+                                                                        .toList()
+                                                                        .where((e) =>
+                                                                            calendarPickerReservationsMainSelectedDay?.start ==
+                                                                            FFAppState()
+                                                                                .selectedDate)
+                                                                        .toList()
+                                                                    : [
+                                                                        "No Sittings"
+                                                                      ])
+                                                                .map((label) =>
+                                                                    ChipData(
+                                                                        label))
+                                                                .toList(),
+                                                            onChanged:
+                                                                (val) async {
+                                                              setState(() =>
+                                                                  sittingChipsValues
+                                                                          .value =
+                                                                      val);
+                                                              setState(() =>
+                                                                  FFAppState()
+                                                                          .filtersOn =
+                                                                      true);
+                                                              setState(() =>
+                                                                  _apiRequestCompleter =
+                                                                      null);
+                                                            },
+                                                            selectedChipStyle:
+                                                                ChipStyle(
+                                                              backgroundColor:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryColor,
+                                                              textStyle:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyText1
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            FlutterFlowTheme.of(context).bodyText1Family,
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .primaryColor,
+                                                                        useGoogleFonts:
+                                                                            GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText1Family),
+                                                                      ),
+                                                              iconColor: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .primaryColor,
+                                                              iconSize: 14,
+                                                              elevation: 4,
                                                             ),
-                                                          );
-                                                        }
-                                                        final sittingChipsGETSittingTypesByDateResponse =
-                                                            snapshot.data!;
-                                                        return FlutterFlowChoiceChips(
-                                                          options: (ValetAPIGroup
-                                                                          .gETSittingTypesByDateCall
-                                                                          .sittings(
-                                                                            sittingChipsGETSittingTypesByDateResponse.jsonBody,
-                                                                          )
-                                                                          .length >
-                                                                      0
-                                                                  ? (ValetAPIGroup
-                                                                          .gETSittingTypesByDateCall
-                                                                          .sittingType(
-                                                                      sittingChipsGETSittingTypesByDateResponse
-                                                                          .jsonBody,
-                                                                    ) as List)
-                                                                      .map<String>(
-                                                                          (s) => s
-                                                                              .toString())
-                                                                      .toList()
-                                                                      .where((e) =>
-                                                                          calendarPickerReservationsMainSelectedDay
-                                                                              ?.start ==
-                                                                          FFAppState()
-                                                                              .selectedDate)
-                                                                      .toList()
-                                                                  : [
-                                                                      "No Sittings"
-                                                                    ])
-                                                              .map((label) =>
-                                                                  ChipData(
-                                                                      label))
-                                                              .toList(),
-                                                          onChanged:
-                                                              (val) async {
-                                                            setState(() =>
+                                                            unselectedChipStyle:
+                                                                ChipStyle(
+                                                              backgroundColor:
+                                                                  Colors.white,
+                                                              textStyle:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyText2
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            FlutterFlowTheme.of(context).bodyText2Family,
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .iconGray,
+                                                                        useGoogleFonts:
+                                                                            GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText2Family),
+                                                                      ),
+                                                              iconColor:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .iconGray,
+                                                              iconSize: 14,
+                                                              elevation: 4,
+                                                            ),
+                                                            chipSpacing: 8,
+                                                            multiselect: true,
+                                                            initialized:
                                                                 sittingChipsValues
-                                                                        .value =
-                                                                    val);
-                                                            setState(() =>
-                                                                FFAppState()
-                                                                        .filtersOn =
-                                                                    true);
-                                                            setState(() =>
-                                                                _apiRequestCompleter =
-                                                                    null);
-                                                          },
-                                                          selectedChipStyle:
-                                                              ChipStyle(
-                                                            backgroundColor:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .secondaryColor,
-                                                            textStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyText1
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .bodyText1Family,
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .primaryColor,
-                                                                      useGoogleFonts: GoogleFonts
-                                                                              .asMap()
-                                                                          .containsKey(
-                                                                              FlutterFlowTheme.of(context).bodyText1Family),
-                                                                    ),
-                                                            iconColor:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primaryColor,
-                                                            iconSize: 14,
-                                                            elevation: 4,
-                                                          ),
-                                                          unselectedChipStyle:
-                                                              ChipStyle(
-                                                            backgroundColor:
-                                                                Colors.white,
-                                                            textStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyText2
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .bodyText2Family,
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .iconGray,
-                                                                      useGoogleFonts: GoogleFonts
-                                                                              .asMap()
-                                                                          .containsKey(
-                                                                              FlutterFlowTheme.of(context).bodyText2Family),
-                                                                    ),
-                                                            iconColor:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .iconGray,
-                                                            iconSize: 14,
-                                                            elevation: 4,
-                                                          ),
-                                                          chipSpacing: 8,
-                                                          multiselect: true,
-                                                          initialized:
-                                                              sittingChipsValues
-                                                                      .value !=
-                                                                  null,
-                                                          alignment:
-                                                              WrapAlignment
-                                                                  .spaceEvenly,
-                                                          selectedValuesVariable:
-                                                              sittingChipsValues,
-                                                        );
-                                                      },
+                                                                        .value !=
+                                                                    null,
+                                                            alignment:
+                                                                WrapAlignment
+                                                                    .spaceEvenly,
+                                                            selectedValuesVariable:
+                                                                sittingChipsValues,
+                                                          );
+                                                        },
+                                                      ),
                                                     ),
                                                     FutureBuilder<
                                                         ApiCallResponse>(
@@ -796,34 +790,26 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                                   CrossAxisAlignment
                                                                       .start,
                                                               children: [
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0,
-                                                                          0,
-                                                                          0,
-                                                                          4),
-                                                                  child: Text(
-                                                                    getJsonField(
-                                                                      resListItem,
-                                                                      r'''$.customer.fullName''',
-                                                                    ).toString(),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .subtitle1
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Overpass',
-                                                                          color:
-                                                                              Color(0xFF101213),
-                                                                          fontSize:
-                                                                              18,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                          useGoogleFonts:
-                                                                              GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).subtitle1Family),
-                                                                        ),
-                                                                  ),
+                                                                Text(
+                                                                  getJsonField(
+                                                                    resListItem,
+                                                                    r'''$.customer.fullName''',
+                                                                  ).toString(),
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .subtitle1
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Overpass',
+                                                                        color: Color(
+                                                                            0xFF101213),
+                                                                        fontSize:
+                                                                            18,
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                        useGoogleFonts:
+                                                                            GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).subtitle1Family),
+                                                                      ),
                                                                 ),
                                                                 Padding(
                                                                   padding: EdgeInsetsDirectional
@@ -858,8 +844,8 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                                             r'''$.dateTime''',
                                                                           ).toString())} · ${getJsonField(
                                                                             resListItem,
-                                                                            r'''$.duration''',
-                                                                          ).toString()} mins',
+                                                                            r'''$.noGuests''',
+                                                                          ).toString()} pax',
                                                                           style: FlutterFlowTheme.of(context)
                                                                               .bodyText2
                                                                               .override(

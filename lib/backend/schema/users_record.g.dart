@@ -40,19 +40,19 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    value = object.createdTime;
-    if (value != null) {
-      result
-        ..add('created_time')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(DateTime)));
-    }
     value = object.photoUrl;
     if (value != null) {
       result
         ..add('photo_url')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
+    }
+    value = object.createdTime;
+    if (value != null) {
+      result
+        ..add('created_time')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(DateTime)));
     }
     value = object.phoneNumber;
     if (value != null) {
@@ -95,13 +95,13 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
           result.uid = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
-        case 'created_time':
-          result.createdTime = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime)) as DateTime?;
-          break;
         case 'photo_url':
           result.photoUrl = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
+          break;
+        case 'created_time':
+          result.createdTime = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime?;
           break;
         case 'phone_number':
           result.phoneNumber = serializers.deserialize(value,
@@ -128,9 +128,9 @@ class _$UsersRecord extends UsersRecord {
   @override
   final String? uid;
   @override
-  final DateTime? createdTime;
-  @override
   final String? photoUrl;
+  @override
+  final DateTime? createdTime;
   @override
   final String? phoneNumber;
   @override
@@ -143,8 +143,8 @@ class _$UsersRecord extends UsersRecord {
       {this.email,
       this.displayName,
       this.uid,
-      this.createdTime,
       this.photoUrl,
+      this.createdTime,
       this.phoneNumber,
       this.ffRef})
       : super._();
@@ -163,8 +163,8 @@ class _$UsersRecord extends UsersRecord {
         email == other.email &&
         displayName == other.displayName &&
         uid == other.uid &&
-        createdTime == other.createdTime &&
         photoUrl == other.photoUrl &&
+        createdTime == other.createdTime &&
         phoneNumber == other.phoneNumber &&
         ffRef == other.ffRef;
   }
@@ -177,8 +177,8 @@ class _$UsersRecord extends UsersRecord {
                 $jc(
                     $jc($jc($jc(0, email.hashCode), displayName.hashCode),
                         uid.hashCode),
-                    createdTime.hashCode),
-                photoUrl.hashCode),
+                    photoUrl.hashCode),
+                createdTime.hashCode),
             phoneNumber.hashCode),
         ffRef.hashCode));
   }
@@ -189,8 +189,8 @@ class _$UsersRecord extends UsersRecord {
           ..add('email', email)
           ..add('displayName', displayName)
           ..add('uid', uid)
-          ..add('createdTime', createdTime)
           ..add('photoUrl', photoUrl)
+          ..add('createdTime', createdTime)
           ..add('phoneNumber', phoneNumber)
           ..add('ffRef', ffRef))
         .toString();
@@ -212,13 +212,13 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
   String? get uid => _$this._uid;
   set uid(String? uid) => _$this._uid = uid;
 
-  DateTime? _createdTime;
-  DateTime? get createdTime => _$this._createdTime;
-  set createdTime(DateTime? createdTime) => _$this._createdTime = createdTime;
-
   String? _photoUrl;
   String? get photoUrl => _$this._photoUrl;
   set photoUrl(String? photoUrl) => _$this._photoUrl = photoUrl;
+
+  DateTime? _createdTime;
+  DateTime? get createdTime => _$this._createdTime;
+  set createdTime(DateTime? createdTime) => _$this._createdTime = createdTime;
 
   String? _phoneNumber;
   String? get phoneNumber => _$this._phoneNumber;
@@ -238,8 +238,8 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
       _email = $v.email;
       _displayName = $v.displayName;
       _uid = $v.uid;
-      _createdTime = $v.createdTime;
       _photoUrl = $v.photoUrl;
+      _createdTime = $v.createdTime;
       _phoneNumber = $v.phoneNumber;
       _ffRef = $v.ffRef;
       _$v = null;
@@ -267,8 +267,8 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
             email: email,
             displayName: displayName,
             uid: uid,
-            createdTime: createdTime,
             photoUrl: photoUrl,
+            createdTime: createdTime,
             phoneNumber: phoneNumber,
             ffRef: ffRef);
     replace(_$result);

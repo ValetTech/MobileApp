@@ -51,7 +51,7 @@ class _NewReservationWidgetState extends State<NewReservationWidget> {
               backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
               automaticallyImplyLeading: false,
               title: Container(
-                width: 100,
+                width: double.infinity,
                 height: 60,
                 decoration: BoxDecoration(),
                 child: Row(

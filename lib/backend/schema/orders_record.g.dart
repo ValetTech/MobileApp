@@ -20,19 +20,19 @@ class _$OrdersRecordSerializer implements StructuredSerializer<OrdersRecord> {
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[];
     Object? value;
-    value = object.name;
+    value = object.tableId;
     if (value != null) {
       result
-        ..add('name')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add('tableId')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    value = object.amount;
+    value = object.items;
     if (value != null) {
       result
-        ..add('amount')
+        ..add('items')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(double)));
+            specifiedType: const FullType(
+                BuiltList, const [const FullType(OrderItemStruct)])));
     }
     value = object.status;
     if (value != null) {
@@ -41,25 +41,12 @@ class _$OrdersRecordSerializer implements StructuredSerializer<OrdersRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    value = object.tax;
+    value = object.date;
     if (value != null) {
       result
-        ..add('tax')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(double)));
-    }
-    value = object.createdAt;
-    if (value != null) {
-      result
-        ..add('created_at')
+        ..add('date')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(DateTime)));
-    }
-    value = object.tableId;
-    if (value != null) {
-      result
-        ..add('tableId')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
     value = object.ffRef;
     if (value != null) {
@@ -84,29 +71,23 @@ class _$OrdersRecordSerializer implements StructuredSerializer<OrdersRecord> {
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
-        case 'name':
-          result.name = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+        case 'tableId':
+          result.tableId = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
-        case 'amount':
-          result.amount = serializers.deserialize(value,
-              specifiedType: const FullType(double)) as double?;
+        case 'items':
+          result.items.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(OrderItemStruct)]))!
+              as BuiltList<Object?>);
           break;
         case 'status':
           result.status = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
-        case 'tax':
-          result.tax = serializers.deserialize(value,
-              specifiedType: const FullType(double)) as double?;
-          break;
-        case 'created_at':
-          result.createdAt = serializers.deserialize(value,
+        case 'date':
+          result.date = serializers.deserialize(value,
               specifiedType: const FullType(DateTime)) as DateTime?;
-          break;
-        case 'tableId':
-          result.tableId = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
           break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
@@ -123,17 +104,13 @@ class _$OrdersRecordSerializer implements StructuredSerializer<OrdersRecord> {
 
 class _$OrdersRecord extends OrdersRecord {
   @override
-  final String? name;
+  final int? tableId;
   @override
-  final double? amount;
+  final BuiltList<OrderItemStruct>? items;
   @override
   final String? status;
   @override
-  final double? tax;
-  @override
-  final DateTime? createdAt;
-  @override
-  final int? tableId;
+  final DateTime? date;
   @override
   final DocumentReference<Object?>? ffRef;
 
@@ -141,13 +118,7 @@ class _$OrdersRecord extends OrdersRecord {
       (new OrdersRecordBuilder()..update(updates))._build();
 
   _$OrdersRecord._(
-      {this.name,
-      this.amount,
-      this.status,
-      this.tax,
-      this.createdAt,
-      this.tableId,
-      this.ffRef})
+      {this.tableId, this.items, this.status, this.date, this.ffRef})
       : super._();
 
   @override
@@ -161,38 +132,28 @@ class _$OrdersRecord extends OrdersRecord {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is OrdersRecord &&
-        name == other.name &&
-        amount == other.amount &&
-        status == other.status &&
-        tax == other.tax &&
-        createdAt == other.createdAt &&
         tableId == other.tableId &&
+        items == other.items &&
+        status == other.status &&
+        date == other.date &&
         ffRef == other.ffRef;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc(
-            $jc(
-                $jc(
-                    $jc($jc($jc(0, name.hashCode), amount.hashCode),
-                        status.hashCode),
-                    tax.hashCode),
-                createdAt.hashCode),
-            tableId.hashCode),
+        $jc($jc($jc($jc(0, tableId.hashCode), items.hashCode), status.hashCode),
+            date.hashCode),
         ffRef.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'OrdersRecord')
-          ..add('name', name)
-          ..add('amount', amount)
-          ..add('status', status)
-          ..add('tax', tax)
-          ..add('createdAt', createdAt)
           ..add('tableId', tableId)
+          ..add('items', items)
+          ..add('status', status)
+          ..add('date', date)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -202,29 +163,22 @@ class OrdersRecordBuilder
     implements Builder<OrdersRecord, OrdersRecordBuilder> {
   _$OrdersRecord? _$v;
 
-  String? _name;
-  String? get name => _$this._name;
-  set name(String? name) => _$this._name = name;
+  int? _tableId;
+  int? get tableId => _$this._tableId;
+  set tableId(int? tableId) => _$this._tableId = tableId;
 
-  double? _amount;
-  double? get amount => _$this._amount;
-  set amount(double? amount) => _$this._amount = amount;
+  ListBuilder<OrderItemStruct>? _items;
+  ListBuilder<OrderItemStruct> get items =>
+      _$this._items ??= new ListBuilder<OrderItemStruct>();
+  set items(ListBuilder<OrderItemStruct>? items) => _$this._items = items;
 
   String? _status;
   String? get status => _$this._status;
   set status(String? status) => _$this._status = status;
 
-  double? _tax;
-  double? get tax => _$this._tax;
-  set tax(double? tax) => _$this._tax = tax;
-
-  DateTime? _createdAt;
-  DateTime? get createdAt => _$this._createdAt;
-  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
-
-  int? _tableId;
-  int? get tableId => _$this._tableId;
-  set tableId(int? tableId) => _$this._tableId = tableId;
+  DateTime? _date;
+  DateTime? get date => _$this._date;
+  set date(DateTime? date) => _$this._date = date;
 
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
@@ -237,12 +191,10 @@ class OrdersRecordBuilder
   OrdersRecordBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _name = $v.name;
-      _amount = $v.amount;
-      _status = $v.status;
-      _tax = $v.tax;
-      _createdAt = $v.createdAt;
       _tableId = $v.tableId;
+      _items = $v.items?.toBuilder();
+      _status = $v.status;
+      _date = $v.date;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -264,15 +216,26 @@ class OrdersRecordBuilder
   OrdersRecord build() => _build();
 
   _$OrdersRecord _build() {
-    final _$result = _$v ??
-        new _$OrdersRecord._(
-            name: name,
-            amount: amount,
-            status: status,
-            tax: tax,
-            createdAt: createdAt,
-            tableId: tableId,
-            ffRef: ffRef);
+    _$OrdersRecord _$result;
+    try {
+      _$result = _$v ??
+          new _$OrdersRecord._(
+              tableId: tableId,
+              items: _items?.build(),
+              status: status,
+              date: date,
+              ffRef: ffRef);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'items';
+        _items?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'OrdersRecord', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
