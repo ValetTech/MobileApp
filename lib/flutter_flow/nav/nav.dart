@@ -69,27 +69,36 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, _) =>
-          appStateNotifier.loggedIn ? NavBarPage() : OnboardWidget(),
+          appStateNotifier.loggedIn ? NavBarPage() : MainLoginWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? NavBarPage() : OnboardWidget(),
+              appStateNotifier.loggedIn ? NavBarPage() : MainLoginWidget(),
           routes: [
             FFRoute(
-              name: 'Onboard',
-              path: 'onboard',
-              builder: (context, params) => OnboardWidget(),
+              name: 'mainLogin',
+              path: 'mainLogin',
+              builder: (context, params) => MainLoginWidget(),
             ),
             FFRoute(
-              name: 'managerLogin',
-              path: 'managerLogin',
-              builder: (context, params) => ManagerLoginWidget(),
+              name: 'PINLogin',
+              path: 'pINLogin',
+              requireAuth: true,
+              builder: (context, params) => PINLoginWidget(
+                firstName: params.getParam('firstName', ParamType.String),
+              ),
+            ),
+            FFRoute(
+              name: 'Registration',
+              path: 'registration',
+              builder: (context, params) => RegistrationWidget(),
             ),
             FFRoute(
               name: 'Dashboard',
               path: 'dashboard',
+              requireAuth: true,
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'Dashboard')
                   : DashboardWidget(),
@@ -97,6 +106,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'Reservations',
               path: 'reservations',
+              requireAuth: true,
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'Reservations')
                   : ReservationsWidget(),
@@ -104,6 +114,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'Seating',
               path: 'seating',
+              requireAuth: true,
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'Seating')
                   : SeatingWidget(),
@@ -111,6 +122,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'Orders',
               path: 'orders',
+              requireAuth: true,
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'Orders')
                   : OrdersWidget(),
@@ -118,11 +130,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'consumerEntry',
               path: 'consumerEntry',
+              requireAuth: true,
               builder: (context, params) => ConsumerEntryWidget(),
             ),
             FFRoute(
               name: 'NewReservation',
               path: 'newReservation',
+              requireAuth: true,
               builder: (context, params) => NavBarPage(
                 initialPage: '',
                 page: NewReservationWidget(
@@ -133,6 +147,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'ViewReservation',
               path: 'viewReservation',
+              requireAuth: true,
               builder: (context, params) => NavBarPage(
                 initialPage: '',
                 page: ViewReservationWidget(
@@ -141,13 +156,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ),
             ),
             FFRoute(
-              name: 'newSittingOrArea',
-              path: 'newSittingOrArea',
-              builder: (context, params) => NewSittingOrAreaWidget(),
-            ),
-            FFRoute(
               name: 'Menu',
               path: 'menu',
+              requireAuth: true,
               builder: (context, params) => NavBarPage(
                 initialPage: '',
                 page: MenuWidget(),
@@ -156,6 +167,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'EditReservation',
               path: 'editReservation',
+              requireAuth: true,
               builder: (context, params) => NavBarPage(
                 initialPage: '',
                 page: EditReservationWidget(
@@ -167,6 +179,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'EditReservationJamie',
               path: 'editReservationJamie',
+              requireAuth: true,
               builder: (context, params) => NavBarPage(
                 initialPage: '',
                 page: EditReservationJamieWidget(
@@ -178,9 +191,19 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'NewOrder',
               path: 'newOrder',
+              requireAuth: true,
               builder: (context, params) => NavBarPage(
                 initialPage: '',
                 page: NewOrderWidget(),
+              ),
+            ),
+            FFRoute(
+              name: 'OrderSummary',
+              path: 'orderSummary',
+              requireAuth: true,
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: OrderSummaryWidget(),
               ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
@@ -341,7 +364,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.location);
-            return '/onboard';
+            return '/mainLogin';
           }
           return null;
         },

@@ -37,7 +37,7 @@
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>valet.com</string>
+        <string>app</string>
         <key>CFBundleURLSchemes</key>
         <array>
         <string>valet</string>
@@ -54,8 +54,9 @@
 	<true/>
 
 	<key>NSFaceIDUsageDescription</key>
-      <string>This app requires permissions to perform a biometric verification.</string>
-
+      <string>This app reequies biometrics permission to provide biometric login functionality.</string>
+	<key>NFCReaderUsageDescription</key>
+      <string>This app requires NFC access to enable scanning of NFC tags on tables for ordering.</string>
 
 
 	<key>UILaunchStoryboardName</key>

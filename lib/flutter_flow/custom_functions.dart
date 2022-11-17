@@ -148,3 +148,19 @@ int getTableIdByType(
   return tables.where((table) => table["type"] == (type ?? "")).first["id"] ??
       0;
 }
+
+double getPercentage(
+  int? numerator,
+  int? denominator,
+) {
+  // Add your function code here!
+  var result = (numerator ?? 0) / (denominator ?? 0);
+  return result > 1 ? 0 : result;
+}
+
+int arrayCount(List<dynamic> array) {
+  // Add your function code here!
+
+  if (array == null) return 0;
+  return array.length;
+}

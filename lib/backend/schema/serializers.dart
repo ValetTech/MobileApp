@@ -1,10 +1,11 @@
 import 'package:built_value/standard_json_plugin.dart';
 import 'package:from_css_color/from_css_color.dart';
 
-import 'users_record.dart';
 import 'menu_record.dart';
 import 'categories_record.dart';
 import 'orders_record.dart';
+import 'user_cart_record.dart';
+import 'user_list_record.dart';
 
 import 'index.dart';
 
@@ -15,10 +16,11 @@ part 'serializers.g.dart';
 const kDocumentReferenceField = 'Document__Reference__Field';
 
 @SerializersFor(const [
-  UsersRecord,
   MenuRecord,
   CategoriesRecord,
   OrdersRecord,
+  UserCartRecord,
+  UserListRecord,
   CatagoryStruct,
   OrderItemStruct,
 ])

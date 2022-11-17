@@ -596,6 +596,107 @@ class PatchCustomerCall {
 
 /// End Valet API Group Code
 
+/// Start Widgets Group Code
+
+class WidgetsGroup {
+  static String baseUrl = 'https://valetapi.azurewebsites.net/api';
+  static Map<String, String> headers = {};
+  static GetReservationsCall getReservationsCall = GetReservationsCall();
+  static GetTablesCall getTablesCall = GetTablesCall();
+}
+
+class GetReservationsCall {
+  Future<ApiCallResponse> call({
+    String? authToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiNDQxMzA4NTEtMGRhMi00YTdmLThmMzYtMTJlMTJlYWI4NzI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE3MDAwMTc3NTgsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLXhxcmgxQG9uZS1idXR0b24tNjNmZjkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCJ9._hDXDG7CNocdMoX8BvP7n2f92XiAGFJj_dbZMJzXSaU',
+    String? date = '',
+    String? hasTables = '',
+    int? sittingId,
+    int? areaId,
+    String? minDate = '',
+    String? maxDate = '',
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'Get Reservations',
+      apiUrl: '${WidgetsGroup.baseUrl}/reservations',
+      callType: ApiCallType.GET,
+      headers: {
+        ...WidgetsGroup.headers,
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {
+        'Date': date,
+        'hasTables': hasTables,
+        'SittingId': sittingId,
+        'AreaId': areaId,
+        'MinDate': minDate,
+        'MaxDate': maxDate,
+      },
+      returnBody: true,
+      cache: false,
+    );
+  }
+
+  dynamic reservationsId(dynamic response) => getJsonField(
+        response,
+        r'''$.reservations[:].id''',
+        true,
+      );
+  dynamic allReservations(dynamic response) => getJsonField(
+        response,
+        r'''$.reservations[*]''',
+      );
+}
+
+class GetTablesCall {
+  Future<ApiCallResponse> call({
+    String? authToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiNDQxMzA4NTEtMGRhMi00YTdmLThmMzYtMTJlMTJlYWI4NzI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE3MDAwMTc3NTgsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLXhxcmgxQG9uZS1idXR0b24tNjNmZjkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCJ9._hDXDG7CNocdMoX8BvP7n2f92XiAGFJj_dbZMJzXSaU',
+    String? hasReservations = '',
+    String? date = '',
+    String? minDate = '',
+    String? maxDate = '',
+    String? sittingId = '',
+    String? sittingType = '',
+    String? areaId = '',
+    String? type = '',
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'Get Tables',
+      apiUrl: '${WidgetsGroup.baseUrl}/tables',
+      callType: ApiCallType.GET,
+      headers: {
+        ...WidgetsGroup.headers,
+        'Authorization': 'Bearer ${authToken}',
+      },
+      params: {
+        'hasReservations': hasReservations,
+        'Date': date,
+        'MinDate': minDate,
+        'MaxDate': maxDate,
+        'SittingId': sittingId,
+        'SittingType': sittingType,
+        'AreaId': areaId,
+        'Type': type,
+      },
+      returnBody: true,
+      cache: false,
+    );
+  }
+
+  dynamic tableId(dynamic response) => getJsonField(
+        response,
+        r'''$.tables[:].id''',
+        true,
+      );
+  dynamic allTables(dynamic response) => getJsonField(
+        response,
+        r'''$.tables[*]''',
+      );
+}
+
+/// End Widgets Group Code
+
 class GETReservationsCall {
   static Future<ApiCallResponse> call({
     String? date = '',

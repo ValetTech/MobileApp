@@ -168,6 +168,12 @@ class FFAppState {
     _apiToken = _value;
     prefs.setString('ff_apiToken', _value);
   }
+
+  double VacancyRate = 0;
+
+  int UnallocatedReservations = 0;
+
+  int AvaliableTables = 0;
 }
 
 LatLng? _latLngFromString(String? val) {

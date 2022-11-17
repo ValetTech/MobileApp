@@ -1190,7 +1190,8 @@ class _EditReservationJamieWidgetState
                                                                           2,
                                                                           0),
                                                               child:
-                                                                  FlutterFlowDropDown(
+                                                                  FlutterFlowDropDown<
+                                                                      String>(
                                                                 initialOption:
                                                                     sittingsValue ??=
                                                                         getJsonField(
@@ -1572,7 +1573,8 @@ class _EditReservationJamieWidgetState
                                                                             0,
                                                                             0),
                                                                 child:
-                                                                    FlutterFlowDropDown(
+                                                                    FlutterFlowDropDown<
+                                                                        String>(
                                                                   initialOption:
                                                                       sourceValue ??=
                                                                           getJsonField(

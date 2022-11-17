@@ -1,22 +1,21 @@
 import '../auth/auth_util.dart';
-import '../backend/api_requests/api_calls.dart';
-import '../flutter_flow/flutter_flow_icon_button.dart';
+import '../auth/firebase_user_provider.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ManagerLoginWidget extends StatefulWidget {
-  const ManagerLoginWidget({Key? key}) : super(key: key);
+class MainLoginWidget extends StatefulWidget {
+  const MainLoginWidget({Key? key}) : super(key: key);
 
   @override
-  _ManagerLoginWidgetState createState() => _ManagerLoginWidgetState();
+  _MainLoginWidgetState createState() => _MainLoginWidgetState();
 }
 
-class _ManagerLoginWidgetState extends State<ManagerLoginWidget> {
-  ApiCallResponse? apiResulthxs;
+class _MainLoginWidgetState extends State<MainLoginWidget> {
   TextEditingController? emailAddressController;
   TextEditingController? passwordLoginController;
 
@@ -26,6 +25,21 @@ class _ManagerLoginWidgetState extends State<ManagerLoginWidget> {
   @override
   void initState() {
     super.initState();
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      if (loggedIn) {
+        context.pushNamed(
+          'PINLogin',
+          queryParams: {
+            'firstName': serializeParam(
+              valueOrDefault(currentUserDocument?.firstName, ''),
+              ParamType.String,
+            ),
+          }.withoutNulls,
+        );
+      }
+    });
+
     emailAddressController = TextEditingController();
     passwordLoginController = TextEditingController();
     passwordLoginVisibility = false;
@@ -42,23 +56,23 @@ class _ManagerLoginWidgetState extends State<ManagerLoginWidget> {
   @override
   Widget build(BuildContext context) {
     return Title(
-        title: 'managerLogin',
+        title: 'mainLogin',
         color: FlutterFlowTheme.of(context).primaryColor,
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-          body: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 1,
-            child: Stack(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 1,
-                  child: Stack(
-                    children: [
-                      Column(
+          body: SafeArea(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 1,
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
+                    child: SingleChildScrollView(
+                      child: Column(
                         mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Row(
@@ -108,7 +122,7 @@ class _ManagerLoginWidgetState extends State<ManagerLoginWidget> {
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       2, 0, 12, 0),
                                   child: Text(
-                                    'Manager Login',
+                                    'Login',
                                     style: FlutterFlowTheme.of(context).title2,
                                   ),
                                 ),
@@ -311,95 +325,38 @@ class _ManagerLoginWidgetState extends State<ManagerLoginWidget> {
                           ),
                           Padding(
                             padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 44, 0, 0),
+                                EdgeInsetsDirectional.fromSTEB(0, 24, 0, 4),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                var _shouldSetState = false;
-                                Function() _navigate = () {};
-                                apiResulthxs =
-                                    await ValetAPIGroup.loginUserCall.call(
-                                  email: emailAddressController!.text,
-                                  password: passwordLoginController!.text,
-                                );
-                                _shouldSetState = true;
-                                if ((apiResulthxs?.succeeded ?? true)) {
-                                  GoRouter.of(context).prepareAuthEvent();
-                                  final user = await signInWithJwtToken(
-                                    context,
-                                    getJsonField(
-                                      (apiResulthxs?.jsonBody ?? ''),
-                                      r'''$.token''',
-                                    ).toString(),
-                                  );
-                                  if (user == null) {
-                                    return;
-                                  }
+                                GoRouter.of(context).prepareAuthEvent();
 
-                                  _navigate = () =>
-                                      context.goNamedAuth('Dashboard', mounted);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Logged In.',
-                                        style: TextStyle(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
-                                        ),
-                                      ),
-                                      duration: Duration(milliseconds: 4000),
-                                      backgroundColor: Color(0x00000000),
-                                    ),
-                                  );
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        getJsonField(
-                                          (apiResulthxs?.jsonBody ?? ''),
-                                          r'''$.title''',
-                                        ).toString(),
-                                        style: TextStyle(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
-                                        ),
-                                      ),
-                                      duration: Duration(milliseconds: 4000),
-                                      backgroundColor: Color(0x00000000),
-                                    ),
-                                  );
-                                  if (_shouldSetState) setState(() {});
+                                final user = await signInWithEmail(
+                                  context,
+                                  emailAddressController!.text,
+                                  passwordLoginController!.text,
+                                );
+                                if (user == null) {
                                   return;
                                 }
 
-                                _navigate();
-                                if (_shouldSetState) setState(() {});
+                                context.goNamedAuth('Dashboard', mounted);
                               },
                               text: 'Login',
                               icon: Icon(
-                                Icons.perm_identity_sharp,
-                                size: 15,
+                                Icons.person,
+                                size: 20,
                               ),
                               options: FFButtonOptions(
-                                width: 200,
-                                height: 50,
-                                color: FlutterFlowTheme.of(context).white,
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .subtitle2Family,
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryColor,
-                                      useGoogleFonts: GoogleFonts.asMap()
-                                          .containsKey(
-                                              FlutterFlowTheme.of(context)
-                                                  .subtitle2Family),
-                                    ),
-                                elevation: 5,
+                                width: 175,
+                                height: 40,
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryColor,
+                                textStyle:
+                                    FlutterFlowTheme.of(context).bodyText1,
+                                elevation: 2,
                                 borderSide: BorderSide(
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryColor,
-                                  width: 2,
+                                  color: Colors.transparent,
+                                  width: 1,
                                 ),
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -407,79 +364,67 @@ class _ManagerLoginWidgetState extends State<ManagerLoginWidget> {
                           ),
                           Padding(
                             padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 44, 0, 0),
+                                EdgeInsetsDirectional.fromSTEB(0, 24, 0, 4),
                             child: FFButtonWidget(
-                              onPressed: () {
-                                print('Button-Login pressed ...');
+                              onPressed: () async {
+                                context.pushNamed('Registration');
                               },
-                              text: 'Forgot Password?',
+                              text: 'Register',
+                              icon: Icon(
+                                Icons.new_releases_sharp,
+                                size: 20,
+                              ),
                               options: FFButtonOptions(
-                                width: 170,
-                                height: 50,
-                                color: FlutterFlowTheme.of(context)
-                                    .primaryBackground,
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .subtitle2Family,
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                      useGoogleFonts: GoogleFonts.asMap()
-                                          .containsKey(
-                                              FlutterFlowTheme.of(context)
-                                                  .subtitle2Family),
-                                    ),
-                                elevation: 0,
+                                width: 175,
+                                height: 40,
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryColor,
+                                textStyle:
+                                    FlutterFlowTheme.of(context).bodyText1,
+                                elevation: 2,
                                 borderSide: BorderSide(
                                   color: Colors.transparent,
                                   width: 1,
                                 ),
+                                borderRadius: BorderRadius.circular(8),
                               ),
                             ),
                           ),
                           FFButtonWidget(
-                            onPressed: () async {
-                              context.pushNamed('newSittingOrArea');
+                            onPressed: () {
+                              print('Button-Login pressed ...');
                             },
-                            text: 'New Area/Sitting',
-                            icon: Icon(
-                              Icons.new_releases_sharp,
-                              size: 20,
-                            ),
+                            text: 'Forgot Password?',
                             options: FFButtonOptions(
-                              width: 175,
-                              height: 40,
-                              color:
-                                  FlutterFlowTheme.of(context).secondaryColor,
-                              textStyle: FlutterFlowTheme.of(context).bodyText1,
+                              width: 170,
+                              height: 50,
+                              color: FlutterFlowTheme.of(context)
+                                  .primaryBackground,
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .subtitle2
+                                  .override(
+                                    fontFamily: FlutterFlowTheme.of(context)
+                                        .subtitle2Family,
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                    useGoogleFonts: GoogleFonts.asMap()
+                                        .containsKey(
+                                            FlutterFlowTheme.of(context)
+                                                .subtitle2Family),
+                                  ),
+                              elevation: 0,
                               borderSide: BorderSide(
                                 color: Colors.transparent,
                                 width: 1,
                               ),
-                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-                FlutterFlowIconButton(
-                  borderColor: Colors.transparent,
-                  borderRadius: 30,
-                  borderWidth: 1,
-                  buttonSize: 60,
-                  icon: Icon(
-                    Icons.arrow_back_outlined,
-                    color: FlutterFlowTheme.of(context).white,
-                    size: 30,
-                  ),
-                  onPressed: () async {
-                    context.pushNamed('Onboard');
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ));

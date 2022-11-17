@@ -1,3 +1,4 @@
+import '../backend/api_requests/api_calls.dart';
 import '../components/end_drawer_container_widget.dart';
 import '../components/header_widget.dart';
 import '../flutter_flow/flutter_flow_calendar.dart';
@@ -5,6 +6,7 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -21,6 +23,9 @@ class DashboardWidget extends StatefulWidget {
 }
 
 class _DashboardWidgetState extends State<DashboardWidget> {
+  ApiCallResponse? allTablesChange;
+  ApiCallResponse? vacantTablesChange;
+  ApiCallResponse? unallocatedReservationsChange;
   DateTimeRange? calendarPickerSelectedDay;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -98,10 +103,11 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 12),
+                      padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
                       child: Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
@@ -134,6 +140,79 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                               calendarPickerSelectedDay = newSelectedDate;
                               setState(() => FFAppState().selectedDate =
                                   calendarPickerSelectedDay?.start);
+                              allTablesChange =
+                                  await WidgetsGroup.getTablesCall.call(
+                                date: functions.formatDateForPOST(
+                                    FFAppState().selectedDate!),
+                              );
+                              vacantTablesChange =
+                                  await WidgetsGroup.getTablesCall.call(
+                                date: functions.formatDateForPOST(
+                                    FFAppState().selectedDate!),
+                                hasReservations: false.toString(),
+                              );
+                              unallocatedReservationsChange =
+                                  await WidgetsGroup.getReservationsCall.call(
+                                date: functions.formatDateForPOST(
+                                    FFAppState().selectedDate!),
+                                hasTables: false.toString(),
+                              );
+                              if ((allTablesChange?.succeeded ?? true) &&
+                                  (vacantTablesChange?.succeeded ?? true) &&
+                                  (unallocatedReservationsChange?.succeeded ??
+                                      true)) {
+                                setState(() =>
+                                    FFAppState().UnallocatedReservations =
+                                        functions
+                                            .arrayCount(valueOrDefault<dynamic>(
+                                      WidgetsGroup.getReservationsCall
+                                          .allReservations(
+                                        (unallocatedReservationsChange
+                                                ?.jsonBody ??
+                                            ''),
+                                      ),
+                                      0,
+                                    )));
+                                setState(() => FFAppState().AvaliableTables =
+                                        functions
+                                            .arrayCount(valueOrDefault<dynamic>(
+                                      WidgetsGroup.getTablesCall.allTables(
+                                        (vacantTablesChange?.jsonBody ?? ''),
+                                      ),
+                                      0,
+                                    )));
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Something went wrong.',
+                                      style: TextStyle(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                      ),
+                                    ),
+                                    duration: Duration(milliseconds: 4000),
+                                    backgroundColor: Color(0x00000000),
+                                  ),
+                                );
+                                return;
+                              }
+
+                              setState(() => FFAppState().VacancyRate =
+                                      valueOrDefault<double>(
+                                    functions.getPercentage(
+                                        functions.arrayCount(WidgetsGroup
+                                            .getTablesCall
+                                            .allTables(
+                                          (vacantTablesChange?.jsonBody ?? ''),
+                                        )),
+                                        functions.arrayCount(WidgetsGroup
+                                            .getTablesCall
+                                            .allTables(
+                                          (allTablesChange?.jsonBody ?? ''),
+                                        ))),
+                                    0.0,
+                                  ));
                               setState(() {});
                             },
                             titleStyle: FlutterFlowTheme.of(context).subtitle2,
@@ -190,14 +269,19 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                               child: Padding(
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(80, 0, 0, 0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                child: Wrap(
+                                  spacing: 0,
+                                  runSpacing: 0,
+                                  alignment: WrapAlignment.spaceEvenly,
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  direction: Axis.horizontal,
+                                  runAlignment: WrapAlignment.center,
+                                  verticalDirection: VerticalDirection.down,
+                                  clipBehavior: Clip.none,
                                   children: [
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 4, 0, 0),
+                                          0, 0, 0, 4),
                                       child: Text(
                                         'Current Vacancy Rate',
                                         textAlign: TextAlign.center,
@@ -206,46 +290,45 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                             .subtitle2,
                                       ),
                                     ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            12, 0, 0, 0),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            FFButtonWidget(
-                                              onPressed: () async {
-                                                context.pushNamed(
-                                                    'NewReservation');
-                                              },
-                                              text: 'New Reservation',
-                                              icon: FaIcon(
-                                                FontAwesomeIcons.calendarPlus,
-                                                size: 20,
-                                              ),
-                                              options: FFButtonOptions(
-                                                width: 175,
-                                                height: 40,
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryColor,
-                                                textStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyText1,
-                                                borderSide: BorderSide(
-                                                  color: Colors.transparent,
-                                                  width: 1,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          12, 0, 0, 0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          FFButtonWidget(
+                                            onPressed: () async {
+                                              context
+                                                  .pushNamed('NewReservation');
+                                            },
+                                            text: 'New Reservation',
+                                            icon: FaIcon(
+                                              FontAwesomeIcons.calendarPlus,
+                                              size: 20,
                                             ),
-                                          ],
-                                        ),
+                                            options: FFButtonOptions(
+                                              width: 175,
+                                              height: 40,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryColor,
+                                              textStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyText1,
+                                              elevation: 2,
+                                              borderSide: BorderSide(
+                                                color: Colors.transparent,
+                                                width: 1,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
@@ -269,7 +352,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                               shape: BoxShape.circle,
                             ),
                             child: CircularPercentIndicator(
-                              percent: 0.5,
+                              percent: FFAppState().VacancyRate,
                               radius: 37.5,
                               lineWidth: 12,
                               animation: true,
@@ -278,7 +361,12 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                               backgroundColor:
                                   FlutterFlowTheme.of(context).iconGray,
                               center: Text(
-                                '50%',
+                                formatNumber(
+                                  FFAppState().VacancyRate,
+                                  formatType: FormatType.custom,
+                                  format: '##%',
+                                  locale: '',
+                                ),
                                 style: FlutterFlowTheme.of(context)
                                     .subtitle2
                                     .override(
@@ -299,317 +387,426 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                         ],
                       ),
                     ),
-                    Wrap(
-                      spacing: 16,
-                      runSpacing: 16,
-                      alignment: WrapAlignment.center,
-                      crossAxisAlignment: WrapCrossAlignment.start,
-                      direction: Axis.horizontal,
-                      runAlignment: WrapAlignment.center,
-                      verticalDirection: VerticalDirection.down,
-                      clipBehavior: Clip.none,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          width: 150,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context).white,
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 5,
-                                color: Color(0x44111417),
-                                offset: Offset(0, 2),
-                              )
-                            ],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
+                        Expanded(
+                          flex: 1,
                           child: Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(12, 12, 12, 12),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Icon(
-                                      Icons.supervisor_account_rounded,
-                                      color: Color(0xFF101213),
-                                      size: 44,
-                                    ),
-                                    Text(
-                                      '150',
-                                      textAlign: TextAlign.center,
-                                      style:
-                                          FlutterFlowTheme.of(context).title3,
-                                    ),
-                                  ],
-                                ),
-                                AutoSizeText(
-                                  'Reservations Unallocated',
-                                  textAlign: TextAlign.center,
-                                  maxLines: 2,
-                                  style: FlutterFlowTheme.of(context).subtitle2,
-                                ),
-                                FFButtonWidget(
-                                  onPressed: () {
-                                    print('Button pressed ...');
-                                  },
-                                  text: 'Allocate',
-                                  icon: Icon(
-                                    Icons.group_add,
-                                    size: 20,
-                                  ),
-                                  options: FFButtonOptions(
-                                    width: 175,
-                                    height: 40,
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryColor,
-                                    textStyle:
-                                        FlutterFlowTheme.of(context).bodyText1,
-                                    borderSide: BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 150,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context).white,
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 5,
-                                color: Color(0x44111417),
-                                offset: Offset(0, 2),
-                              )
-                            ],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(12, 12, 12, 12),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Icon(
-                                      Icons.view_module_rounded,
-                                      color: Color(0xFF101213),
-                                      size: 44,
-                                    ),
-                                    Text(
-                                      '20',
-                                      textAlign: TextAlign.center,
-                                      style:
-                                          FlutterFlowTheme.of(context).title3,
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  'Tables Available',
-                                  textAlign: TextAlign.center,
-                                  style: FlutterFlowTheme.of(context).subtitle2,
-                                ),
-                                FFButtonWidget(
-                                  onPressed: () async {
-                                    context.pushNamed('Seating');
-                                  },
-                                  text: 'Seating',
-                                  icon: Icon(
-                                    Icons.image_search,
-                                    size: 20,
-                                  ),
-                                  options: FFButtonOptions(
-                                    width: 175,
-                                    height: 40,
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryColor,
-                                    textStyle:
-                                        FlutterFlowTheme.of(context).bodyText1,
-                                    borderSide: BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 150,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context).white,
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 5,
-                                color: Color(0x44111417),
-                                offset: Offset(0, 2),
-                              )
-                            ],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(12, 12, 12, 12),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Icon(
-                                      Icons.restaurant_menu,
-                                      color: Color(0xFF101213),
-                                      size: 44,
-                                    ),
-                                    Text(
-                                      '34',
-                                      textAlign: TextAlign.center,
-                                      style:
-                                          FlutterFlowTheme.of(context).title3,
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  'Open Orders',
-                                  textAlign: TextAlign.center,
-                                  style: FlutterFlowTheme.of(context).subtitle2,
-                                ),
-                                FFButtonWidget(
-                                  onPressed: () async {
-                                    context.pushNamed('NewOrder');
-                                  },
-                                  text: 'New Order',
-                                  icon: FaIcon(
-                                    FontAwesomeIcons.calendarPlus,
-                                    size: 20,
-                                  ),
-                                  options: FFButtonOptions(
-                                    width: 175,
-                                    height: 40,
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryColor,
-                                    textStyle:
-                                        FlutterFlowTheme.of(context).bodyText1,
-                                    borderSide: BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 8, 0, 0),
-                                  child: FFButtonWidget(
-                                    onPressed: () async {
-                                      context.pushNamed('Orders');
-                                    },
-                                    text: 'View/Settle',
-                                    icon: FaIcon(
-                                      FontAwesomeIcons.calendarPlus,
-                                      size: 20,
-                                    ),
-                                    options: FFButtonOptions(
-                                      width: 175,
-                                      height: 40,
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryColor,
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .bodyText1,
-                                      borderSide: BorderSide(
-                                        color: Colors.transparent,
-                                        width: 1,
+                            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        16, 8, 8, 8),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            FlutterFlowTheme.of(context).white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            blurRadius: 5,
+                                            color: Color(0x44111417),
+                                            offset: Offset(0, 2),
+                                          )
+                                        ],
+                                        borderRadius: BorderRadius.circular(8),
                                       ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 150,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 5,
-                                color: Color(0x44111417),
-                                offset: Offset(0, 2),
-                              )
-                            ],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(12, 12, 12, 12),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(
-                                  'Today\'s Chef\'s Special',
-                                  textAlign: TextAlign.center,
-                                  style: FlutterFlowTheme.of(context).subtitle2,
-                                ),
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image.asset(
-                                    'assets/images/Special.jpg',
-                                    width: double.infinity,
-                                    height: 100,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 8, 0, 8),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          'Pan-roasted Barramundi with Bacon, Mushrooms, and Peas ',
-                                          textAlign: TextAlign.center,
-                                          maxLines: 2,
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily:
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            12, 12, 12, 12),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Icon(
+                                                  Icons.restaurant_menu,
+                                                  color: Color(0xFF101213),
+                                                  size: 44,
+                                                ),
+                                                Text(
+                                                  '34',
+                                                  textAlign: TextAlign.center,
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .title3,
+                                                ),
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0, 0, 0, 8),
+                                              child: Text(
+                                                'Open Orders',
+                                                textAlign: TextAlign.center,
+                                                style:
                                                     FlutterFlowTheme.of(context)
-                                                        .bodyText1Family,
-                                                fontStyle: FontStyle.italic,
-                                                useGoogleFonts: GoogleFonts
-                                                        .asMap()
-                                                    .containsKey(
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .bodyText1Family),
+                                                        .subtitle2,
                                               ),
+                                            ),
+                                            FFButtonWidget(
+                                              onPressed: () async {
+                                                context.pushNamed('NewOrder');
+                                              },
+                                              text: 'New Order',
+                                              icon: FaIcon(
+                                                FontAwesomeIcons.calendarPlus,
+                                                size: 20,
+                                              ),
+                                              options: FFButtonOptions(
+                                                width: 175,
+                                                height: 40,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondaryColor,
+                                                textStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyText1,
+                                                elevation: 2,
+                                                borderSide: BorderSide(
+                                                  color: Colors.transparent,
+                                                  width: 1,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0, 8, 0, 0),
+                                              child: FFButtonWidget(
+                                                onPressed: () async {
+                                                  context.pushNamed('Orders');
+                                                },
+                                                text: 'View/Settle',
+                                                icon: FaIcon(
+                                                  FontAwesomeIcons.calendarPlus,
+                                                  size: 20,
+                                                ),
+                                                options: FFButtonOptions(
+                                                  width: 175,
+                                                  height: 40,
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryColor,
+                                                  textStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodyText1,
+                                                  elevation: 2,
+                                                  borderSide: BorderSide(
+                                                    color: Colors.transparent,
+                                                    width: 1,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        16, 16, 8, 16),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color:
+                                            FlutterFlowTheme.of(context).white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            blurRadius: 5,
+                                            color: Color(0x44111417),
+                                            offset: Offset(0, 2),
+                                          )
+                                        ],
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            12, 12, 12, 12),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Icon(
+                                                  Icons
+                                                      .supervisor_account_rounded,
+                                                  color: Color(0xFF101213),
+                                                  size: 44,
+                                                ),
+                                                Text(
+                                                  valueOrDefault<String>(
+                                                    FFAppState()
+                                                        .UnallocatedReservations
+                                                        .toString(),
+                                                    '0',
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .title3,
+                                                ),
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0, 0, 0, 8),
+                                              child: AutoSizeText(
+                                                'Reservations Unallocated',
+                                                textAlign: TextAlign.center,
+                                                maxLines: 2,
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .subtitle2,
+                                              ),
+                                            ),
+                                            FFButtonWidget(
+                                              onPressed: () {
+                                                print('Button pressed ...');
+                                              },
+                                              text: 'Allocate',
+                                              icon: Icon(
+                                                Icons.group_add,
+                                                size: 20,
+                                              ),
+                                              options: FFButtonOptions(
+                                                width: 175,
+                                                height: 40,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondaryColor,
+                                                textStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyText1,
+                                                elevation: 2,
+                                                borderSide: BorderSide(
+                                                  color: Colors.transparent,
+                                                  width: 1,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      8, 8, 16, 8),
+                                  child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.5,
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context).white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 5,
+                                          color: Color(0x44111417),
+                                          offset: Offset(0, 2),
+                                        )
+                                      ],
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          12, 12, 12, 12),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Icon(
+                                                Icons.view_module_rounded,
+                                                color: Color(0xFF101213),
+                                                size: 44,
+                                              ),
+                                              Text(
+                                                valueOrDefault<String>(
+                                                  FFAppState()
+                                                      .AvaliableTables
+                                                      .toString(),
+                                                  '0',
+                                                ),
+                                                textAlign: TextAlign.center,
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .title3,
+                                              ),
+                                            ],
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0, 0, 0, 8),
+                                            child: Text(
+                                              'Tables Available',
+                                              textAlign: TextAlign.center,
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .subtitle2,
+                                            ),
+                                          ),
+                                          FFButtonWidget(
+                                            onPressed: () async {
+                                              context.pushNamed('Seating');
+                                            },
+                                            text: 'Seating',
+                                            icon: Icon(
+                                              Icons.image_search,
+                                              size: 20,
+                                            ),
+                                            options: FFButtonOptions(
+                                              width: 175,
+                                              height: 40,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryColor,
+                                              textStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyText1,
+                                              elevation: 2,
+                                              borderSide: BorderSide(
+                                                color: Colors.transparent,
+                                                width: 1,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      8, 8, 16, 16),
+                                  child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.5,
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 5,
+                                          color: Color(0x44111417),
+                                          offset: Offset(0, 2),
+                                        )
+                                      ],
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          12, 12, 12, 12),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0, 0, 0, 8),
+                                            child: Text(
+                                              'Today\'s Chef\'s Special',
+                                              textAlign: TextAlign.center,
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .subtitle2,
+                                            ),
+                                          ),
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            child: Image.asset(
+                                              'assets/images/Special.jpg',
+                                              width: double.infinity,
+                                              height: 100,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0, 8, 0, 8),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    'Pan-roasted Barramundi with Bacon, Mushrooms, and Peas ',
+                                                    textAlign: TextAlign.center,
+                                                    maxLines: 2,
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyText1
+                                                        .override(
+                                                          fontFamily:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodyText1Family,
+                                                          fontStyle:
+                                                              FontStyle.italic,
+                                                          useGoogleFonts: GoogleFonts
+                                                                  .asMap()
+                                                              .containsKey(
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyText1Family),
+                                                        ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],

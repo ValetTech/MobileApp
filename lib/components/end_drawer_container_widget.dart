@@ -115,13 +115,27 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
                           child: Icon(
                             Icons.dashboard,
-                            color: FlutterFlowTheme.of(context).iconGray,
                             size: 24,
                           ),
                         ),
                         Text(
                           'Dashboard',
-                          style: FlutterFlowTheme.of(context).bodyText1,
+                          style: FlutterFlowTheme.of(context)
+                              .bodyText1
+                              .override(
+                                fontFamily: FlutterFlowTheme.of(context)
+                                    .bodyText1Family,
+                                color:
+                                    'valet://app${GoRouter.of(context).location}' ==
+                                            'valet://path/dashboard'
+                                        ? FlutterFlowTheme.of(context)
+                                            .secondaryColor
+                                        : FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                    FlutterFlowTheme.of(context)
+                                        .bodyText1Family),
+                              ),
                         ),
                       ],
                     ),
@@ -167,7 +181,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                       if (Navigator.of(context).canPop()) {
                         context.pop();
                       }
-                      context.pushNamed('ViewReservation');
+                      context.pushNamed('Reservations');
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -347,7 +361,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                   GoRouter.of(context).prepareAuthEvent();
                   await signOut();
 
-                  context.goNamedAuth('Onboard', mounted);
+                  context.goNamedAuth('mainLogin', mounted);
                 },
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,

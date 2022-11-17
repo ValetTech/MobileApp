@@ -4,16 +4,13 @@ import '../backend/backend.dart';
 import '../components/end_drawer_container_widget.dart';
 import '../components/page_name_widget.dart';
 import '../flutter_flow/flutter_flow_choice_chips.dart';
-import '../flutter_flow/flutter_flow_count_controller.dart';
 import '../flutter_flow/flutter_flow_drop_down.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,27 +23,14 @@ class NewOrderWidget extends StatefulWidget {
 }
 
 class _NewOrderWidgetState extends State<NewOrderWidget> {
-  OrdersRecord? currentTableOrder;
-  final formKey = GlobalKey<FormState>();
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   String? dropDownValue;
   ValueNotifier<List<String>?> choiceChipsValues = ValueNotifier(null);
-  int? countControllerValue;
+  final formKey = GlobalKey<FormState>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      final ordersCreateData = createOrdersRecordData(
-        status: 'Open',
-        date: getCurrentTimestamp,
-      );
-      var ordersRecordReference = OrdersRecord.collection.doc();
-      await ordersRecordReference.set(ordersCreateData);
-      currentTableOrder = OrdersRecord.getDocumentFromData(
-          ordersCreateData, ordersRecordReference);
-    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -209,7 +193,7 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                           }
                                           final dropDownGETTablesResponse =
                                               snapshot.data!;
-                                          return FlutterFlowDropDown(
+                                          return FlutterFlowDropDown<String>(
                                             options: (ValetAPIGroup
                                                     .gETTablesCall
                                                     .tableType(
@@ -220,25 +204,8 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                                     (s) => s.toString())
                                                 .toList()
                                                 .toList(),
-                                            onChanged: (val) async {
-                                              setState(
-                                                  () => dropDownValue = val);
-                                              final ordersUpdateData =
-                                                  createOrdersRecordData(
-                                                tableId:
-                                                    functions.getTableIdByType(
-                                                        dropDownValue,
-                                                        ValetAPIGroup
-                                                            .gETTablesCall
-                                                            .tables(
-                                                              dropDownGETTablesResponse
-                                                                  .jsonBody,
-                                                            )
-                                                            .toList()),
-                                              );
-                                              await currentTableOrder!.reference
-                                                  .update(ordersUpdateData);
-                                            },
+                                            onChanged: (val) => setState(
+                                                () => dropDownValue = val),
                                             width: double.infinity,
                                             height: 50,
                                             textStyle:
@@ -701,81 +668,45 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                                                                   ),
                                                                                   Expanded(
                                                                                     flex: 3,
-                                                                                    child: Column(
-                                                                                      mainAxisSize: MainAxisSize.max,
-                                                                                      children: [
-                                                                                        Padding(
-                                                                                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 4, 0),
-                                                                                          child: Container(
-                                                                                            width: double.infinity,
-                                                                                            height: 50,
-                                                                                            decoration: BoxDecoration(
-                                                                                              color: Colors.white,
-                                                                                              borderRadius: BorderRadius.circular(25),
-                                                                                              shape: BoxShape.rectangle,
-                                                                                              border: Border.all(
-                                                                                                color: Color(0xFF9E9E9E),
-                                                                                                width: 2,
-                                                                                              ),
-                                                                                            ),
-                                                                                            child: FlutterFlowCountController(
-                                                                                              decrementIconBuilder: (enabled) => FaIcon(
-                                                                                                FontAwesomeIcons.minus,
-                                                                                                color: enabled ? Color(0xDD000000) : Color(0xFFEEEEEE),
-                                                                                                size: 20,
-                                                                                              ),
-                                                                                              incrementIconBuilder: (enabled) => FaIcon(
-                                                                                                FontAwesomeIcons.plus,
-                                                                                                color: enabled ? FlutterFlowTheme.of(context).secondaryColor : Color(0xFFEEEEEE),
-                                                                                                size: 20,
-                                                                                              ),
-                                                                                              countBuilder: (count) => Text(
-                                                                                                count.toString(),
-                                                                                                style: GoogleFonts.getFont(
-                                                                                                  'Roboto',
-                                                                                                  color: Colors.black,
-                                                                                                  fontWeight: FontWeight.w600,
-                                                                                                  fontSize: 16,
-                                                                                                ),
-                                                                                              ),
-                                                                                              count: countControllerValue ??= 0,
-                                                                                              updateCount: (count) async {
-                                                                                                setState(() => countControllerValue = count);
-                                                                                                final ordersUpdateData = {
-                                                                                                  'items': FieldValue.arrayUnion([
-                                                                                                    getOrderItemFirestoreData(
-                                                                                                      createOrderItemStruct(
-                                                                                                        itemId: categoryListViewIndex,
-                                                                                                        unitPrice: menuListViewMenuRecord.price,
-                                                                                                        fieldValues: {
-                                                                                                          'quantity': FieldValue.increment(countControllerValue!),
-                                                                                                        },
-                                                                                                        clearUnsetFields: false,
-                                                                                                      ),
-                                                                                                      true,
-                                                                                                    )
-                                                                                                  ]),
-                                                                                                };
-                                                                                                await currentTableOrder!.reference.update(ordersUpdateData);
-                                                                                                ScaffoldMessenger.of(context).showSnackBar(
-                                                                                                  SnackBar(
-                                                                                                    content: Text(
-                                                                                                      'Item added: ${menuListViewMenuRecord.name}',
-                                                                                                      style: TextStyle(
-                                                                                                        color: FlutterFlowTheme.of(context).primaryText,
-                                                                                                      ),
-                                                                                                    ),
-                                                                                                    duration: Duration(milliseconds: 4000),
-                                                                                                    backgroundColor: Color(0x00000000),
+                                                                                    child: Padding(
+                                                                                      padding: EdgeInsetsDirectional.fromSTEB(12, 8, 0, 8),
+                                                                                      child: Column(
+                                                                                        mainAxisSize: MainAxisSize.max,
+                                                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                        children: [
+                                                                                          Padding(
+                                                                                            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
+                                                                                            child: Row(
+                                                                                              mainAxisSize: MainAxisSize.max,
+                                                                                              mainAxisAlignment: MainAxisAlignment.end,
+                                                                                              children: [
+                                                                                                FlutterFlowIconButton(
+                                                                                                  borderColor: Colors.transparent,
+                                                                                                  borderRadius: 30,
+                                                                                                  borderWidth: 1,
+                                                                                                  buttonSize: 45,
+                                                                                                  fillColor: FlutterFlowTheme.of(context).secondaryColor,
+                                                                                                  icon: Icon(
+                                                                                                    Icons.add,
+                                                                                                    color: FlutterFlowTheme.of(context).white,
+                                                                                                    size: 25,
                                                                                                   ),
-                                                                                                );
-                                                                                              },
-                                                                                              stepSize: 1,
-                                                                                              minimum: 0,
+                                                                                                  onPressed: () async {
+                                                                                                    final userCartCreateData = createUserCartRecordData(
+                                                                                                      quantity: 1,
+                                                                                                      itemRef: menuListViewMenuRecord.reference,
+                                                                                                      itemName: menuListViewMenuRecord.name,
+                                                                                                      cartItemTotal: 1.0,
+                                                                                                    );
+                                                                                                    await UserCartRecord.collection.doc().set(userCartCreateData);
+                                                                                                  },
+                                                                                                ),
+                                                                                              ],
                                                                                             ),
                                                                                           ),
-                                                                                        ),
-                                                                                      ],
+                                                                                        ],
+                                                                                      ),
                                                                                     ),
                                                                                   ),
                                                                                 ],
@@ -807,7 +738,7 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                           ),
                         ),
                         Align(
-                          alignment: AlignmentDirectional(1, 1),
+                          alignment: AlignmentDirectional(0, 1),
                           child: Padding(
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
@@ -815,14 +746,14 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                               onPressed: () async {
                                 context.pushNamed('NewOrder');
                               },
-                              text: 'New Order',
+                              text: '',
                               icon: Icon(
-                                Icons.post_add_rounded,
-                                size: 30,
+                                Icons.shopping_cart_rounded,
+                                size: 50,
                               ),
                               options: FFButtonOptions(
-                                width: 175,
-                                height: 50,
+                                width: 75,
+                                height: 75,
                                 color:
                                     FlutterFlowTheme.of(context).secondaryColor,
                                 textStyle: FlutterFlowTheme.of(context)
@@ -843,6 +774,7 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                 ),
                                 borderRadius: BorderRadius.circular(100),
                               ),
+                              showLoadingIndicator: false,
                             ),
                           ),
                         ),

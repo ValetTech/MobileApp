@@ -12,7 +12,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(MenuRecord.serializer)
       ..add(OrderItemStruct.serializer)
       ..add(OrdersRecord.serializer)
-      ..add(UsersRecord.serializer)
+      ..add(UserCartRecord.serializer)
+      ..add(UserListRecord.serializer)
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(OrderItemStruct)]),
           () => new ListBuilder<OrderItemStruct>()))

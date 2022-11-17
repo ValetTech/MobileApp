@@ -64,8 +64,10 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
   }
 
-  void setLocale(String language) =>
-      setState(() => _locale = createLocale(language));
+  void setLocale(String language) {
+    setState(() => _locale = createLocale(language));
+  }
+
   void setThemeMode(ThemeMode mode) => setState(() {
         _themeMode = mode;
       });
@@ -135,11 +137,11 @@ class _NavBarPageState extends State<NavBarPage> {
         unselectedItemColor: FlutterFlowTheme.of(context).iconGray,
         selectedBackgroundColor: FlutterFlowTheme.of(context).primaryColor,
         borderRadius: 8,
-        itemBorderRadius: 8,
+        itemBorderRadius: 24,
         margin: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
         width: double.infinity,
-        elevation: 0,
+        elevation: 6,
         items: [
           FloatingNavbarItem(
             customWidget: Column(

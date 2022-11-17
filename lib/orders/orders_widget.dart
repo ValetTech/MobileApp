@@ -822,7 +822,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
                         child: FFButtonWidget(
                           onPressed: () async {
-                            context.pushNamed('NewReservation');
+                            context.pushNamed('NewOrder');
                           },
                           text: 'New Order',
                           icon: Icon(
