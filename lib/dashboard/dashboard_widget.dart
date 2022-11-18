@@ -16,7 +16,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class DashboardWidget extends StatefulWidget {
-  const DashboardWidget({Key? key}) : super(key: key);
+  const DashboardWidget({
+    Key? key,
+    this.firstName,
+  }) : super(key: key);
+
+  final String? firstName;
 
   @override
   _DashboardWidgetState createState() => _DashboardWidgetState();
@@ -525,7 +530,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                   ),
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
-                                        16, 16, 8, 16),
+                                        16, 8, 8, 16),
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color:

@@ -101,7 +101,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               requireAuth: true,
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'Dashboard')
-                  : DashboardWidget(),
+                  : DashboardWidget(
+                      firstName: params.getParam('firstName', ParamType.String),
+                    ),
             ),
             FFRoute(
               name: 'Reservations',

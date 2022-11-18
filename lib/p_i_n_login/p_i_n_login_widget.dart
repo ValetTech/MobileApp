@@ -356,46 +356,6 @@ class _PINLoginWidgetState extends State<PINLoginWidget>
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           0, 0, 0, 24),
-                                      child: FFButtonWidget(
-                                        onPressed: () async {
-                                          context.pushNamed(
-                                            'mainLogin',
-                                            extra: <String, dynamic>{
-                                              kTransitionInfoKey:
-                                                  TransitionInfo(
-                                                hasTransition: true,
-                                                transitionType:
-                                                    PageTransitionType.fade,
-                                              ),
-                                            },
-                                          );
-                                        },
-                                        text: 'First Time User',
-                                        icon: Icon(
-                                          Icons.accessibility_new_rounded,
-                                          size: 20,
-                                        ),
-                                        options: FFButtonOptions(
-                                          width: 175,
-                                          height: 40,
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryColor,
-                                          textStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .bodyText1,
-                                          elevation: 2,
-                                          borderSide: BorderSide(
-                                            color: Colors.transparent,
-                                            width: 1,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 0, 0, 24),
                                       child: AuthUserStreamWidget(
                                         child: FFButtonWidget(
                                           onPressed: () async {

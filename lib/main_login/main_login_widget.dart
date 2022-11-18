@@ -174,10 +174,10 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
                                 controller: emailAddressController,
                                 obscureText: false,
                                 decoration: InputDecoration(
-                                  labelText: 'Your email address...',
+                                  labelText: 'E-mail address...',
                                   labelStyle:
                                       FlutterFlowTheme.of(context).bodyText2,
-                                  hintText: 'Enter your email...',
+                                  hintText: 'Please enter your email...',
                                   hintStyle: FlutterFlowTheme.of(context)
                                       .bodyText1
                                       .override(
@@ -339,7 +339,17 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
                                   return;
                                 }
 
-                                context.goNamedAuth('Dashboard', mounted);
+                                context.pushNamedAuth(
+                                  'Dashboard',
+                                  mounted,
+                                  queryParams: {
+                                    'firstName': serializeParam(
+                                      valueOrDefault(
+                                          currentUserDocument?.firstName, ''),
+                                      ParamType.String,
+                                    ),
+                                  }.withoutNulls,
+                                );
                               },
                               text: 'Login',
                               icon: Icon(
