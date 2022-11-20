@@ -71,6 +71,14 @@ class _$UserCartRecordSerializer
             specifiedType: const FullType(
                 DocumentReference, const [const FullType.nullable(Object)])));
     }
+    value = object.inCart;
+    if (value != null) {
+      result
+        ..add('in_cart')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                DocumentReference, const [const FullType.nullable(Object)])));
+    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -126,6 +134,12 @@ class _$UserCartRecordSerializer
                 const FullType.nullable(Object)
               ])) as DocumentReference<Object?>?;
           break;
+        case 'in_cart':
+          result.inCart = serializers.deserialize(value,
+              specifiedType: const FullType(DocumentReference, const [
+                const FullType.nullable(Object)
+              ])) as DocumentReference<Object?>?;
+          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -155,6 +169,8 @@ class _$UserCartRecord extends UserCartRecord {
   @override
   final DocumentReference<Object?>? userRef;
   @override
+  final DocumentReference<Object?>? inCart;
+  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$UserCartRecord([void Function(UserCartRecordBuilder)? updates]) =>
@@ -168,6 +184,7 @@ class _$UserCartRecord extends UserCartRecord {
       this.itemPrice,
       this.cartItemTotal,
       this.userRef,
+      this.inCart,
       this.ffRef})
       : super._();
 
@@ -190,6 +207,7 @@ class _$UserCartRecord extends UserCartRecord {
         itemPrice == other.itemPrice &&
         cartItemTotal == other.cartItemTotal &&
         userRef == other.userRef &&
+        inCart == other.inCart &&
         ffRef == other.ffRef;
   }
 
@@ -200,12 +218,16 @@ class _$UserCartRecord extends UserCartRecord {
             $jc(
                 $jc(
                     $jc(
-                        $jc($jc($jc(0, quantity.hashCode), itemRef.hashCode),
-                            itemName.hashCode),
-                        itemImage.hashCode),
-                    itemPrice.hashCode),
-                cartItemTotal.hashCode),
-            userRef.hashCode),
+                        $jc(
+                            $jc(
+                                $jc($jc(0, quantity.hashCode),
+                                    itemRef.hashCode),
+                                itemName.hashCode),
+                            itemImage.hashCode),
+                        itemPrice.hashCode),
+                    cartItemTotal.hashCode),
+                userRef.hashCode),
+            inCart.hashCode),
         ffRef.hashCode));
   }
 
@@ -219,6 +241,7 @@ class _$UserCartRecord extends UserCartRecord {
           ..add('itemPrice', itemPrice)
           ..add('cartItemTotal', cartItemTotal)
           ..add('userRef', userRef)
+          ..add('inCart', inCart)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -257,6 +280,10 @@ class UserCartRecordBuilder
   DocumentReference<Object?>? get userRef => _$this._userRef;
   set userRef(DocumentReference<Object?>? userRef) => _$this._userRef = userRef;
 
+  DocumentReference<Object?>? _inCart;
+  DocumentReference<Object?>? get inCart => _$this._inCart;
+  set inCart(DocumentReference<Object?>? inCart) => _$this._inCart = inCart;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -275,6 +302,7 @@ class UserCartRecordBuilder
       _itemPrice = $v.itemPrice;
       _cartItemTotal = $v.cartItemTotal;
       _userRef = $v.userRef;
+      _inCart = $v.inCart;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -305,6 +333,7 @@ class UserCartRecordBuilder
             itemPrice: itemPrice,
             cartItemTotal: cartItemTotal,
             userRef: userRef,
+            inCart: inCart,
             ffRef: ffRef);
     replace(_$result);
     return _$result;

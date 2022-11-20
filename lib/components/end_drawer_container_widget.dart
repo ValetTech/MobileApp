@@ -121,10 +121,10 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                         Text(
                           'Dashboard',
                           style: FlutterFlowTheme.of(context)
-                              .bodyText1
+                              .subtitle1
                               .override(
                                 fontFamily: FlutterFlowTheme.of(context)
-                                    .bodyText1Family,
+                                    .subtitle1Family,
                                 color:
                                     'valet://app${GoRouter.of(context).location}' ==
                                             'valet://path/dashboard'
@@ -134,7 +134,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                                             .secondaryText,
                                 useGoogleFonts: GoogleFonts.asMap().containsKey(
                                     FlutterFlowTheme.of(context)
-                                        .bodyText1Family),
+                                        .subtitle1Family),
                               ),
                         ),
                       ],
@@ -168,7 +168,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                         ),
                         Text(
                           'New Reservation',
-                          style: FlutterFlowTheme.of(context).bodyText1,
+                          style: FlutterFlowTheme.of(context).subtitle1,
                         ),
                       ],
                     ),
@@ -196,8 +196,8 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                           ),
                         ),
                         Text(
-                          'View/Modify Reservations',
-                          style: FlutterFlowTheme.of(context).bodyText1,
+                          'View Reservations',
+                          style: FlutterFlowTheme.of(context).subtitle1,
                         ),
                       ],
                     ),
@@ -219,7 +219,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                       ),
                       Text(
                         'Allocate To Table',
-                        style: FlutterFlowTheme.of(context).bodyText1,
+                        style: FlutterFlowTheme.of(context).subtitle1,
                       ),
                     ],
                   ),
@@ -251,7 +251,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                         ),
                         Text(
                           'View Seating',
-                          style: FlutterFlowTheme.of(context).bodyText1,
+                          style: FlutterFlowTheme.of(context).subtitle1,
                         ),
                       ],
                     ),
@@ -284,7 +284,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                         ),
                         Text(
                           'New Order',
-                          style: FlutterFlowTheme.of(context).bodyText1,
+                          style: FlutterFlowTheme.of(context).subtitle1,
                         ),
                       ],
                     ),
@@ -310,7 +310,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                         ),
                         Text(
                           'View/Modify Open Orders',
-                          style: FlutterFlowTheme.of(context).bodyText1,
+                          style: FlutterFlowTheme.of(context).subtitle1,
                         ),
                       ],
                     ),
@@ -336,7 +336,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                         ),
                         Text(
                           'View Menu',
-                          style: FlutterFlowTheme.of(context).bodyText1,
+                          style: FlutterFlowTheme.of(context).subtitle1,
                         ),
                       ],
                     ),
@@ -380,7 +380,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                       ),
                       Text(
                         'Logout',
-                        style: FlutterFlowTheme.of(context).bodyText1,
+                        style: FlutterFlowTheme.of(context).subtitle1,
                       ),
                     ],
                   ),

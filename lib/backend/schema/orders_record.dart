@@ -10,10 +10,6 @@ abstract class OrdersRecord
     implements Built<OrdersRecord, OrdersRecordBuilder> {
   static Serializer<OrdersRecord> get serializer => _$ordersRecordSerializer;
 
-  int? get tableId;
-
-  BuiltList<OrderItemStruct>? get items;
-
   String? get status;
 
   DateTime? get date;
@@ -22,10 +18,8 @@ abstract class OrdersRecord
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
 
-  static void _initializeBuilder(OrdersRecordBuilder builder) => builder
-    ..tableId = 0
-    ..items = ListBuilder()
-    ..status = '';
+  static void _initializeBuilder(OrdersRecordBuilder builder) =>
+      builder..status = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('orders');
@@ -49,7 +43,6 @@ abstract class OrdersRecord
 }
 
 Map<String, dynamic> createOrdersRecordData({
-  int? tableId,
   String? status,
   DateTime? date,
 }) {
@@ -57,8 +50,6 @@ Map<String, dynamic> createOrdersRecordData({
     OrdersRecord.serializer,
     OrdersRecord(
       (o) => o
-        ..tableId = tableId
-        ..items = null
         ..status = status
         ..date = date,
     ),

@@ -31,6 +31,9 @@ abstract class UserCartRecord
   @BuiltValueField(wireName: 'user_ref')
   DocumentReference? get userRef;
 
+  @BuiltValueField(wireName: 'in_cart')
+  DocumentReference? get inCart;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -71,6 +74,7 @@ Map<String, dynamic> createUserCartRecordData({
   double? itemPrice,
   double? cartItemTotal,
   DocumentReference? userRef,
+  DocumentReference? inCart,
 }) {
   final firestoreData = serializers.toFirestore(
     UserCartRecord.serializer,
@@ -82,7 +86,8 @@ Map<String, dynamic> createUserCartRecordData({
         ..itemImage = itemImage
         ..itemPrice = itemPrice
         ..cartItemTotal = cartItemTotal
-        ..userRef = userRef,
+        ..userRef = userRef
+        ..inCart = inCart,
     ),
   );
 
