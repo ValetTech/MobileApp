@@ -52,24 +52,7 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget> {
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
           endDrawer: Drawer(
             elevation: 16,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                        child: EndDrawerContainerWidget(),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            child: EndDrawerContainerWidget(),
           ),
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(60),
@@ -107,7 +90,7 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget> {
                     size: 30,
                   ),
                   onPressed: () async {
-                    scaffoldKey.currentState!.openDrawer();
+                    scaffoldKey.currentState!.openEndDrawer();
                   },
                 ),
               ],

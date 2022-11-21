@@ -30,79 +30,83 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
       height: double.infinity,
       child: Stack(
         children: [
+          Material(
+            color: Colors.transparent,
+            elevation: 6,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 1,
+              decoration: BoxDecoration(
+                color: FlutterFlowTheme.of(context).secondaryColor,
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 4,
+                    color: Color(0x33000000),
+                    offset: Offset(-2, -2),
+                    spreadRadius: 4,
+                  )
+                ],
+              ),
+            ),
+          ),
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+            padding: EdgeInsetsDirectional.fromSTEB(16, 24, 16, 0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(12, 12, 0, 0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: Image.network(
-                          random_data.randomImageUrl(
-                            60,
-                            60,
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(12, 12, 0, 0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: Image.network(
+                            random_data.randomImageUrl(
+                              60,
+                              60,
+                            ),
+                            width: 60,
+                            height: 60,
+                            fit: BoxFit.cover,
                           ),
-                          width: 60,
-                          height: 60,
-                          fit: BoxFit.cover,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(12, 12, 0, 0),
-                  child: AuthUserStreamWidget(
-                    child: Text(
-                      currentUserDisplayName,
-                      style: FlutterFlowTheme.of(context).subtitle1.override(
-                            fontFamily: 'Outfit',
-                            color: Color(0xFF101213),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).subtitle1Family),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(12, 12, 0, 0),
+                        child: AuthUserStreamWidget(
+                          child: Text(
+                            '${valueOrDefault(currentUserDocument?.firstName, '')} ${valueOrDefault(currentUserDocument?.lastName, '')}',
+                            style: FlutterFlowTheme.of(context)
+                                .subtitle1
+                                .override(
+                                  fontFamily: 'Outfit',
+                                  color: Color(0xFF101213),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                  useGoogleFonts: GoogleFonts.asMap()
+                                      .containsKey(FlutterFlowTheme.of(context)
+                                          .subtitle1Family),
+                                ),
                           ),
-                    ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(12, 4, 0, 12),
-                      child: Text(
-                        currentUserEmail,
-                        style: FlutterFlowTheme.of(context).subtitle2,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                      child: Icon(
-                        Icons.arrow_drop_down_rounded,
-                        color: FlutterFlowTheme.of(context).iconGray,
-                        size: 24,
-                      ),
-                    ),
-                  ],
-                ),
                 Divider(
-                  height: 2,
+                  height: 1,
                   thickness: 1,
                   indent: 12,
                   endIndent: 12,
-                  color: FlutterFlowTheme.of(context).grayLines,
+                  color: FlutterFlowTheme.of(context).primaryColor,
                 ),
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 16),
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 16),
                   child: InkWell(
                     onTap: () async {
                       context.pushNamed('Dashboard');
@@ -121,10 +125,10 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                         Text(
                           'Dashboard',
                           style: FlutterFlowTheme.of(context)
-                              .subtitle1
+                              .subtitle2
                               .override(
                                 fontFamily: FlutterFlowTheme.of(context)
-                                    .subtitle1Family,
+                                    .subtitle2Family,
                                 color:
                                     'valet://app${GoRouter.of(context).location}' ==
                                             'valet://path/dashboard'
@@ -134,7 +138,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                                             .secondaryText,
                                 useGoogleFonts: GoogleFonts.asMap().containsKey(
                                     FlutterFlowTheme.of(context)
-                                        .subtitle1Family),
+                                        .subtitle2Family),
                               ),
                         ),
                       ],
@@ -142,11 +146,11 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                   ),
                 ),
                 Divider(
-                  height: 2,
+                  height: 1,
                   thickness: 1,
                   indent: 12,
                   endIndent: 12,
-                  color: FlutterFlowTheme.of(context).grayLines,
+                  color: FlutterFlowTheme.of(context).primaryColor,
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 8),
@@ -162,13 +166,13 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
                           child: FaIcon(
                             FontAwesomeIcons.calendarPlus,
-                            color: FlutterFlowTheme.of(context).iconGray,
+                            color: FlutterFlowTheme.of(context).primaryColor,
                             size: 24,
                           ),
                         ),
                         Text(
                           'New Reservation',
-                          style: FlutterFlowTheme.of(context).subtitle1,
+                          style: FlutterFlowTheme.of(context).subtitle2,
                         ),
                       ],
                     ),
@@ -191,13 +195,13 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
                           child: Icon(
                             Icons.calendar_today_rounded,
-                            color: FlutterFlowTheme.of(context).iconGray,
+                            color: FlutterFlowTheme.of(context).primaryColor,
                             size: 24,
                           ),
                         ),
                         Text(
                           'View Reservations',
-                          style: FlutterFlowTheme.of(context).subtitle1,
+                          style: FlutterFlowTheme.of(context).subtitle2,
                         ),
                       ],
                     ),
@@ -213,23 +217,23 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
                         child: Icon(
                           Icons.group_add,
-                          color: FlutterFlowTheme.of(context).iconGray,
+                          color: FlutterFlowTheme.of(context).primaryColor,
                           size: 24,
                         ),
                       ),
                       Text(
                         'Allocate To Table',
-                        style: FlutterFlowTheme.of(context).subtitle1,
+                        style: FlutterFlowTheme.of(context).subtitle2,
                       ),
                     ],
                   ),
                 ),
                 Divider(
-                  height: 2,
+                  height: 1,
                   thickness: 1,
                   indent: 12,
                   endIndent: 12,
-                  color: FlutterFlowTheme.of(context).grayLines,
+                  color: FlutterFlowTheme.of(context).primaryColor,
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 16),
@@ -245,24 +249,24 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
                           child: Icon(
                             Icons.table_chart,
-                            color: FlutterFlowTheme.of(context).iconGray,
+                            color: FlutterFlowTheme.of(context).primaryColor,
                             size: 24,
                           ),
                         ),
                         Text(
                           'View Seating',
-                          style: FlutterFlowTheme.of(context).subtitle1,
+                          style: FlutterFlowTheme.of(context).subtitle2,
                         ),
                       ],
                     ),
                   ),
                 ),
                 Divider(
-                  height: 2,
+                  height: 1,
                   thickness: 1,
                   indent: 12,
                   endIndent: 12,
-                  color: FlutterFlowTheme.of(context).grayLines,
+                  color: FlutterFlowTheme.of(context).primaryColor,
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 8),
@@ -278,13 +282,13 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
                           child: Icon(
                             Icons.post_add_rounded,
-                            color: FlutterFlowTheme.of(context).iconGray,
+                            color: FlutterFlowTheme.of(context).primaryColor,
                             size: 24,
                           ),
                         ),
                         Text(
                           'New Order',
-                          style: FlutterFlowTheme.of(context).subtitle1,
+                          style: FlutterFlowTheme.of(context).subtitle2,
                         ),
                       ],
                     ),
@@ -304,13 +308,13 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
                           child: Icon(
                             Icons.payment_rounded,
-                            color: FlutterFlowTheme.of(context).iconGray,
+                            color: FlutterFlowTheme.of(context).primaryColor,
                             size: 24,
                           ),
                         ),
                         Text(
                           'View/Modify Open Orders',
-                          style: FlutterFlowTheme.of(context).subtitle1,
+                          style: FlutterFlowTheme.of(context).subtitle2,
                         ),
                       ],
                     ),
@@ -330,24 +334,24 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
                           child: Icon(
                             Icons.fastfood_rounded,
-                            color: FlutterFlowTheme.of(context).iconGray,
+                            color: FlutterFlowTheme.of(context).primaryColor,
                             size: 24,
                           ),
                         ),
                         Text(
                           'View Menu',
-                          style: FlutterFlowTheme.of(context).subtitle1,
+                          style: FlutterFlowTheme.of(context).subtitle2,
                         ),
                       ],
                     ),
                   ),
                 ),
                 Divider(
-                  height: 2,
+                  height: 1,
                   thickness: 1,
                   indent: 12,
                   endIndent: 12,
-                  color: FlutterFlowTheme.of(context).grayLines,
+                  color: FlutterFlowTheme.of(context).primaryColor,
                 ),
               ],
             ),
@@ -355,7 +359,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
           Align(
             alignment: AlignmentDirectional(-1, 1),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 60),
+              padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 80),
               child: InkWell(
                 onTap: () async {
                   GoRouter.of(context).prepareAuthEvent();
@@ -374,7 +378,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
                         child: Icon(
                           Icons.logout,
-                          color: FlutterFlowTheme.of(context).iconGray,
+                          color: FlutterFlowTheme.of(context).primaryColor,
                           size: 24,
                         ),
                       ),
