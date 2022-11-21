@@ -33,9 +33,6 @@ abstract class MenuRecord implements Built<MenuRecord, MenuRecordBuilder> {
 
   DocumentReference? get cat;
 
-  @BuiltValueField(wireName: 'in_cart')
-  BuiltList<bool>? get inCart;
-
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -47,8 +44,7 @@ abstract class MenuRecord implements Built<MenuRecord, MenuRecordBuilder> {
     ..onSale = false
     ..salePrice = 0.0
     ..image = ''
-    ..category = ''
-    ..inCart = ListBuilder();
+    ..category = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('menu');
@@ -95,8 +91,7 @@ Map<String, dynamic> createMenuRecordData({
         ..salePrice = salePrice
         ..image = image
         ..category = category
-        ..cat = cat
-        ..inCart = null,
+        ..cat = cat,
     ),
   );
 

@@ -85,7 +85,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'PINLogin',
               path: 'pINLogin',
-              requireAuth: true,
               builder: (context, params) => PINLoginWidget(
                 firstName: params.getParam('firstName', ParamType.String),
               ),
@@ -101,9 +100,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               requireAuth: true,
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'Dashboard')
-                  : DashboardWidget(
-                      firstName: params.getParam('firstName', ParamType.String),
-                    ),
+                  : DashboardWidget(),
             ),
             FFRoute(
               name: 'Reservations',
@@ -196,7 +193,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               requireAuth: true,
               builder: (context, params) => NavBarPage(
                 initialPage: '',
-                page: NewOrderWidget(),
+                page: NewOrderWidget(
+                  table: params.getParam('table', ParamType.String),
+                ),
               ),
             ),
             FFRoute(
@@ -205,7 +204,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               requireAuth: true,
               builder: (context, params) => NavBarPage(
                 initialPage: '',
-                page: OrderSummaryWidget(),
+                page: OrderSummaryWidget(
+                  table: params.getParam('table', ParamType.String),
+                  items: params.getParam(
+                      'items', ParamType.DocumentReference, false, 'cart'),
+                ),
               ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),

@@ -12,18 +12,25 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class NewOrderWidget extends StatefulWidget {
-  const NewOrderWidget({Key? key}) : super(key: key);
+  const NewOrderWidget({
+    Key? key,
+    this.table,
+  }) : super(key: key);
+
+  final String? table;
 
   @override
   _NewOrderWidgetState createState() => _NewOrderWidgetState();
 }
 
 class _NewOrderWidgetState extends State<NewOrderWidget> {
+  CartRecord? newCart;
   String? tableSelectionValue;
   ValueNotifier<List<String>?> choiceChipsValues = ValueNotifier(null);
   final formKey = GlobalKey<FormState>();
@@ -32,6 +39,13 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
   @override
   void initState() {
     super.initState();
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      final cartUpdateData = createCartRecordData(
+        qty: 0,
+      );
+      await newCart!.reference.update(cartUpdateData);
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -46,24 +60,7 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
           endDrawer: Drawer(
             elevation: 16,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                        child: EndDrawerContainerWidget(),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            child: EndDrawerContainerWidget(),
           ),
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(60),
@@ -195,6 +192,13 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                                   snapshot.data!;
                                               return FlutterFlowDropDown<
                                                   String>(
+                                                initialOption:
+                                                    tableSelectionValue ??=
+                                                        widget.table != null &&
+                                                                widget.table !=
+                                                                    ''
+                                                            ? widget.table
+                                                            : '',
                                                 options: (ValetAPIGroup
                                                         .gETTablesCall
                                                         .tableType(
@@ -205,20 +209,9 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                                         (s) => s.toString())
                                                     .toList()
                                                     .toList(),
-                                                onChanged: (val) async {
-                                                  setState(() =>
-                                                      tableSelectionValue =
-                                                          val);
-                                                  final userCartCreateData =
-                                                      createUserCartRecordData(
-                                                    userRef:
-                                                        currentUserReference,
-                                                  );
-                                                  await UserCartRecord
-                                                      .collection
-                                                      .doc()
-                                                      .set(userCartCreateData);
-                                                },
+                                                onChanged: (val) => setState(
+                                                    () => tableSelectionValue =
+                                                        val),
                                                 width: MediaQuery.of(context)
                                                     .size
                                                     .width,
@@ -242,8 +235,17 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                       ],
                                     ),
                                   ),
-                                  if (tableSelectionValue != null &&
-                                      tableSelectionValue != '')
+                                  if (() {
+                                    if (widget.table != null &&
+                                        widget.table != '') {
+                                      return true;
+                                    } else if (tableSelectionValue != null &&
+                                        tableSelectionValue != '') {
+                                      return true;
+                                    } else {
+                                      return false;
+                                    }
+                                  }())
                                     SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
                                       child: Row(
@@ -272,6 +274,27 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                                   setState(() =>
                                                       choiceChipsValues.value =
                                                           []);
+
+                                                  context.pushNamed(
+                                                    'NewOrder',
+                                                    queryParams: {
+                                                      'table': serializeParam(
+                                                        tableSelectionValue,
+                                                        ParamType.String,
+                                                      ),
+                                                    }.withoutNulls,
+                                                    extra: <String, dynamic>{
+                                                      kTransitionInfoKey:
+                                                          TransitionInfo(
+                                                        hasTransition: true,
+                                                        transitionType:
+                                                            PageTransitionType
+                                                                .fade,
+                                                        duration: Duration(
+                                                            milliseconds: 0),
+                                                      ),
+                                                    },
+                                                  );
                                                 },
                                                 child: Icon(
                                                   Icons.cancel,
@@ -423,8 +446,16 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                               ),
                             ),
                           ),
-                          if (tableSelectionValue != null &&
-                              tableSelectionValue != '')
+                          if (() {
+                            if (widget.table != null && widget.table != '') {
+                              return true;
+                            } else if (tableSelectionValue != null &&
+                                tableSelectionValue != '') {
+                              return true;
+                            } else {
+                              return false;
+                            }
+                          }())
                             Expanded(
                               child: Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
@@ -529,11 +560,11 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                                                           18,
                                                                           0,
                                                                           0),
-                                                              child: StreamBuilder<
+                                                              child: FutureBuilder<
                                                                   List<
                                                                       MenuRecord>>(
-                                                                stream:
-                                                                    queryMenuRecord(
+                                                                future:
+                                                                    queryMenuRecordOnce(
                                                                   queryBuilder: (menuRecord) => menuRecord
                                                                       .where(
                                                                           'category',
@@ -707,15 +738,73 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                                                                           ),
                                                                                         ),
                                                                                       ),
-                                                                                      Column(
+                                                                                      Row(
                                                                                         mainAxisSize: MainAxisSize.max,
                                                                                         children: [
                                                                                           Padding(
                                                                                             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
-                                                                                            child: Icon(
-                                                                                              Icons.add_circle,
-                                                                                              color: FlutterFlowTheme.of(context).secondaryColor,
-                                                                                              size: 30,
+                                                                                            child: InkWell(
+                                                                                              onTap: () async {
+                                                                                                final cartCreateData = createCartRecordData(
+                                                                                                  qty: 1,
+                                                                                                  price: menuListViewMenuRecord.price,
+                                                                                                  itemRef: menuListViewMenuRecord.reference,
+                                                                                                );
+                                                                                                var cartRecordReference = CartRecord.collection.doc();
+                                                                                                await cartRecordReference.set(cartCreateData);
+                                                                                                newCart = CartRecord.getDocumentFromData(cartCreateData, cartRecordReference);
+                                                                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                                                                  SnackBar(
+                                                                                                    content: Text(
+                                                                                                      'Added to Cart',
+                                                                                                      style: TextStyle(
+                                                                                                        color: FlutterFlowTheme.of(context).primaryText,
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                    duration: Duration(milliseconds: 4000),
+                                                                                                    backgroundColor: Color(0x00000000),
+                                                                                                  ),
+                                                                                                );
+
+                                                                                                setState(() {});
+                                                                                              },
+                                                                                              child: Icon(
+                                                                                                Icons.add_circle,
+                                                                                                color: FlutterFlowTheme.of(context).secondaryColor,
+                                                                                                size: 30,
+                                                                                              ),
+                                                                                            ),
+                                                                                          ),
+                                                                                          Padding(
+                                                                                            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
+                                                                                            child: InkWell(
+                                                                                              onTap: () async {
+                                                                                                final cartUpdateData = {
+                                                                                                  ...createCartRecordData(
+                                                                                                    itemRef: menuListViewMenuRecord.reference,
+                                                                                                    price: menuListViewMenuRecord.price,
+                                                                                                  ),
+                                                                                                  'qty': FieldValue.increment(-(1)),
+                                                                                                };
+                                                                                                await newCart!.reference.update(cartUpdateData);
+                                                                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                                                                  SnackBar(
+                                                                                                    content: Text(
+                                                                                                      'Removed From Cart',
+                                                                                                      style: TextStyle(
+                                                                                                        color: FlutterFlowTheme.of(context).primaryText,
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                    duration: Duration(milliseconds: 4000),
+                                                                                                    backgroundColor: Color(0x00000000),
+                                                                                                  ),
+                                                                                                );
+                                                                                              },
+                                                                                              child: Icon(
+                                                                                                Icons.remove_circle_outlined,
+                                                                                                color: FlutterFlowTheme.of(context).secondaryColor,
+                                                                                                size: 30,
+                                                                                              ),
                                                                                             ),
                                                                                           ),
                                                                                         ],
@@ -780,7 +869,7 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                       alignment: AlignmentDirectional(0, 1),
                       child: Badge(
                         badgeContent: Text(
-                          '1',
+                          newCart!.qty!.toString(),
                           style: FlutterFlowTheme.of(context)
                               .bodyText1
                               .override(
@@ -802,39 +891,82 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                         toAnimate: true,
                         child: Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
-                          child: FFButtonWidget(
-                            onPressed: () async {
-                              context.pushNamed('OrderSummary');
-                            },
-                            text: '',
-                            icon: Icon(
-                              Icons.shopping_cart_rounded,
-                              size: 50,
+                          child: StreamBuilder<List<MenuRecord>>(
+                            stream: queryMenuRecord(
+                              singleRecord: true,
                             ),
-                            options: FFButtonOptions(
-                              width: 75,
-                              height: 75,
-                              color:
-                                  FlutterFlowTheme.of(context).secondaryColor,
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .bodyText2
-                                  .override(
-                                    fontFamily: FlutterFlowTheme.of(context)
-                                        .bodyText2Family,
-                                    letterSpacing: 1,
-                                    useGoogleFonts: GoogleFonts.asMap()
-                                        .containsKey(
-                                            FlutterFlowTheme.of(context)
-                                                .bodyText2Family),
+                            builder: (context, snapshot) {
+                              // Customize what your widget looks like when it's loading.
+                              if (!snapshot.hasData) {
+                                return Center(
+                                  child: SizedBox(
+                                    width: 40,
+                                    height: 40,
+                                    child: SpinKitRipple(
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryColor,
+                                      size: 40,
+                                    ),
                                   ),
-                              elevation: 6,
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            showLoadingIndicator: false,
+                                );
+                              }
+                              List<MenuRecord> cartButtonMenuRecordList =
+                                  snapshot.data!;
+                              // Return an empty Container when the document does not exist.
+                              if (snapshot.data!.isEmpty) {
+                                return Container();
+                              }
+                              final cartButtonMenuRecord =
+                                  cartButtonMenuRecordList.isNotEmpty
+                                      ? cartButtonMenuRecordList.first
+                                      : null;
+                              return FFButtonWidget(
+                                onPressed: () async {
+                                  context.pushNamed(
+                                    'OrderSummary',
+                                    queryParams: {
+                                      'table': serializeParam(
+                                        tableSelectionValue,
+                                        ParamType.String,
+                                      ),
+                                      'items': serializeParam(
+                                        newCart!.reference,
+                                        ParamType.DocumentReference,
+                                      ),
+                                    }.withoutNulls,
+                                  );
+                                },
+                                text: '',
+                                icon: Icon(
+                                  Icons.shopping_cart_rounded,
+                                  size: 50,
+                                ),
+                                options: FFButtonOptions(
+                                  width: 75,
+                                  height: 75,
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryColor,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .bodyText2
+                                      .override(
+                                        fontFamily: FlutterFlowTheme.of(context)
+                                            .bodyText2Family,
+                                        letterSpacing: 1,
+                                        useGoogleFonts: GoogleFonts.asMap()
+                                            .containsKey(
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyText2Family),
+                                      ),
+                                  elevation: 6,
+                                  borderSide: BorderSide(
+                                    color: Colors.transparent,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                                showLoadingIndicator: false,
+                              );
+                            },
                           ),
                         ),
                       ),

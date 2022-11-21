@@ -16,12 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class DashboardWidget extends StatefulWidget {
-  const DashboardWidget({
-    Key? key,
-    this.firstName,
-  }) : super(key: key);
-
-  final String? firstName;
+  const DashboardWidget({Key? key}) : super(key: key);
 
   @override
   _DashboardWidgetState createState() => _DashboardWidgetState();

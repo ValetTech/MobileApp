@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/lat_lng.dart';
 import 'dart:convert';
 
@@ -30,6 +32,9 @@ class FFAppState {
     _currentUserRoles =
         prefs.getStringList('ff_currentUserRoles') ?? _currentUserRoles;
     _apiToken = prefs.getString('ff_apiToken') ?? _apiToken;
+    _cartsum = prefs.getDouble('ff_cartsum') ?? _cartsum;
+    _cart = prefs.getStringList('ff_cart')?.map((path) => path.ref).toList() ??
+        _cart;
   }
 
   late SharedPreferences prefs;
@@ -174,6 +179,30 @@ class FFAppState {
   int UnallocatedReservations = 0;
 
   int AvaliableTables = 0;
+
+  double _cartsum = 0.0;
+  double get cartsum => _cartsum;
+  set cartsum(double _value) {
+    _cartsum = _value;
+    prefs.setDouble('ff_cartsum', _value);
+  }
+
+  List<DocumentReference> _cart = [];
+  List<DocumentReference> get cart => _cart;
+  set cart(List<DocumentReference> _value) {
+    _cart = _value;
+    prefs.setStringList('ff_cart', _value.map((x) => x.path).toList());
+  }
+
+  void addToCart(DocumentReference _value) {
+    _cart.add(_value);
+    prefs.setStringList('ff_cart', _cart.map((x) => x.path).toList());
+  }
+
+  void removeFromCart(DocumentReference _value) {
+    _cart.remove(_value);
+    prefs.setStringList('ff_cart', _cart.map((x) => x.path).toList());
+  }
 }
 
 LatLng? _latLngFromString(String? val) {

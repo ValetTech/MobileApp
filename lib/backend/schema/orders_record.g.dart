@@ -34,6 +34,13 @@ class _$OrdersRecordSerializer implements StructuredSerializer<OrdersRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(DateTime)));
     }
+    value = object.table;
+    if (value != null) {
+      result
+        ..add('table')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -65,6 +72,10 @@ class _$OrdersRecordSerializer implements StructuredSerializer<OrdersRecord> {
           result.date = serializers.deserialize(value,
               specifiedType: const FullType(DateTime)) as DateTime?;
           break;
+        case 'table':
+          result.table = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -84,12 +95,15 @@ class _$OrdersRecord extends OrdersRecord {
   @override
   final DateTime? date;
   @override
+  final String? table;
+  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$OrdersRecord([void Function(OrdersRecordBuilder)? updates]) =>
       (new OrdersRecordBuilder()..update(updates))._build();
 
-  _$OrdersRecord._({this.status, this.date, this.ffRef}) : super._();
+  _$OrdersRecord._({this.status, this.date, this.table, this.ffRef})
+      : super._();
 
   @override
   OrdersRecord rebuild(void Function(OrdersRecordBuilder) updates) =>
@@ -104,13 +118,15 @@ class _$OrdersRecord extends OrdersRecord {
     return other is OrdersRecord &&
         status == other.status &&
         date == other.date &&
+        table == other.table &&
         ffRef == other.ffRef;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, status.hashCode), date.hashCode), ffRef.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, status.hashCode), date.hashCode), table.hashCode),
+        ffRef.hashCode));
   }
 
   @override
@@ -118,6 +134,7 @@ class _$OrdersRecord extends OrdersRecord {
     return (newBuiltValueToStringHelper(r'OrdersRecord')
           ..add('status', status)
           ..add('date', date)
+          ..add('table', table)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -135,6 +152,10 @@ class OrdersRecordBuilder
   DateTime? get date => _$this._date;
   set date(DateTime? date) => _$this._date = date;
 
+  String? _table;
+  String? get table => _$this._table;
+  set table(String? table) => _$this._table = table;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -148,6 +169,7 @@ class OrdersRecordBuilder
     if ($v != null) {
       _status = $v.status;
       _date = $v.date;
+      _table = $v.table;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -169,8 +191,9 @@ class OrdersRecordBuilder
   OrdersRecord build() => _build();
 
   _$OrdersRecord _build() {
-    final _$result =
-        _$v ?? new _$OrdersRecord._(status: status, date: date, ffRef: ffRef);
+    final _$result = _$v ??
+        new _$OrdersRecord._(
+            status: status, date: date, table: table, ffRef: ffRef);
     replace(_$result);
     return _$result;
   }

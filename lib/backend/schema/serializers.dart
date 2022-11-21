@@ -4,8 +4,8 @@ import 'package:from_css_color/from_css_color.dart';
 import 'menu_record.dart';
 import 'categories_record.dart';
 import 'orders_record.dart';
-import 'user_cart_record.dart';
 import 'user_list_record.dart';
+import 'cart_record.dart';
 
 import 'index.dart';
 
@@ -19,10 +19,8 @@ const kDocumentReferenceField = 'Document__Reference__Field';
   MenuRecord,
   CategoriesRecord,
   OrdersRecord,
-  UserCartRecord,
   UserListRecord,
-  CatagoryStruct,
-  OrderItemStruct,
+  CartRecord,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..add(DocumentReferenceSerializer())

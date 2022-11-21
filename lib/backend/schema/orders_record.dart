@@ -14,12 +14,15 @@ abstract class OrdersRecord
 
   DateTime? get date;
 
+  String? get table;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
 
-  static void _initializeBuilder(OrdersRecordBuilder builder) =>
-      builder..status = '';
+  static void _initializeBuilder(OrdersRecordBuilder builder) => builder
+    ..status = ''
+    ..table = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('orders');
@@ -45,13 +48,15 @@ abstract class OrdersRecord
 Map<String, dynamic> createOrdersRecordData({
   String? status,
   DateTime? date,
+  String? table,
 }) {
   final firestoreData = serializers.toFirestore(
     OrdersRecord.serializer,
     OrdersRecord(
       (o) => o
         ..status = status
-        ..date = date,
+        ..date = date
+        ..table = table,
     ),
   );
 

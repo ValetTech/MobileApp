@@ -63,34 +63,32 @@ class _PINLoginWidgetState extends State<PINLoginWidget>
     super.initState();
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      if (isAndroid == true) {
-        final _localAuth = LocalAuthentication();
-        bool _isBiometricSupported = await _localAuth.isDeviceSupported();
-        bool canCheckBiometrics = await _localAuth.canCheckBiometrics;
-        if (_isBiometricSupported && canCheckBiometrics) {
-          biometriLoginResult = await _localAuth.authenticate(
-              localizedReason:
-                  'Please authenticate with biometrics to access Valet',
-              options: const AuthenticationOptions(biometricOnly: true));
-          setState(() {});
-        }
+      final _localAuth = LocalAuthentication();
+      bool _isBiometricSupported = await _localAuth.isDeviceSupported();
+      bool canCheckBiometrics = await _localAuth.canCheckBiometrics;
+      if (_isBiometricSupported && canCheckBiometrics) {
+        biometriLoginResult = await _localAuth.authenticate(
+            localizedReason:
+                'Please authenticate with biometrics to access Valet',
+            options: const AuthenticationOptions(biometricOnly: true));
+        setState(() {});
+      }
 
-        if (biometriLoginResult!) {
-          context.goNamed('Dashboard');
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                biometriLoginResult!.toString(),
-                style: TextStyle(
-                  color: FlutterFlowTheme.of(context).primaryText,
-                ),
+      if (biometriLoginResult!) {
+        context.goNamed('Dashboard');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              biometriLoginResult!.toString(),
+              style: TextStyle(
+                color: FlutterFlowTheme.of(context).primaryText,
               ),
-              duration: Duration(milliseconds: 4000),
-              backgroundColor: Color(0x00000000),
             ),
-          );
-        }
+            duration: Duration(milliseconds: 4000),
+            backgroundColor: Color(0x00000000),
+          ),
+        );
       }
     });
 

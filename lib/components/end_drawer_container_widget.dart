@@ -1,7 +1,6 @@
 import '../auth/auth_util.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/random_data_util.dart' as random_data;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -65,11 +64,8 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(12, 12, 0, 0),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(50),
-                          child: Image.network(
-                            random_data.randomImageUrl(
-                              60,
-                              60,
-                            ),
+                          child: Image.asset(
+                            'assets/images/FB_IMG_1609522257085_2.jpg',
                             width: 60,
                             height: 60,
                             fit: BoxFit.cover,
@@ -119,27 +115,13 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
                           child: Icon(
                             Icons.dashboard,
+                            color: FlutterFlowTheme.of(context).primaryText,
                             size: 24,
                           ),
                         ),
                         Text(
                           'Dashboard',
-                          style: FlutterFlowTheme.of(context)
-                              .subtitle2
-                              .override(
-                                fontFamily: FlutterFlowTheme.of(context)
-                                    .subtitle2Family,
-                                color:
-                                    'valet://app${GoRouter.of(context).location}' ==
-                                            'valet://path/dashboard'
-                                        ? FlutterFlowTheme.of(context)
-                                            .secondaryColor
-                                        : FlutterFlowTheme.of(context)
-                                            .secondaryText,
-                                useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                    FlutterFlowTheme.of(context)
-                                        .subtitle2Family),
-                              ),
+                          style: FlutterFlowTheme.of(context).subtitle2,
                         ),
                       ],
                     ),

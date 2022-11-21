@@ -9,10 +9,8 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OrdersWidget extends StatefulWidget {
@@ -23,10 +21,8 @@ class OrdersWidget extends StatefulWidget {
 }
 
 class _OrdersWidgetState extends State<OrdersWidget> {
-  Completer<List<OrdersRecord>>? _firestoreRequestCompleter;
   DateTimeRange? calendarPickerReservationsMainSelectedDay;
-  List<String>? choiceChipsValues1;
-  List<String>? choiceChipsValues2;
+  ValueNotifier<List<String>?> choiceChipsValues = ValueNotifier(null);
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -174,10 +170,6 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                                                       .selectedDate =
                                                   calendarPickerReservationsMainSelectedDay
                                                       ?.start);
-                                              setState(() =>
-                                                  _firestoreRequestCompleter =
-                                                      null);
-                                              await waitForFirestoreRequestCompleter();
                                               setState(() {});
                                             },
                                             titleStyle:
@@ -290,6 +282,9 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                                                 onTap: () async {
                                                   setState(() => FFAppState()
                                                       .filtersOn = false);
+                                                  setState(() =>
+                                                      choiceChipsValues.value =
+                                                          []);
                                                 },
                                                 child: Icon(
                                                   Icons.cancel,
@@ -337,28 +332,14 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                                                   final choiceChipsGETSittingTypesByDateResponse =
                                                       snapshot.data!;
                                                   return FlutterFlowChoiceChips(
-                                                    options: (ValetAPIGroup
-                                                            .gETSittingTypesByDateCall
-                                                            .sittingType(
-                                                      choiceChipsGETSittingTypesByDateResponse
-                                                          .jsonBody,
-                                                    ) as List)
-                                                        .map<String>(
-                                                            (s) => s.toString())
-                                                        .toList()
-                                                        .where((e) =>
-                                                            calendarPickerReservationsMainSelectedDay
-                                                                ?.start ==
-                                                            FFAppState()
-                                                                .selectedDate)
-                                                        .toList()
-                                                        .map((label) =>
-                                                            ChipData(label))
-                                                        .toList(),
+                                                    options: [
+                                                      ChipData('Upstairs',
+                                                          Icons.stairs_rounded)
+                                                    ],
                                                     onChanged: (val) async {
                                                       setState(() =>
-                                                          choiceChipsValues1 =
-                                                              val);
+                                                          choiceChipsValues
+                                                              .value = val);
                                                       setState(() =>
                                                           FFAppState()
                                                                   .filtersOn =
@@ -425,121 +406,13 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                                                     chipSpacing: 8,
                                                     multiselect: true,
                                                     initialized:
-                                                        choiceChipsValues1 !=
+                                                        choiceChipsValues
+                                                                .value !=
                                                             null,
                                                     alignment: WrapAlignment
                                                         .spaceEvenly,
-                                                  );
-                                                },
-                                              ),
-                                              FutureBuilder<ApiCallResponse>(
-                                                future: ValetAPIGroup
-                                                    .gETAreasBySittingIDCall
-                                                    .call(),
-                                                builder: (context, snapshot) {
-                                                  // Customize what your widget looks like when it's loading.
-                                                  if (!snapshot.hasData) {
-                                                    return Center(
-                                                      child: SizedBox(
-                                                        width: 40,
-                                                        height: 40,
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          color:
-                                                              Color(0x00023047),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }
-                                                  final choiceChipsGETAreasBySittingIDResponse =
-                                                      snapshot.data!;
-                                                  return FlutterFlowChoiceChips(
-                                                    options: (ValetAPIGroup
-                                                            .gETAreasBySittingIDCall
-                                                            .areaName(
-                                                      choiceChipsGETAreasBySittingIDResponse
-                                                          .jsonBody,
-                                                    ) as List)
-                                                        .map<String>(
-                                                            (s) => s.toString())
-                                                        .toList()
-                                                        .map((label) =>
-                                                            ChipData(label))
-                                                        .toList(),
-                                                    onChanged: (val) async {
-                                                      setState(() =>
-                                                          choiceChipsValues2 =
-                                                              val);
-                                                      setState(() =>
-                                                          FFAppState()
-                                                                  .filtersOn =
-                                                              true);
-                                                    },
-                                                    selectedChipStyle:
-                                                        ChipStyle(
-                                                      backgroundColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .secondaryColor,
-                                                      textStyle:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyText1
-                                                              .override(
-                                                                fontFamily: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyText1Family,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primaryColor,
-                                                                useGoogleFonts: GoogleFonts
-                                                                        .asMap()
-                                                                    .containsKey(
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .bodyText1Family),
-                                                              ),
-                                                      iconColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryColor,
-                                                      iconSize: 14,
-                                                      elevation: 4,
-                                                    ),
-                                                    unselectedChipStyle:
-                                                        ChipStyle(
-                                                      backgroundColor:
-                                                          Colors.white,
-                                                      textStyle:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyText2
-                                                              .override(
-                                                                fontFamily: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyText2Family,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .iconGray,
-                                                                useGoogleFonts: GoogleFonts
-                                                                        .asMap()
-                                                                    .containsKey(
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .bodyText2Family),
-                                                              ),
-                                                      iconColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .iconGray,
-                                                      iconSize: 14,
-                                                      elevation: 4,
-                                                    ),
-                                                    chipSpacing: 8,
-                                                    multiselect: true,
-                                                    initialized:
-                                                        choiceChipsValues2 !=
-                                                            null,
-                                                    alignment: WrapAlignment
-                                                        .spaceEvenly,
+                                                    selectedValuesVariable:
+                                                        choiceChipsValues,
                                                   );
                                                 },
                                               ),
@@ -570,11 +443,12 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                                 ],
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: FutureBuilder<List<OrdersRecord>>(
-                                future: (_firestoreRequestCompleter ??=
-                                        Completer<List<OrdersRecord>>()
-                                          ..complete(queryOrdersRecordOnce()))
-                                    .future,
+                              child: StreamBuilder<List<OrdersRecord>>(
+                                stream: queryOrdersRecord(
+                                  queryBuilder: (ordersRecord) =>
+                                      ordersRecord.where('date',
+                                          isEqualTo: FFAppState().selectedDate),
+                                ),
                                 builder: (context, snapshot) {
                                   // Customize what your widget looks like when it's loading.
                                   if (!snapshot.hasData) {
@@ -604,210 +478,35 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                                       ),
                                     );
                                   }
-                                  return RefreshIndicator(
-                                    onRefresh: () async {
-                                      setState(() =>
-                                          _firestoreRequestCompleter = null);
-                                      await waitForFirestoreRequestCompleter();
+                                  return ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: listViewOrdersRecordList.length,
+                                    itemBuilder: (context, listViewIndex) {
+                                      final listViewOrdersRecord =
+                                          listViewOrdersRecordList[
+                                              listViewIndex];
+                                      return ListTile(
+                                        title: Text(
+                                          listViewOrdersRecord.table!,
+                                          style: FlutterFlowTheme.of(context)
+                                              .title3,
+                                        ),
+                                        subtitle: Text(
+                                          listViewOrdersRecord.status!,
+                                          style: FlutterFlowTheme.of(context)
+                                              .subtitle2,
+                                        ),
+                                        trailing: Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: Color(0xFF303030),
+                                          size: 20,
+                                        ),
+                                        tileColor: Color(0xFFF5F5F5),
+                                        dense: false,
+                                      );
                                     },
-                                    child: ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.vertical,
-                                      itemCount:
-                                          listViewOrdersRecordList.length,
-                                      itemBuilder: (context, listViewIndex) {
-                                        final listViewOrdersRecord =
-                                            listViewOrdersRecordList[
-                                                listViewIndex];
-                                        return Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  12, 4, 0, 4),
-                                          child: Container(
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Expanded(
-                                                  flex: 4,
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                12, 8, 0, 8),
-                                                    child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(0,
-                                                                      0, 0, 4),
-                                                          child: Text(
-                                                            'The Key to Starting Every Day Right',
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .subtitle1
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Overpass',
-                                                                  color: Color(
-                                                                      0xFF101213),
-                                                                  fontSize: 18,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .subtitle1Family),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(0,
-                                                                      0, 0, 4),
-                                                          child: Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            children: [
-                                                              Icon(
-                                                                Icons
-                                                                    .access_time,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .iconGray,
-                                                                size: 16,
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            4,
-                                                                            0,
-                                                                            0,
-                                                                            0),
-                                                                child: Text(
-                                                                  '5 min ',
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyText2
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Outfit',
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .iconGray,
-                                                                        fontSize:
-                                                                            14,
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                        useGoogleFonts:
-                                                                            GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText2Family),
-                                                                      ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          children: [
-                                                            Icon(
-                                                              Icons.phone,
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .iconGray,
-                                                              size: 16,
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          4,
-                                                                          0,
-                                                                          0,
-                                                                          0),
-                                                              child: Text(
-                                                                'By Ellen Fraud',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyText2
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Outfit',
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .iconGray,
-                                                                      fontSize:
-                                                                          14,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      useGoogleFonts: GoogleFonts
-                                                                              .asMap()
-                                                                          .containsKey(
-                                                                              FlutterFlowTheme.of(context).bodyText2Family),
-                                                                    ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  flex: 1,
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    children: [
-                                                      FlutterFlowIconButton(
-                                                        borderColor:
-                                                            Colors.transparent,
-                                                        borderRadius: 30,
-                                                        borderWidth: 1,
-                                                        buttonSize: 60,
-                                                        icon: Icon(
-                                                          Icons
-                                                              .keyboard_arrow_right,
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryText,
-                                                          size: 30,
-                                                        ),
-                                                        onPressed: () {
-                                                          print(
-                                                              'IconButton pressed ...');
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
                                   );
                                 },
                               ),
@@ -859,20 +558,5 @@ class _OrdersWidgetState extends State<OrdersWidget> {
             ),
           ),
         ));
-  }
-
-  Future waitForFirestoreRequestCompleter({
-    double minWait = 0,
-    double maxWait = double.infinity,
-  }) async {
-    final stopwatch = Stopwatch()..start();
-    while (true) {
-      await Future.delayed(Duration(milliseconds: 50));
-      final timeElapsed = stopwatch.elapsedMilliseconds;
-      final requestComplete = _firestoreRequestCompleter?.isCompleted ?? false;
-      if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
-        break;
-      }
-    }
   }
 }

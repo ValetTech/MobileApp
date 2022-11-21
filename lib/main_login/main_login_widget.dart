@@ -339,17 +339,7 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
                                   return;
                                 }
 
-                                context.pushNamedAuth(
-                                  'Dashboard',
-                                  mounted,
-                                  queryParams: {
-                                    'firstName': serializeParam(
-                                      valueOrDefault(
-                                          currentUserDocument?.firstName, ''),
-                                      ParamType.String,
-                                    ),
-                                  }.withoutNulls,
-                                );
+                                context.pushNamedAuth('Dashboard', mounted);
                               },
                               text: 'Login',
                               icon: Icon(

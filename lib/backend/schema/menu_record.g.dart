@@ -90,14 +90,6 @@ class _$MenuRecordSerializer implements StructuredSerializer<MenuRecord> {
             specifiedType: const FullType(
                 DocumentReference, const [const FullType.nullable(Object)])));
     }
-    value = object.inCart;
-    if (value != null) {
-      result
-        ..add('in_cart')
-        ..add(serializers.serialize(value,
-            specifiedType:
-                const FullType(BuiltList, const [const FullType(bool)])));
-    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -162,12 +154,6 @@ class _$MenuRecordSerializer implements StructuredSerializer<MenuRecord> {
                 const FullType.nullable(Object)
               ])) as DocumentReference<Object?>?;
           break;
-        case 'in_cart':
-          result.inCart.replace(serializers.deserialize(value,
-                  specifiedType:
-                      const FullType(BuiltList, const [const FullType(bool)]))!
-              as BuiltList<Object?>);
-          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -203,8 +189,6 @@ class _$MenuRecord extends MenuRecord {
   @override
   final DocumentReference<Object?>? cat;
   @override
-  final BuiltList<bool>? inCart;
-  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$MenuRecord([void Function(MenuRecordBuilder)? updates]) =>
@@ -221,7 +205,6 @@ class _$MenuRecord extends MenuRecord {
       this.image,
       this.category,
       this.cat,
-      this.inCart,
       this.ffRef})
       : super._();
 
@@ -246,7 +229,6 @@ class _$MenuRecord extends MenuRecord {
         image == other.image &&
         category == other.category &&
         cat == other.cat &&
-        inCart == other.inCart &&
         ffRef == other.ffRef;
   }
 
@@ -261,18 +243,16 @@ class _$MenuRecord extends MenuRecord {
                             $jc(
                                 $jc(
                                     $jc(
-                                        $jc(
-                                            $jc($jc(0, name.hashCode),
-                                                description.hashCode),
-                                            price.hashCode),
-                                        createdAt.hashCode),
-                                    modifiedAt.hashCode),
-                                onSale.hashCode),
-                            salePrice.hashCode),
-                        image.hashCode),
-                    category.hashCode),
-                cat.hashCode),
-            inCart.hashCode),
+                                        $jc($jc(0, name.hashCode),
+                                            description.hashCode),
+                                        price.hashCode),
+                                    createdAt.hashCode),
+                                modifiedAt.hashCode),
+                            onSale.hashCode),
+                        salePrice.hashCode),
+                    image.hashCode),
+                category.hashCode),
+            cat.hashCode),
         ffRef.hashCode));
   }
 
@@ -289,7 +269,6 @@ class _$MenuRecord extends MenuRecord {
           ..add('image', image)
           ..add('category', category)
           ..add('cat', cat)
-          ..add('inCart', inCart)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -338,10 +317,6 @@ class MenuRecordBuilder implements Builder<MenuRecord, MenuRecordBuilder> {
   DocumentReference<Object?>? get cat => _$this._cat;
   set cat(DocumentReference<Object?>? cat) => _$this._cat = cat;
 
-  ListBuilder<bool>? _inCart;
-  ListBuilder<bool> get inCart => _$this._inCart ??= new ListBuilder<bool>();
-  set inCart(ListBuilder<bool>? inCart) => _$this._inCart = inCart;
-
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -363,7 +338,6 @@ class MenuRecordBuilder implements Builder<MenuRecord, MenuRecordBuilder> {
       _image = $v.image;
       _category = $v.category;
       _cat = $v.cat;
-      _inCart = $v.inCart?.toBuilder();
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -385,33 +359,19 @@ class MenuRecordBuilder implements Builder<MenuRecord, MenuRecordBuilder> {
   MenuRecord build() => _build();
 
   _$MenuRecord _build() {
-    _$MenuRecord _$result;
-    try {
-      _$result = _$v ??
-          new _$MenuRecord._(
-              name: name,
-              description: description,
-              price: price,
-              createdAt: createdAt,
-              modifiedAt: modifiedAt,
-              onSale: onSale,
-              salePrice: salePrice,
-              image: image,
-              category: category,
-              cat: cat,
-              inCart: _inCart?.build(),
-              ffRef: ffRef);
-    } catch (_) {
-      late String _$failedField;
-      try {
-        _$failedField = 'inCart';
-        _inCart?.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'MenuRecord', _$failedField, e.toString());
-      }
-      rethrow;
-    }
+    final _$result = _$v ??
+        new _$MenuRecord._(
+            name: name,
+            description: description,
+            price: price,
+            createdAt: createdAt,
+            modifiedAt: modifiedAt,
+            onSale: onSale,
+            salePrice: salePrice,
+            image: image,
+            category: category,
+            cat: cat,
+            ffRef: ffRef);
     replace(_$result);
     return _$result;
   }

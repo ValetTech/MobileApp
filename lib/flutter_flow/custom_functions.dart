@@ -164,3 +164,15 @@ int arrayCount(List<dynamic> array) {
   if (array == null) return 0;
   return array.length;
 }
+
+double returncartprice(double value) {
+  return value * -1;
+}
+
+int countPricesAndQty(
+  int qty,
+  double price,
+) {
+  qty = price.toInt() * qty;
+  return qty;
+}
