@@ -45,7 +45,10 @@ class _HeaderWidgetState extends State<HeaderWidget> {
           padding: EdgeInsetsDirectional.fromSTEB(2, 0, 16, 0),
           child: AuthUserStreamWidget(
             child: Text(
-              valueOrDefault(currentUserDocument?.firstName, ''),
+              valueOrDefault<String>(
+                valueOrDefault(currentUserDocument?.firstName, ''),
+                'there',
+              ),
               textAlign: TextAlign.start,
               style: FlutterFlowTheme.of(context).title1.override(
                     fontFamily: 'Overpass',

@@ -1,3 +1,4 @@
+import '../auth/auth_util.dart';
 import '../backend/api_requests/api_calls.dart';
 import '../backend/backend.dart';
 import '../components/end_drawer_container_widget.dart';
@@ -9,6 +10,7 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:badges/badges.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -203,9 +205,20 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                                         (s) => s.toString())
                                                     .toList()
                                                     .toList(),
-                                                onChanged: (val) => setState(
-                                                    () => tableSelectionValue =
-                                                        val),
+                                                onChanged: (val) async {
+                                                  setState(() =>
+                                                      tableSelectionValue =
+                                                          val);
+                                                  final userCartCreateData =
+                                                      createUserCartRecordData(
+                                                    userRef:
+                                                        currentUserReference,
+                                                  );
+                                                  await UserCartRecord
+                                                      .collection
+                                                      .doc()
+                                                      .set(userCartCreateData);
+                                                },
                                                 width: MediaQuery.of(context)
                                                     .size
                                                     .width,
