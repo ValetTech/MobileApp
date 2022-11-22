@@ -16,24 +16,24 @@ service cloud.firestore {
     }
 
     match /orders/{document} {
-      allow create: if true;
-      allow read: if true;
-      allow write: if true;
-      allow delete: if true;
+      allow create: if request.auth != null;
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+      allow delete: if request.auth != null;
     }
 
     match /userList/{document} {
-      allow create: if true;
-      allow read: if true;
-      allow write: if request.auth.uid == document;
-      allow delete: if false;
+      allow create: if request.auth != null;
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+      allow delete: if request.auth != null;
     }
 
     match /cart/{document} {
-      allow create: if true;
-      allow read: if true;
-      allow write: if true;
-      allow delete: if true;
+      allow create: if request.auth != null;
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+      allow delete: if request.auth != null;
     }
   }
 }
