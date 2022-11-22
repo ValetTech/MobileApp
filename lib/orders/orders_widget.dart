@@ -313,6 +313,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                                                       .formatDateForPOST(
                                                           FFAppState()
                                                               .selectedDate!),
+                                                  authToken: FFAppState().token,
                                                 ),
                                                 builder: (context, snapshot) {
                                                   // Customize what your widget looks like when it's loading.

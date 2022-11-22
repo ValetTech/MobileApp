@@ -46,6 +46,7 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
     ),
   };
   ApiCallResponse? aPIPatchReservation;
+  ApiCallResponse? updateReservationAPIOutput;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -1258,14 +1259,19 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                                                               },
                                                             ) ??
                                                             false;
-                                                    await ValetAPIGroup
-                                                        .updateReservationCall
-                                                        .call(
+                                                    updateReservationAPIOutput =
+                                                        await ValetAPIGroup
+                                                            .updateReservationCall
+                                                            .call(
                                                       status: 'Cancelled',
+                                                      authToken:
+                                                          FFAppState().token,
                                                     );
 
                                                     context.goNamed(
                                                         'Reservations');
+
+                                                    setState(() {});
                                                   },
                                                   text: 'Delete',
                                                   icon: Icon(

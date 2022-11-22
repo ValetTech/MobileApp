@@ -176,3 +176,13 @@ int countPricesAndQty(
   qty = price.toInt() * qty;
   return qty;
 }
+
+List<DateTime> sessionTimes() {
+  var times = <DateTime>[];
+  var time = DateTime(2019, 1, 1, 9);
+  while (time.hour < 23) {
+    times.add(time);
+    time = time.add(Duration(minutes: 30));
+  }
+  return times;
+}

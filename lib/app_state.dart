@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:csv/csv.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/lat_lng.dart';
 import 'dart:convert';
@@ -16,28 +17,34 @@ class FFAppState {
   }
 
   Future initializePersistedState() async {
-    prefs = await SharedPreferences.getInstance();
-    _selectedDate = prefs.containsKey('ff_selectedDate')
-        ? DateTime.fromMillisecondsSinceEpoch(prefs.getInt('ff_selectedDate')!)
+    secureStorage = FlutterSecureStorage();
+    _selectedDate = await secureStorage.read(key: 'ff_selectedDate') != null
+        ? DateTime.fromMillisecondsSinceEpoch(
+            (await secureStorage.getInt('ff_selectedDate'))!)
         : null;
-    _resDate = prefs.containsKey('ff_resDate')
-        ? DateTime.fromMillisecondsSinceEpoch(prefs.getInt('ff_resDate')!)
+    _resDate = await secureStorage.read(key: 'ff_resDate') != null
+        ? DateTime.fromMillisecondsSinceEpoch(
+            (await secureStorage.getInt('ff_resDate'))!)
         : null;
-    _currentUserToken =
-        prefs.getString('ff_currentUserToken') ?? _currentUserToken;
-    _currentUserEmail =
-        prefs.getString('ff_currentUserEmail') ?? _currentUserEmail;
+    _currentUserToken = await secureStorage.getString('ff_currentUserToken') ??
+        _currentUserToken;
+    _currentUserEmail = await secureStorage.getString('ff_currentUserEmail') ??
+        _currentUserEmail;
     _currentUserName =
-        prefs.getString('ff_currentUserName') ?? _currentUserName;
+        await secureStorage.getString('ff_currentUserName') ?? _currentUserName;
     _currentUserRoles =
-        prefs.getStringList('ff_currentUserRoles') ?? _currentUserRoles;
-    _apiToken = prefs.getString('ff_apiToken') ?? _apiToken;
-    _cartsum = prefs.getDouble('ff_cartsum') ?? _cartsum;
-    _cart = prefs.getStringList('ff_cart')?.map((path) => path.ref).toList() ??
+        await secureStorage.getStringList('ff_currentUserRoles') ??
+            _currentUserRoles;
+    _apiToken = await secureStorage.getString('ff_apiToken') ?? _apiToken;
+    _cartsum = await secureStorage.getDouble('ff_cartsum') ?? _cartsum;
+    _cart = (await secureStorage.getStringList('ff_cart'))
+            ?.map((path) => path.ref)
+            .toList() ??
         _cart;
+    _token = await secureStorage.getString('ff_token') ?? _token;
   }
 
-  late SharedPreferences prefs;
+  late FlutterSecureStorage secureStorage;
 
   int selectedSittingId = 0;
 
@@ -103,7 +110,11 @@ class FFAppState {
       return;
     }
     _selectedDate = _value;
-    prefs.setInt('ff_selectedDate', _value.millisecondsSinceEpoch);
+    secureStorage.setInt('ff_selectedDate', _value.millisecondsSinceEpoch);
+  }
+
+  void deleteSelectedDate() {
+    secureStorage.delete(key: 'ff_selectedDate');
   }
 
   int resAreaId = 0;
@@ -117,7 +128,11 @@ class FFAppState {
       return;
     }
     _resDate = _value;
-    prefs.setInt('ff_resDate', _value.millisecondsSinceEpoch);
+    secureStorage.setInt('ff_resDate', _value.millisecondsSinceEpoch);
+  }
+
+  void deleteResDate() {
+    secureStorage.delete(key: 'ff_resDate');
   }
 
   int resCustomerId = 0;
@@ -130,38 +145,54 @@ class FFAppState {
   String get currentUserToken => _currentUserToken;
   set currentUserToken(String _value) {
     _currentUserToken = _value;
-    prefs.setString('ff_currentUserToken', _value);
+    secureStorage.setString('ff_currentUserToken', _value);
+  }
+
+  void deleteCurrentUserToken() {
+    secureStorage.delete(key: 'ff_currentUserToken');
   }
 
   String _currentUserEmail = '';
   String get currentUserEmail => _currentUserEmail;
   set currentUserEmail(String _value) {
     _currentUserEmail = _value;
-    prefs.setString('ff_currentUserEmail', _value);
+    secureStorage.setString('ff_currentUserEmail', _value);
+  }
+
+  void deleteCurrentUserEmail() {
+    secureStorage.delete(key: 'ff_currentUserEmail');
   }
 
   String _currentUserName = '';
   String get currentUserName => _currentUserName;
   set currentUserName(String _value) {
     _currentUserName = _value;
-    prefs.setString('ff_currentUserName', _value);
+    secureStorage.setString('ff_currentUserName', _value);
+  }
+
+  void deleteCurrentUserName() {
+    secureStorage.delete(key: 'ff_currentUserName');
   }
 
   List<String> _currentUserRoles = [];
   List<String> get currentUserRoles => _currentUserRoles;
   set currentUserRoles(List<String> _value) {
     _currentUserRoles = _value;
-    prefs.setStringList('ff_currentUserRoles', _value);
+    secureStorage.setStringList('ff_currentUserRoles', _value);
+  }
+
+  void deleteCurrentUserRoles() {
+    secureStorage.delete(key: 'ff_currentUserRoles');
   }
 
   void addToCurrentUserRoles(String _value) {
     _currentUserRoles.add(_value);
-    prefs.setStringList('ff_currentUserRoles', _currentUserRoles);
+    secureStorage.setStringList('ff_currentUserRoles', _currentUserRoles);
   }
 
   void removeFromCurrentUserRoles(String _value) {
     _currentUserRoles.remove(_value);
-    prefs.setStringList('ff_currentUserRoles', _currentUserRoles);
+    secureStorage.setStringList('ff_currentUserRoles', _currentUserRoles);
   }
 
   int selectedOrderTable = 0;
@@ -171,7 +202,11 @@ class FFAppState {
   String get apiToken => _apiToken;
   set apiToken(String _value) {
     _apiToken = _value;
-    prefs.setString('ff_apiToken', _value);
+    secureStorage.setString('ff_apiToken', _value);
+  }
+
+  void deleteApiToken() {
+    secureStorage.delete(key: 'ff_apiToken');
   }
 
   double VacancyRate = 0;
@@ -184,24 +219,43 @@ class FFAppState {
   double get cartsum => _cartsum;
   set cartsum(double _value) {
     _cartsum = _value;
-    prefs.setDouble('ff_cartsum', _value);
+    secureStorage.setDouble('ff_cartsum', _value);
+  }
+
+  void deleteCartsum() {
+    secureStorage.delete(key: 'ff_cartsum');
   }
 
   List<DocumentReference> _cart = [];
   List<DocumentReference> get cart => _cart;
   set cart(List<DocumentReference> _value) {
     _cart = _value;
-    prefs.setStringList('ff_cart', _value.map((x) => x.path).toList());
+    secureStorage.setStringList('ff_cart', _value.map((x) => x.path).toList());
+  }
+
+  void deleteCart() {
+    secureStorage.delete(key: 'ff_cart');
   }
 
   void addToCart(DocumentReference _value) {
     _cart.add(_value);
-    prefs.setStringList('ff_cart', _cart.map((x) => x.path).toList());
+    secureStorage.setStringList('ff_cart', _cart.map((x) => x.path).toList());
   }
 
   void removeFromCart(DocumentReference _value) {
     _cart.remove(_value);
-    prefs.setStringList('ff_cart', _cart.map((x) => x.path).toList());
+    secureStorage.setStringList('ff_cart', _cart.map((x) => x.path).toList());
+  }
+
+  String _token = '';
+  String get token => _token;
+  set token(String _value) {
+    _token = _value;
+    secureStorage.setString('ff_token', _value);
+  }
+
+  void deleteToken() {
+    secureStorage.delete(key: 'ff_token');
   }
 }
 
@@ -213,4 +267,38 @@ LatLng? _latLngFromString(String? val) {
   final lat = double.parse(split.first);
   final lng = double.parse(split.last);
   return LatLng(lat, lng);
+}
+
+extension FlutterSecureStorageExtensions on FlutterSecureStorage {
+  Future<String?> getString(String key) async => await read(key: key);
+  Future<void> setString(String key, String value) async =>
+      await write(key: key, value: value);
+
+  Future<bool?> getBool(String key) async => (await read(key: key)) == 'true';
+  Future<void> setBool(String key, bool value) async =>
+      await write(key: key, value: value.toString());
+
+  Future<int?> getInt(String key) async =>
+      int.tryParse(await read(key: key) ?? '');
+  Future<void> setInt(String key, int value) async =>
+      await write(key: key, value: value.toString());
+
+  Future<double?> getDouble(String key) async =>
+      double.tryParse(await read(key: key) ?? '');
+  Future<void> setDouble(String key, double value) async =>
+      await write(key: key, value: value.toString());
+
+  Future<List<String>?> getStringList(String key) async =>
+      await read(key: key).then((result) {
+        if (result == null || result.isEmpty) {
+          return null;
+        }
+        return CsvToListConverter()
+            .convert(result)
+            .first
+            .map((e) => e.toString())
+            .toList();
+      });
+  Future<void> setStringList(String key, List<String> value) async =>
+      await write(key: key, value: ListToCsvConverter().convert([value]));
 }

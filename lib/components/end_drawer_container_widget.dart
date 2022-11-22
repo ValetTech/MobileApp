@@ -347,7 +347,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                   GoRouter.of(context).prepareAuthEvent();
                   await signOut();
 
-                  context.goNamedAuth('mainLogin', mounted);
+                  context.goNamedAuth('PINLogin', mounted);
                 },
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,

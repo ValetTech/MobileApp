@@ -139,6 +139,7 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                       areaChipsValues.value?.toList()),
                                   sitting: functions.listJoin(
                                       sittingChipsValues.value?.toList()),
+                                  authToken: FFAppState().token,
                                 )))
                               .future,
                       builder: (context, snapshot) {
@@ -422,6 +423,9 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                               .formatDateForPOST(
                                                                   FFAppState()
                                                                       .selectedDate!),
+                                                          authToken:
+                                                              FFAppState()
+                                                                  .token,
                                                         ),
                                                         builder: (context,
                                                             snapshot) {
@@ -551,7 +555,10 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                         ApiCallResponse>(
                                                       future: ValetAPIGroup
                                                           .gETAreasBySittingIDCall
-                                                          .call(),
+                                                          .call(
+                                                        authToken:
+                                                            FFAppState().token,
+                                                      ),
                                                       builder:
                                                           (context, snapshot) {
                                                         // Customize what your widget looks like when it's loading.

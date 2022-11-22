@@ -9,6 +9,7 @@ import 'schema/categories_record.dart';
 import 'schema/orders_record.dart';
 import 'schema/user_list_record.dart';
 import 'schema/cart_record.dart';
+import 'schema/times_record.dart';
 import 'schema/serializers.dart';
 
 export 'dart:async' show StreamSubscription;
@@ -21,6 +22,7 @@ export 'schema/categories_record.dart';
 export 'schema/orders_record.dart';
 export 'schema/user_list_record.dart';
 export 'schema/cart_record.dart';
+export 'schema/times_record.dart';
 
 /// Functions to query MenuRecords (as a Stream and as a Future).
 Stream<List<MenuRecord>> queryMenuRecord({
@@ -226,6 +228,48 @@ Future<FFFirestorePage<CartRecord>> queryCartRecordPage({
     queryCollectionPage(
       CartRecord.collection,
       CartRecord.serializer,
+      queryBuilder: queryBuilder,
+      nextPageMarker: nextPageMarker,
+      pageSize: pageSize,
+      isStream: isStream,
+    );
+
+/// Functions to query TimesRecords (as a Stream and as a Future).
+Stream<List<TimesRecord>> queryTimesRecord({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollection(
+      TimesRecord.collection,
+      TimesRecord.serializer,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<List<TimesRecord>> queryTimesRecordOnce({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollectionOnce(
+      TimesRecord.collection,
+      TimesRecord.serializer,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<FFFirestorePage<TimesRecord>> queryTimesRecordPage({
+  Query Function(Query)? queryBuilder,
+  DocumentSnapshot? nextPageMarker,
+  required int pageSize,
+  required bool isStream,
+}) =>
+    queryCollectionPage(
+      TimesRecord.collection,
+      TimesRecord.serializer,
       queryBuilder: queryBuilder,
       nextPageMarker: nextPageMarker,
       pageSize: pageSize,

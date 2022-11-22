@@ -399,22 +399,6 @@ class _NewReservationPageViewWidgetState
                                                         .subtitle2Family),
                                           ),
                                     ),
-                                    Text(
-                                      FFAppState().resSittingId.toString(),
-                                      textAlign: TextAlign.center,
-                                      style: FlutterFlowTheme.of(context)
-                                          .subtitle2
-                                          .override(
-                                            fontFamily:
-                                                FlutterFlowTheme.of(context)
-                                                    .subtitle2Family,
-                                            fontWeight: FontWeight.w500,
-                                            useGoogleFonts: GoogleFonts.asMap()
-                                                .containsKey(
-                                                    FlutterFlowTheme.of(context)
-                                                        .subtitle2Family),
-                                          ),
-                                    ),
                                   ],
                                 ),
                               ),
@@ -423,6 +407,7 @@ class _NewReservationPageViewWidgetState
                                     .call(
                                   date: functions.formatDateForPOST(
                                       FFAppState().selectedDate!),
+                                  authToken: FFAppState().token,
                                 ),
                                 builder: (context, snapshot) {
                                   // Customize what your widget looks like when it's loading.
@@ -566,22 +551,6 @@ class _NewReservationPageViewWidgetState
                                                         .subtitle2Family),
                                           ),
                                     ),
-                                    Text(
-                                      FFAppState().resAreaId.toString(),
-                                      textAlign: TextAlign.center,
-                                      style: FlutterFlowTheme.of(context)
-                                          .subtitle2
-                                          .override(
-                                            fontFamily:
-                                                FlutterFlowTheme.of(context)
-                                                    .subtitle2Family,
-                                            fontWeight: FontWeight.w500,
-                                            useGoogleFonts: GoogleFonts.asMap()
-                                                .containsKey(
-                                                    FlutterFlowTheme.of(context)
-                                                        .subtitle2Family),
-                                          ),
-                                    ),
                                   ],
                                 ),
                               ),
@@ -589,6 +558,7 @@ class _NewReservationPageViewWidgetState
                                 future:
                                     ValetAPIGroup.gETAreasBySittingIDCall.call(
                                   sittingId: FFAppState().resSittingId,
+                                  authToken: FFAppState().token,
                                 ),
                                 builder: (context, snapshot) {
                                   // Customize what your widget looks like when it's loading.
@@ -739,12 +709,12 @@ class _NewReservationPageViewWidgetState
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
                                 child: FlutterFlowChoiceChips(
-                                  options: [
-                                    ChipData('09:00 AM'),
-                                    ChipData('11:30 AM'),
-                                    ChipData('06:00 PM'),
-                                    ChipData('01:30 PM')
-                                  ],
+                                  options: functions
+                                      .sessionTimes()
+                                      .map((e) => dateTimeFormat('jm', e))
+                                      .toList()
+                                      .map((label) => ChipData(label))
+                                      .toList(),
                                   onChanged: (val) => setState(
                                       () => timeChoiceValue = val?.first),
                                   selectedChipStyle: ChipStyle(
@@ -1293,6 +1263,7 @@ class _NewReservationPageViewWidgetState
                                           FFAppState().selectedDate,
                                           FFAppState().resTime),
                                   resAreaId: FFAppState().resAreaId,
+                                  authToken: FFAppState().token,
                                 );
                                 if ((newResAPICallResult?.succeeded ?? true)) {
                                   Navigator.pop(context);
@@ -1340,11 +1311,8 @@ class _NewReservationPageViewWidgetState
                               ),
                               options: FFButtonOptions(
                                 height: 40,
-                                color: FFAppState().resFirstName != null &&
-                                        FFAppState().resFirstName != ''
-                                    ? FlutterFlowTheme.of(context)
-                                        .secondaryColor
-                                    : FlutterFlowTheme.of(context).iconGray,
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryColor,
                                 textStyle: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(

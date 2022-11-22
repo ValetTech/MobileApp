@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import '../../flutter_flow/flutter_flow_util.dart';
+import '../cloud_functions/cloud_functions.dart';
 
 import 'api_manager.dart';
 
@@ -495,25 +496,18 @@ class LoginUserCall {
   Future<ApiCallResponse> call({
     String? email = '',
     String? password = '',
-  }) {
-    final body = '''
-{
-  "email": "${email}",
-  "password": "${password}"
-}''';
-    return ApiManager.instance.makeApiCall(
-      callName: 'Login user',
-      apiUrl: '${ValetAPIGroup.baseUrl}/auth/login',
-      callType: ApiCallType.POST,
-      headers: {
-        ...ValetAPIGroup.headers,
+  }) async {
+    final response = await makeCloudCall(
+      _kPrivateApiFunctionName,
+      {
+        'callName': 'LoginUserCall',
+        'variables': {
+          'email': email,
+          'password': password,
+        },
       },
-      params: {},
-      body: body,
-      bodyType: BodyType.JSON,
-      returnBody: true,
-      cache: false,
     );
+    return ApiCallResponse.fromCloudCallResponse(response);
   }
 
   dynamic jWTToken(dynamic response) => getJsonField(

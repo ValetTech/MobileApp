@@ -27,6 +27,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   ApiCallResponse? vacantTablesChange;
   ApiCallResponse? unallocatedReservationsChange;
   DateTimeRange? calendarPickerSelectedDay;
+  ApiCallResponse? tokenAPICall;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -34,6 +35,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     super.initState();
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      tokenAPICall = await ValetAPIGroup.loginUserCall.call();
       setState(() => FFAppState().selectedDate = getCurrentTimestamp);
     });
 

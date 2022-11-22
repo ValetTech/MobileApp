@@ -34,6 +34,10 @@ dependencies:
   cloud_firestore: 3.2.1
   cloud_firestore_platform_interface: 5.5.10
   cloud_firestore_web: 2.6.19
+  cloud_functions: 3.3.1
+  cloud_functions_platform_interface: 5.1.10
+  cloud_functions_web: 4.2.18
+  csv: 5.0.1
   easy_debounce: 2.0.1
   equatable: 2.0.3
   firebase_auth: 3.4.1
@@ -46,6 +50,7 @@ dependencies:
   flutter_animate: 1.0.0
   flutter_cache_manager: 3.3.0
   flutter_datetime_picker: 1.5.1
+  flutter_secure_storage: 6.0.0
   flutter_spinkit: 5.1.0
   font_awesome_flutter: 10.1.0
   from_css_color: 2.0.0

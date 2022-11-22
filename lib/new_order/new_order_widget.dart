@@ -170,7 +170,9 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                         Expanded(
                                           child: FutureBuilder<ApiCallResponse>(
                                             future: ValetAPIGroup.gETTablesCall
-                                                .call(),
+                                                .call(
+                                              authToken: FFAppState().token,
+                                            ),
                                             builder: (context, snapshot) {
                                               // Customize what your widget looks like when it's loading.
                                               if (!snapshot.hasData) {

@@ -69,13 +69,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, _) =>
-          appStateNotifier.loggedIn ? NavBarPage() : MainLoginWidget(),
+          appStateNotifier.loggedIn ? NavBarPage() : PINLoginWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? NavBarPage() : MainLoginWidget(),
+              appStateNotifier.loggedIn ? NavBarPage() : PINLoginWidget(),
           routes: [
             FFRoute(
               name: 'mainLogin',
@@ -170,18 +170,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => NavBarPage(
                 initialPage: '',
                 page: EditReservationWidget(
-                  resDetailsEdit:
-                      params.getParam('resDetailsEdit', ParamType.JSON),
-                ),
-              ),
-            ),
-            FFRoute(
-              name: 'EditReservationJamie',
-              path: 'editReservationJamie',
-              requireAuth: true,
-              builder: (context, params) => NavBarPage(
-                initialPage: '',
-                page: EditReservationJamieWidget(
                   resDetailsEdit:
                       params.getParam('resDetailsEdit', ParamType.JSON),
                 ),
@@ -369,7 +357,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.location);
-            return '/mainLogin';
+            return '/pINLogin';
           }
           return null;
         },
