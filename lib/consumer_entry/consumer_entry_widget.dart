@@ -86,6 +86,8 @@ class _ConsumerEntryWidgetState extends State<ConsumerEntryWidget>
       this,
     );
 
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'consumerEntry'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -131,6 +133,9 @@ class _ConsumerEntryWidgetState extends State<ConsumerEntryWidget>
                           padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
                           child: FFButtonWidget(
                             onPressed: () async {
+                              logFirebaseEvent(
+                                  'CONSUMER_ENTRY_PAGE_MENU_BTN_ON_TAP');
+                              logFirebaseEvent('Button_widget_animation');
                               if (animationsMap[
                                       'containerOnActionTriggerAnimation2'] !=
                                   null) {
@@ -172,6 +177,9 @@ class _ConsumerEntryWidgetState extends State<ConsumerEntryWidget>
                         alignment: AlignmentDirectional(0.8, -0.09),
                         child: FFButtonWidget(
                           onPressed: () async {
+                            logFirebaseEvent(
+                                'CONSUMER_ENTRY_BOOK_ONLINE_BTN_ON_TAP');
+                            logFirebaseEvent('Button_widget_animation');
                             if (animationsMap[
                                     'containerOnActionTriggerAnimation1'] !=
                                 null) {
@@ -553,6 +561,10 @@ class _ConsumerEntryWidgetState extends State<ConsumerEntryWidget>
                                             onChanged: (val) async {
                                               setState(() =>
                                                   choiceChipsValues = val);
+                                              logFirebaseEvent(
+                                                  'CONSUMER_ENTRY_ChoiceChips_6fghuwsv_ON_F');
+                                              logFirebaseEvent(
+                                                  'ChoiceChips_update_local_state');
                                               setState(() => FFAppState()
                                                   .filtersOn = true);
                                             },
@@ -974,6 +986,9 @@ class _ConsumerEntryWidgetState extends State<ConsumerEntryWidget>
                       size: 20,
                     ),
                     onPressed: () async {
+                      logFirebaseEvent(
+                          'CONSUMER_ENTRY_cancel_outlined_ICN_ON_TA');
+                      logFirebaseEvent('IconButton_widget_animation');
                       if (animationsMap['containerOnActionTriggerAnimation1'] !=
                           null) {
                         await animationsMap[
@@ -985,6 +1000,7 @@ class _ConsumerEntryWidgetState extends State<ConsumerEntryWidget>
                                 .controller
                                 .reverse);
                       }
+                      logFirebaseEvent('IconButton_widget_animation');
                       if (animationsMap['containerOnActionTriggerAnimation2'] !=
                           null) {
                         await animationsMap[

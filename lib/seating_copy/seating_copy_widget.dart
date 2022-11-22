@@ -16,14 +16,14 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SeatingWidget extends StatefulWidget {
-  const SeatingWidget({Key? key}) : super(key: key);
+class SeatingCopyWidget extends StatefulWidget {
+  const SeatingCopyWidget({Key? key}) : super(key: key);
 
   @override
-  _SeatingWidgetState createState() => _SeatingWidgetState();
+  _SeatingCopyWidgetState createState() => _SeatingCopyWidgetState();
 }
 
-class _SeatingWidgetState extends State<SeatingWidget>
+class _SeatingCopyWidgetState extends State<SeatingCopyWidget>
     with TickerProviderStateMixin {
   Completer<ApiCallResponse>? _apiRequestCompleter;
   DateTimeRange? calendarPickerSeatingSelectedDay;
@@ -60,14 +60,14 @@ class _SeatingWidgetState extends State<SeatingWidget>
       start: DateTime.now().startOfDay,
       end: DateTime.now().endOfDay,
     );
-    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Seating'});
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'SeatingCopy'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
   Widget build(BuildContext context) {
     return Title(
-        title: 'Seating',
+        title: 'Allocate',
         color: FlutterFlowTheme.of(context).primaryColor,
         child: Scaffold(
           key: scaffoldKey,
@@ -115,7 +115,7 @@ class _SeatingWidgetState extends State<SeatingWidget>
                     size: 30,
                   ),
                   onPressed: () async {
-                    logFirebaseEvent('SEATING_PAGE_menu_ICN_ON_TAP');
+                    logFirebaseEvent('SEATING_COPY_PAGE_menu_ICN_ON_TAP');
                     logFirebaseEvent('IconButton_drawer');
                     scaffoldKey.currentState!.openEndDrawer();
                   },
@@ -160,7 +160,7 @@ class _SeatingWidgetState extends State<SeatingWidget>
                         return RefreshIndicator(
                           onRefresh: () async {
                             logFirebaseEvent(
-                                'SEATING_ColumnScaffold_ON_PULL_TO_REFRES');
+                                'SEATING_COPY_ColumnScaffold_ON_PULL_TO_R');
                             logFirebaseEvent(
                                 'ColumnScaffold_refresh_database_request');
                             setState(() => _apiRequestCompleter = null);
@@ -238,7 +238,7 @@ class _SeatingWidgetState extends State<SeatingWidget>
                                                     calendarPickerSeatingSelectedDay =
                                                         newSelectedDate;
                                                     logFirebaseEvent(
-                                                        'SEATING_CalendarPickerSeating_ON_DATE_SE');
+                                                        'SEATING_COPY_CalendarPickerSeating_ON_DA');
                                                     logFirebaseEvent(
                                                         'CalendarPickerSeating_clear_all_select_a');
                                                     setState(() =>
@@ -376,7 +376,7 @@ class _SeatingWidgetState extends State<SeatingWidget>
                                                     child: InkWell(
                                                       onTap: () async {
                                                         logFirebaseEvent(
-                                                            'SEATING_PAGE_Icon_6kp2we6f_ON_TAP');
+                                                            'SEATING_COPY_PAGE_Icon_u6nwl4yh_ON_TAP');
                                                         logFirebaseEvent(
                                                             'Icon_update_local_state');
                                                         setState(() =>
@@ -426,7 +426,7 @@ class _SeatingWidgetState extends State<SeatingWidget>
                                                             allocatedFreeChipsValues
                                                                 .value = val);
                                                         logFirebaseEvent(
-                                                            'SEATING_AllocatedFreeChips_ON_FORM_WIDGE');
+                                                            'SEATING_COPY_AllocatedFreeChips_ON_FORM_');
                                                         logFirebaseEvent(
                                                             'AllocatedFreeChips_update_local_state');
                                                         setState(() =>
@@ -685,7 +685,7 @@ class _SeatingWidgetState extends State<SeatingWidget>
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
                         child: FFButtonWidget(
                           onPressed: () async {
-                            logFirebaseEvent('SEATING_PAGE_FAB_ON_TAP');
+                            logFirebaseEvent('SEATING_COPY_PAGE_FAB_ON_TAP');
                             logFirebaseEvent('FAB_navigate_to');
 
                             context.pushNamed('NewReservation');

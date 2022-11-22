@@ -282,6 +282,9 @@ class _NewReservationPageViewWidgetState
                           children: [
                             FFButtonWidget(
                               onPressed: () async {
+                                logFirebaseEvent(
+                                    'NEW_RESERVATION_VIEW_CANCEL_BTN_ON_TAP');
+                                logFirebaseEvent('Button_navigate_back');
                                 context.pop();
                               },
                               text: 'Cancel',
@@ -315,10 +318,15 @@ class _NewReservationPageViewWidgetState
                             ),
                             FFButtonWidget(
                               onPressed: () async {
+                                logFirebaseEvent(
+                                    'NEW_RESERVATION_VIEW_NEXT_BTN_ON_TAP');
+                                logFirebaseEvent('Button_update_local_state');
                                 setState(() => FFAppState().resNumPeople =
                                     resNumPeopleCountControllerValue!);
+                                logFirebaseEvent('Button_update_local_state');
                                 setState(() => FFAppState().selectedDate =
                                     FFAppState().selectedDate);
+                                logFirebaseEvent('Button_page_view');
                                 await pageViewController?.nextPage(
                                   duration: Duration(milliseconds: 300),
                                   curve: Curves.ease,
@@ -448,6 +456,10 @@ class _NewReservationPageViewWidgetState
                                     onChanged: (val) async {
                                       setState(
                                           () => sittingChipsValue = val?.first);
+                                      logFirebaseEvent(
+                                          'NEW_RESERVATION_VIEW_SittingChips_ON_FOR');
+                                      logFirebaseEvent(
+                                          'SittingChips_update_local_state');
                                       setState(() => FFAppState().resSittingId =
                                           functions.getSittingIdByType(
                                               sittingChipsValue,
@@ -599,6 +611,10 @@ class _NewReservationPageViewWidgetState
                                     onChanged: (val) async {
                                       setState(
                                           () => areaChipsValue = val?.first);
+                                      logFirebaseEvent(
+                                          'NEW_RESERVATION_VIEW_AreaChips_ON_FORM_W');
+                                      logFirebaseEvent(
+                                          'AreaChips_update_local_state');
                                       setState(() => FFAppState().resAreaId =
                                           functions.getAreaIdByName(
                                               areaChipsValue,
@@ -774,6 +790,9 @@ class _NewReservationPageViewWidgetState
                           children: [
                             FFButtonWidget(
                               onPressed: () async {
+                                logFirebaseEvent(
+                                    'NEW_RESERVATION_VIEW_BACK_BTN_ON_TAP');
+                                logFirebaseEvent('Button_page_view');
                                 await pageViewController?.previousPage(
                                   duration: Duration(milliseconds: 300),
                                   curve: Curves.ease,
@@ -809,8 +828,12 @@ class _NewReservationPageViewWidgetState
                             ),
                             FFButtonWidget(
                               onPressed: () async {
+                                logFirebaseEvent(
+                                    'NEW_RESERVATION_VIEW_NEXT_BTN_ON_TAP');
+                                logFirebaseEvent('Button_update_local_state');
                                 setState(() =>
                                     FFAppState().resTime = timeChoiceValue!);
+                                logFirebaseEvent('Button_page_view');
                                 await pageViewController?.nextPage(
                                   duration: Duration(milliseconds: 300),
                                   curve: Curves.ease,
@@ -1213,6 +1236,9 @@ class _NewReservationPageViewWidgetState
                           children: [
                             FFButtonWidget(
                               onPressed: () async {
+                                logFirebaseEvent(
+                                    'NEW_RESERVATION_VIEW_BACK_BTN_ON_TAP');
+                                logFirebaseEvent('Button_page_view');
                                 await pageViewController?.previousPage(
                                   duration: Duration(milliseconds: 300),
                                   curve: Curves.ease,
@@ -1248,6 +1274,9 @@ class _NewReservationPageViewWidgetState
                             ),
                             FFButtonWidget(
                               onPressed: () async {
+                                logFirebaseEvent(
+                                    'NEW_RESERVATION_VIEW_MAKE_RESERVATION_BT');
+                                logFirebaseEvent('Button_backend_call');
                                 newResAPICallResult =
                                     await ValetAPIGroup.newReservationCall.call(
                                   resNumPeople:
@@ -1266,7 +1295,10 @@ class _NewReservationPageViewWidgetState
                                   authToken: FFAppState().token,
                                 );
                                 if ((newResAPICallResult?.succeeded ?? true)) {
+                                  logFirebaseEvent(
+                                      'Button_close_dialog,_drawer,_etc');
                                   Navigator.pop(context);
+                                  logFirebaseEvent('Button_show_snack_bar');
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
@@ -1281,6 +1313,7 @@ class _NewReservationPageViewWidgetState
                                     ),
                                   );
                                 } else {
+                                  logFirebaseEvent('Button_alert_dialog');
                                   await showDialog(
                                     context: context,
                                     builder: (alertDialogContext) {

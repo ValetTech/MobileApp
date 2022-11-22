@@ -41,12 +41,16 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
     super.initState();
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      logFirebaseEvent('NEW_ORDER_PAGE_NewOrder_ON_PAGE_LOAD');
+      logFirebaseEvent('NewOrder_backend_call');
+
       final cartUpdateData = createCartRecordData(
         qty: 0,
       );
       await newCart!.reference.update(cartUpdateData);
     });
 
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'NewOrder'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -58,9 +62,12 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-          endDrawer: Drawer(
-            elevation: 16,
-            child: EndDrawerContainerWidget(),
+          endDrawer: Container(
+            width: 250,
+            child: Drawer(
+              elevation: 16,
+              child: EndDrawerContainerWidget(),
+            ),
           ),
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(60),
@@ -98,6 +105,8 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                     size: 30,
                   ),
                   onPressed: () async {
+                    logFirebaseEvent('NEW_ORDER_PAGE_menu_ICN_ON_TAP');
+                    logFirebaseEvent('IconButton_drawer');
                     scaffoldKey.currentState!.openEndDrawer();
                   },
                 ),
@@ -271,11 +280,19 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                                   .fromSTEB(4, 0, 4, 0),
                                               child: InkWell(
                                                 onTap: () async {
+                                                  logFirebaseEvent(
+                                                      'NEW_ORDER_PAGE_Icon_10z2b0ra_ON_TAP');
+                                                  logFirebaseEvent(
+                                                      'Icon_update_local_state');
                                                   setState(() => FFAppState()
                                                       .filtersOn = false);
+                                                  logFirebaseEvent(
+                                                      'Icon_clear_all_select_all');
                                                   setState(() =>
                                                       choiceChipsValues.value =
                                                           []);
+                                                  logFirebaseEvent(
+                                                      'Icon_navigate_to');
 
                                                   context.pushNamed(
                                                     'NewOrder',
@@ -362,6 +379,10 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                                         setState(() =>
                                                             choiceChipsValues
                                                                 .value = val);
+                                                        logFirebaseEvent(
+                                                            'NEW_ORDER_ChoiceChips_cnfhv9vl_ON_FORM_W');
+                                                        logFirebaseEvent(
+                                                            'ChoiceChips_update_local_state');
                                                         setState(() =>
                                                             FFAppState()
                                                                     .filtersOn =
@@ -747,6 +768,9 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                                                                             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
                                                                                             child: InkWell(
                                                                                               onTap: () async {
+                                                                                                logFirebaseEvent('NEW_ORDER_PAGE_Icon_60b1qbdu_ON_TAP');
+                                                                                                logFirebaseEvent('Icon_backend_call');
+
                                                                                                 final cartCreateData = createCartRecordData(
                                                                                                   qty: 1,
                                                                                                   price: menuListViewMenuRecord.price,
@@ -755,6 +779,7 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                                                                                 var cartRecordReference = CartRecord.collection.doc();
                                                                                                 await cartRecordReference.set(cartCreateData);
                                                                                                 newCart = CartRecord.getDocumentFromData(cartCreateData, cartRecordReference);
+                                                                                                logFirebaseEvent('Icon_show_snack_bar');
                                                                                                 ScaffoldMessenger.of(context).showSnackBar(
                                                                                                   SnackBar(
                                                                                                     content: Text(
@@ -781,6 +806,9 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                                                                             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
                                                                                             child: InkWell(
                                                                                               onTap: () async {
+                                                                                                logFirebaseEvent('NEW_ORDER_PAGE_Icon_20qw5gyu_ON_TAP');
+                                                                                                logFirebaseEvent('Icon_backend_call');
+
                                                                                                 final cartUpdateData = {
                                                                                                   ...createCartRecordData(
                                                                                                     itemRef: menuListViewMenuRecord.reference,
@@ -789,6 +817,7 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                                                                                   'qty': FieldValue.increment(-(1)),
                                                                                                 };
                                                                                                 await newCart!.reference.update(cartUpdateData);
+                                                                                                logFirebaseEvent('Icon_show_snack_bar');
                                                                                                 ScaffoldMessenger.of(context).showSnackBar(
                                                                                                   SnackBar(
                                                                                                     content: Text(
@@ -924,6 +953,10 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                       : null;
                               return FFButtonWidget(
                                 onPressed: () async {
+                                  logFirebaseEvent(
+                                      'NEW_ORDER_PAGE_CartButton_ON_TAP');
+                                  logFirebaseEvent('CartButton_navigate_to');
+
                                   context.pushNamed(
                                     'OrderSummary',
                                     queryParams: {

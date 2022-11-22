@@ -40,6 +40,8 @@ class _CalendarPickerValetExpandedWidgetState
         rowHeight: 35,
         onChange: (DateTimeRange? newSelectedDate) async {
           calendarPickerReservationsSelectedDay = newSelectedDate;
+          logFirebaseEvent('CALENDAR_PICKER_VALET_EXPANDED_CalendarP');
+          logFirebaseEvent('CalendarPickerReservations_update_local_');
           setState(() => FFAppState().selectedDate =
               calendarPickerReservationsSelectedDay?.start);
           setState(() {});

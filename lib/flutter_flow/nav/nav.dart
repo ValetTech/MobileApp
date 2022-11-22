@@ -127,12 +127,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                   : OrdersWidget(),
             ),
             FFRoute(
-              name: 'consumerEntry',
-              path: 'consumerEntry',
-              requireAuth: true,
-              builder: (context, params) => ConsumerEntryWidget(),
-            ),
-            FFRoute(
               name: 'NewReservation',
               path: 'newReservation',
               requireAuth: true,
@@ -142,6 +136,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                   resDetails: params.getParam('resDetails', ParamType.JSON),
                 ),
               ),
+            ),
+            FFRoute(
+              name: 'consumerEntry',
+              path: 'consumerEntry',
+              builder: (context, params) => ConsumerEntryWidget(),
             ),
             FFRoute(
               name: 'ViewReservation',
@@ -198,6 +197,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                       'items', ParamType.DocumentReference, false, 'cart'),
                 ),
               ),
+            ),
+            FFRoute(
+              name: 'SeatingCopy',
+              path: 'Allocate',
+              requireAuth: true,
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'SeatingCopy')
+                  : SeatingCopyWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),

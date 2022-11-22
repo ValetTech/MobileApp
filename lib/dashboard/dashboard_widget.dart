@@ -35,10 +35,14 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     super.initState();
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      logFirebaseEvent('DASHBOARD_PAGE_Dashboard_ON_PAGE_LOAD');
+      logFirebaseEvent('Dashboard_backend_call');
       tokenAPICall = await ValetAPIGroup.loginUserCall.call();
+      logFirebaseEvent('Dashboard_update_local_state');
       setState(() => FFAppState().selectedDate = getCurrentTimestamp);
     });
 
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Dashboard'});
     calendarPickerSelectedDay = DateTimeRange(
       start: DateTime.now().startOfDay,
       end: DateTime.now().endOfDay,
@@ -54,9 +58,12 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-          endDrawer: Drawer(
-            elevation: 16,
-            child: EndDrawerContainerWidget(),
+          endDrawer: Container(
+            width: 250,
+            child: Drawer(
+              elevation: 16,
+              child: EndDrawerContainerWidget(),
+            ),
           ),
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(60),
@@ -90,6 +97,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                     size: 30,
                   ),
                   onPressed: () async {
+                    logFirebaseEvent('DASHBOARD_PAGE_menu_ICN_ON_TAP');
+                    logFirebaseEvent('IconButton_drawer');
                     scaffoldKey.currentState!.openEndDrawer();
                   },
                 ),
@@ -140,19 +149,26 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                             initialDate: getCurrentTimestamp,
                             onChange: (DateTimeRange? newSelectedDate) async {
                               calendarPickerSelectedDay = newSelectedDate;
+                              logFirebaseEvent(
+                                  'DASHBOARD_CalendarPicker_ON_DATE_SELECTE');
+                              logFirebaseEvent(
+                                  'CalendarPicker_update_local_state');
                               setState(() => FFAppState().selectedDate =
                                   calendarPickerSelectedDay?.start);
+                              logFirebaseEvent('CalendarPicker_backend_call');
                               allTablesChange =
                                   await WidgetsGroup.getTablesCall.call(
                                 date: functions.formatDateForPOST(
                                     FFAppState().selectedDate!),
                               );
+                              logFirebaseEvent('CalendarPicker_backend_call');
                               vacantTablesChange =
                                   await WidgetsGroup.getTablesCall.call(
                                 date: functions.formatDateForPOST(
                                     FFAppState().selectedDate!),
                                 hasReservations: false.toString(),
                               );
+                              logFirebaseEvent('CalendarPicker_backend_call');
                               unallocatedReservationsChange =
                                   await WidgetsGroup.getReservationsCall.call(
                                 date: functions.formatDateForPOST(
@@ -163,6 +179,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                   (vacantTablesChange?.succeeded ?? true) &&
                                   (unallocatedReservationsChange?.succeeded ??
                                       true)) {
+                                logFirebaseEvent(
+                                    'CalendarPicker_update_local_state');
                                 setState(() =>
                                     FFAppState().UnallocatedReservations =
                                         functions
@@ -175,6 +193,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                       ),
                                       0,
                                     )));
+                                logFirebaseEvent(
+                                    'CalendarPicker_update_local_state');
                                 setState(() => FFAppState().AvaliableTables =
                                         functions
                                             .arrayCount(valueOrDefault<dynamic>(
@@ -184,6 +204,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                       0,
                                     )));
                               } else {
+                                logFirebaseEvent(
+                                    'CalendarPicker_show_snack_bar');
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
@@ -200,6 +222,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                 return;
                               }
 
+                              logFirebaseEvent(
+                                  'CalendarPicker_update_local_state');
                               setState(() => FFAppState().VacancyRate =
                                       valueOrDefault<double>(
                                     functions.getPercentage(
@@ -304,6 +328,11 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                         children: [
                                           FFButtonWidget(
                                             onPressed: () async {
+                                              logFirebaseEvent(
+                                                  'DASHBOARD_NEW_RESERVATION_BTN_ON_TAP');
+                                              logFirebaseEvent(
+                                                  'Button_navigate_to');
+
                                               context
                                                   .pushNamed('NewReservation');
                                             },
@@ -463,6 +492,11 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                             ),
                                             FFButtonWidget(
                                               onPressed: () async {
+                                                logFirebaseEvent(
+                                                    'DASHBOARD_PAGE_NEW_ORDER_BTN_ON_TAP');
+                                                logFirebaseEvent(
+                                                    'Button_navigate_to');
+
                                                 context.pushNamed('NewOrder');
                                               },
                                               text: 'New Order',
@@ -493,6 +527,11 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                                   .fromSTEB(0, 8, 0, 0),
                                               child: FFButtonWidget(
                                                 onPressed: () async {
+                                                  logFirebaseEvent(
+                                                      'DASHBOARD_PAGE_VIEW_SETTLE_BTN_ON_TAP');
+                                                  logFirebaseEvent(
+                                                      'Button_navigate_to');
+
                                                   context.pushNamed('Orders');
                                                 },
                                                 text: 'View/Settle',
@@ -694,6 +733,11 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                           ),
                                           FFButtonWidget(
                                             onPressed: () async {
+                                              logFirebaseEvent(
+                                                  'DASHBOARD_PAGE_SEATING_BTN_ON_TAP');
+                                              logFirebaseEvent(
+                                                  'Button_navigate_to');
+
                                               context.pushNamed('Seating');
                                             },
                                             text: 'Seating',

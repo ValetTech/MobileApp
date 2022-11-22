@@ -26,7 +26,8 @@ class _NewReservationWidgetState extends State<NewReservationWidget> {
   @override
   void initState() {
     super.initState();
-
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'NewReservation'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -38,10 +39,10 @@ class _NewReservationWidgetState extends State<NewReservationWidget> {
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-          endDrawer: Drawer(
-            elevation: 16,
-            child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+          endDrawer: Container(
+            width: 250,
+            child: Drawer(
+              elevation: 16,
               child: EndDrawerContainerWidget(),
             ),
           ),
@@ -79,6 +80,8 @@ class _NewReservationWidgetState extends State<NewReservationWidget> {
                     size: 30,
                   ),
                   onPressed: () async {
+                    logFirebaseEvent('NEW_RESERVATION_PAGE_menu_ICN_ON_TAP');
+                    logFirebaseEvent('IconButton_drawer');
                     scaffoldKey.currentState!.openEndDrawer();
                   },
                 ),

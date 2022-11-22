@@ -45,28 +45,36 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
     super.initState();
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      logFirebaseEvent('EDIT_RESERVATION_EditReservation_ON_LOAD');
+      logFirebaseEvent('EditReservation_update_local_state');
       setState(() => FFAppState().resFirstName = getJsonField(
             widget.resDetailsEdit,
             r'''$.customer.firstName''',
           ).toString());
+      logFirebaseEvent('EditReservation_update_local_state');
       setState(() => FFAppState().resLastName = getJsonField(
             widget.resDetailsEdit,
             r'''$.customer.lastName''',
           ).toString());
+      logFirebaseEvent('EditReservation_update_local_state');
       setState(() => FFAppState().resPhone = getJsonField(
             widget.resDetailsEdit,
             r'''$.customer.phone''',
           ).toString());
+      logFirebaseEvent('EditReservation_update_local_state');
       setState(() => FFAppState().resEmail = getJsonField(
             widget.resDetailsEdit,
             r'''$.customer.email''',
           ).toString());
+      logFirebaseEvent('EditReservation_update_local_state');
       setState(() => FFAppState().isVIP = getJsonField(
             widget.resDetailsEdit,
             r'''$.isVip''',
           ));
     });
 
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'EditReservation'});
     durationController = TextEditingController(
         text: getJsonField(
       widget.resDetailsEdit,
@@ -125,10 +133,10 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-          endDrawer: Drawer(
-            elevation: 16,
-            child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+          endDrawer: Container(
+            width: 250,
+            child: Drawer(
+              elevation: 16,
               child: EndDrawerContainerWidget(),
             ),
           ),
@@ -166,6 +174,8 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                     size: 30,
                   ),
                   onPressed: () async {
+                    logFirebaseEvent('EDIT_RESERVATION_PAGE_menu_ICN_ON_TAP');
+                    logFirebaseEvent('IconButton_drawer');
                     scaffoldKey.currentState!.openEndDrawer();
                   },
                 ),
@@ -250,6 +260,10 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                       Duration(
                                                           milliseconds: 2000),
                                                       () async {
+                                                        logFirebaseEvent(
+                                                            'EDIT_RESERVATION_First_ON_TEXTFIELD_CHAN');
+                                                        logFirebaseEvent(
+                                                            'First_update_local_state');
                                                         setState(() => FFAppState()
                                                                 .resFirstName =
                                                             firstController!
@@ -316,6 +330,10 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                                       () async {
                                                                     firstController
                                                                         ?.clear();
+                                                                    logFirebaseEvent(
+                                                                        'EDIT_RESERVATION_First_ON_TEXTFIELD_CHAN');
+                                                                    logFirebaseEvent(
+                                                                        'First_update_local_state');
                                                                     setState(() => FFAppState()
                                                                             .resFirstName =
                                                                         firstController!
@@ -350,6 +368,10 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                       Duration(
                                                           milliseconds: 2000),
                                                       () async {
+                                                        logFirebaseEvent(
+                                                            'EDIT_RESERVATION_Last_ON_TEXTFIELD_CHANG');
+                                                        logFirebaseEvent(
+                                                            'Last_update_local_state');
                                                         setState(() =>
                                                             FFAppState()
                                                                     .resLastName =
@@ -416,6 +438,10 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                                       () async {
                                                                     lastController
                                                                         ?.clear();
+                                                                    logFirebaseEvent(
+                                                                        'EDIT_RESERVATION_Last_ON_TEXTFIELD_CHANG');
+                                                                    logFirebaseEvent(
+                                                                        'Last_update_local_state');
                                                                     setState(() => FFAppState()
                                                                             .resLastName =
                                                                         lastController!
@@ -443,11 +469,17 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                     .fromSTEB(4, 0, 0, 0),
                                                 child: InkWell(
                                                   onTap: () async {
+                                                    logFirebaseEvent(
+                                                        'EDIT_RESERVATION_Icon_u2pyylgt_ON_TAP');
                                                     if (FFAppState().isVIP) {
+                                                      logFirebaseEvent(
+                                                          'Icon_update_local_state');
                                                       setState(() =>
                                                           FFAppState().isVIP =
                                                               false);
                                                     } else {
+                                                      logFirebaseEvent(
+                                                          'Icon_update_local_state');
                                                       setState(() =>
                                                           FFAppState().isVIP =
                                                               true);
@@ -491,6 +523,10 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                     Duration(
                                                         milliseconds: 2000),
                                                     () async {
+                                                      logFirebaseEvent(
+                                                          'EDIT_RESERVATION_Phone_ON_TEXTFIELD_CHAN');
+                                                      logFirebaseEvent(
+                                                          'Phone_update_local_state');
                                                       setState(() =>
                                                           FFAppState()
                                                                   .resPhone =
@@ -557,6 +593,10 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                             onTap: () async {
                                                               phoneController
                                                                   ?.clear();
+                                                              logFirebaseEvent(
+                                                                  'EDIT_RESERVATION_Phone_ON_TEXTFIELD_CHAN');
+                                                              logFirebaseEvent(
+                                                                  'Phone_update_local_state');
                                                               setState(() => FFAppState()
                                                                       .resPhone =
                                                                   phoneController!
@@ -614,6 +654,10 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                     Duration(
                                                         milliseconds: 2000),
                                                     () async {
+                                                      logFirebaseEvent(
+                                                          'EDIT_RESERVATION_Email_ON_TEXTFIELD_CHAN');
+                                                      logFirebaseEvent(
+                                                          'Email_update_local_state');
                                                       setState(() =>
                                                           FFAppState()
                                                                   .resEmail =
@@ -680,6 +724,10 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                             onTap: () async {
                                                               emailController
                                                                   ?.clear();
+                                                              logFirebaseEvent(
+                                                                  'EDIT_RESERVATION_Email_ON_TEXTFIELD_CHAN');
+                                                              logFirebaseEvent(
+                                                                  'Email_update_local_state');
                                                               setState(() => FFAppState()
                                                                       .resEmail =
                                                                   emailController!
@@ -909,6 +957,8 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                                             InkWell(
                                                                           onTap:
                                                                               () async {
+                                                                            logFirebaseEvent('EDIT_RESERVATION_Text_mdvcioec_ON_TAP');
+                                                                            logFirebaseEvent('Text_date_time_picker');
                                                                             if (kIsWeb) {
                                                                               final _datePickedDate = await showDatePicker(
                                                                                 context: context,
@@ -948,8 +998,10 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                                               );
                                                                             }
 
+                                                                            logFirebaseEvent('Text_update_local_state');
                                                                             setState(() =>
                                                                                 FFAppState().resDate = datePicked);
+                                                                            logFirebaseEvent('Text_update_local_state');
                                                                             setState(() =>
                                                                                 FFAppState().resTime = dateTimeFormat('jm', datePicked));
                                                                           },
@@ -1000,6 +1052,10 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                                         milliseconds:
                                                                             2000),
                                                                     () async {
+                                                                      logFirebaseEvent(
+                                                                          'EDIT_RESERVATION_Duration_ON_TEXTFIELD_C');
+                                                                      logFirebaseEvent(
+                                                                          'Duration_update_local_state');
                                                                       setState(() => FFAppState()
                                                                               .resDuration =
                                                                           int.parse(
@@ -1075,6 +1131,8 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                                             onTap:
                                                                                 () async {
                                                                               durationController?.clear();
+                                                                              logFirebaseEvent('EDIT_RESERVATION_Duration_ON_TEXTFIELD_C');
+                                                                              logFirebaseEvent('Duration_update_local_state');
                                                                               setState(() => FFAppState().resDuration = int.parse(durationController!.text));
                                                                               setState(() {});
                                                                             },
@@ -1154,10 +1212,16 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                                   setState(() =>
                                                                       sittingsValue =
                                                                           val);
+                                                                  logFirebaseEvent(
+                                                                      'EDIT_RESERVATION_Sittings_ON_FORM_WIDGET');
+                                                                  logFirebaseEvent(
+                                                                      'Sittings_update_local_state');
                                                                   setState(() =>
                                                                       FFAppState()
                                                                               .resSitting =
                                                                           sittingsValue!);
+                                                                  logFirebaseEvent(
+                                                                      'Sittings_update_local_state');
                                                                   setState(() =>
                                                                       FFAppState()
                                                                               .selectedSittingId =
@@ -1235,6 +1299,10 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                                       milliseconds:
                                                                           2000),
                                                                   () async {
+                                                                    logFirebaseEvent(
+                                                                        'EDIT_RESERVATION_noGuests_ON_TEXTFIELD_C');
+                                                                    logFirebaseEvent(
+                                                                        'noGuests_update_local_state');
                                                                     setState(() => FFAppState()
                                                                             .resNumPeople =
                                                                         int.parse(
@@ -1306,6 +1374,8 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                                           onTap:
                                                                               () async {
                                                                             noGuestsController?.clear();
+                                                                            logFirebaseEvent('EDIT_RESERVATION_noGuests_ON_TEXTFIELD_C');
+                                                                            logFirebaseEvent('noGuests_update_local_state');
                                                                             setState(() =>
                                                                                 FFAppState().resNumPeople = int.parse(noGuestsController!.text));
                                                                             setState(() {});
@@ -1426,6 +1496,10 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                                         milliseconds:
                                                                             2000),
                                                                     () async {
+                                                                      logFirebaseEvent(
+                                                                          'EDIT_RESERVATION_Notes_ON_TEXTFIELD_CHAN');
+                                                                      logFirebaseEvent(
+                                                                          'Notes_update_local_state');
                                                                       setState(() => FFAppState()
                                                                               .resNotes =
                                                                           notesController!
@@ -1457,6 +1531,8 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                                             onTap:
                                                                                 () async {
                                                                               notesController?.clear();
+                                                                              logFirebaseEvent('EDIT_RESERVATION_Notes_ON_TEXTFIELD_CHAN');
+                                                                              logFirebaseEvent('Notes_update_local_state');
                                                                               setState(() => FFAppState().resNotes = notesController!.text);
                                                                               setState(() {});
                                                                             },
@@ -1646,6 +1722,10 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
                                                 children: [
                                                   FFButtonWidget(
                                                     onPressed: () async {
+                                                      logFirebaseEvent(
+                                                          'EDIT_RESERVATION_PAGE_BACK_BTN_ON_TAP');
+                                                      logFirebaseEvent(
+                                                          'Button_navigate_back');
                                                       context.pop();
                                                     },
                                                     text: 'Back',

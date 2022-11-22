@@ -38,6 +38,8 @@ class _CalendarPickerValetWidgetState extends State<CalendarPickerValetWidget> {
         initialDate: getCurrentTimestamp,
         onChange: (DateTimeRange? newSelectedDate) async {
           calendarPickerSelectedDay = newSelectedDate;
+          logFirebaseEvent('CALENDAR_PICKER_VALET_CalendarPicker_ON_');
+          logFirebaseEvent('CalendarPicker_update_local_state');
           setState(() =>
               FFAppState().selectedDate = calendarPickerSelectedDay?.start);
           setState(() {});

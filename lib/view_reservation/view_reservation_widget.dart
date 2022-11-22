@@ -55,12 +55,16 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      logFirebaseEvent('VIEW_RESERVATION_ViewReservation_ON_LOAD');
+      logFirebaseEvent('ViewReservation_update_local_state');
       setState(() => FFAppState().isVIP = getJsonField(
             widget.resDetails,
             r'''$.customer.isVip''',
           ));
     });
 
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'ViewReservation'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -72,10 +76,10 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-          endDrawer: Drawer(
-            elevation: 16,
-            child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+          endDrawer: Container(
+            width: 250,
+            child: Drawer(
+              elevation: 16,
               child: EndDrawerContainerWidget(),
             ),
           ),
@@ -113,6 +117,8 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                     size: 30,
                   ),
                   onPressed: () async {
+                    logFirebaseEvent('VIEW_RESERVATION_PAGE_menu_ICN_ON_TAP');
+                    logFirebaseEvent('IconButton_drawer');
                     scaffoldKey.currentState!.openEndDrawer();
                   },
                 ),
@@ -955,6 +961,10 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                                                           FFButtonWidget(
                                                             onPressed:
                                                                 () async {
+                                                              logFirebaseEvent(
+                                                                  'VIEW_RESERVATION_PAGE_CONFIRM_BTN_ON_TAP');
+                                                              logFirebaseEvent(
+                                                                  'Button_backend_call');
                                                               aPIPatchReservation =
                                                                   await ValetAPIGroup
                                                                       .patchReservationCall
@@ -972,11 +982,15 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                                                               if ((aPIPatchReservation
                                                                       ?.succeeded ??
                                                                   true)) {
+                                                                logFirebaseEvent(
+                                                                    'Button_update_local_state');
                                                                 setState(() =>
                                                                     FFAppState()
                                                                             .resStatus =
                                                                         'Confirmed');
                                                               } else {
+                                                                logFirebaseEvent(
+                                                                    'Button_alert_dialog');
                                                                 await showDialog(
                                                                   context:
                                                                       context,
@@ -1229,6 +1243,10 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                                               children: [
                                                 FFButtonWidget(
                                                   onPressed: () async {
+                                                    logFirebaseEvent(
+                                                        'VIEW_RESERVATION_PAGE_DELETE_BTN_ON_TAP');
+                                                    logFirebaseEvent(
+                                                        'Button_alert_dialog');
                                                     var confirmDialogResponse =
                                                         await showDialog<bool>(
                                                               context: context,
@@ -1259,6 +1277,8 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                                                               },
                                                             ) ??
                                                             false;
+                                                    logFirebaseEvent(
+                                                        'Button_backend_call');
                                                     updateReservationAPIOutput =
                                                         await ValetAPIGroup
                                                             .updateReservationCall
@@ -1267,6 +1287,8 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                                                       authToken:
                                                           FFAppState().token,
                                                     );
+                                                    logFirebaseEvent(
+                                                        'Button_navigate_to');
 
                                                     context.goNamed(
                                                         'Reservations');
@@ -1311,6 +1333,11 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                                               children: [
                                                 FFButtonWidget(
                                                   onPressed: () async {
+                                                    logFirebaseEvent(
+                                                        'VIEW_RESERVATION_PAGE_EDIT_BTN_ON_TAP');
+                                                    logFirebaseEvent(
+                                                        'Button_navigate_to');
+
                                                     context.pushNamed(
                                                       'EditReservation',
                                                       queryParams: {

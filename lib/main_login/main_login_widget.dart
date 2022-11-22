@@ -26,6 +26,7 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
     emailAddressController = TextEditingController();
     passwordLoginController = TextEditingController();
     passwordLoginVisibility = false;
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'mainLogin'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -311,6 +312,9 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
                                 EdgeInsetsDirectional.fromSTEB(0, 24, 0, 4),
                             child: FFButtonWidget(
                               onPressed: () async {
+                                logFirebaseEvent(
+                                    'MAIN_LOGIN_PAGE_LOGIN_BTN_ON_TAP');
+                                logFirebaseEvent('Button_auth');
                                 GoRouter.of(context).prepareAuthEvent();
 
                                 final user = await signInWithEmail(
@@ -321,6 +325,8 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
                                 if (user == null) {
                                   return;
                                 }
+
+                                logFirebaseEvent('Button_navigate_to');
 
                                 context.pushNamedAuth('Dashboard', mounted);
                               },
@@ -350,6 +356,10 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
                                 EdgeInsetsDirectional.fromSTEB(0, 24, 0, 4),
                             child: FFButtonWidget(
                               onPressed: () async {
+                                logFirebaseEvent(
+                                    'MAIN_LOGIN_PAGE_REGISTER_BTN_ON_TAP');
+                                logFirebaseEvent('Button_navigate_to');
+
                                 context.pushNamed('Registration');
                               },
                               text: 'Register',

@@ -35,7 +35,6 @@ class FFAppState {
     _currentUserRoles =
         await secureStorage.getStringList('ff_currentUserRoles') ??
             _currentUserRoles;
-    _apiToken = await secureStorage.getString('ff_apiToken') ?? _apiToken;
     _cartsum = await secureStorage.getDouble('ff_cartsum') ?? _cartsum;
     _cart = (await secureStorage.getStringList('ff_cart'))
             ?.map((path) => path.ref)
@@ -196,18 +195,6 @@ class FFAppState {
   }
 
   int selectedOrderTable = 0;
-
-  String _apiToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhQGEuY29tIiwianRpIjoiNDQxMzA4NTEtMGRhMi00YTdmLThmMzYtMTJlMTJlYWI4NzI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJleHAiOjE3MDAwMTc3NTgsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLXhxcmgxQG9uZS1idXR0b24tNjNmZjkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCJ9._hDXDG7CNocdMoX8BvP7n2f92XiAGFJj_dbZMJzXSaU';
-  String get apiToken => _apiToken;
-  set apiToken(String _value) {
-    _apiToken = _value;
-    secureStorage.setString('ff_apiToken', _value);
-  }
-
-  void deleteApiToken() {
-    secureStorage.delete(key: 'ff_apiToken');
-  }
 
   double VacancyRate = 0;
 

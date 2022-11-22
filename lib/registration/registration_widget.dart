@@ -40,6 +40,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     passwordLogin2Controller = TextEditingController();
     passwordLogin2Visibility = false;
     pinCodeController = TextEditingController();
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'Registration'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -671,6 +673,9 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
                         child: FFButtonWidget(
                           onPressed: () async {
+                            logFirebaseEvent(
+                                'REGISTRATION_CREATE_ACCOUNT_BTN_ON_TAP');
+                            logFirebaseEvent('Button_auth');
                             GoRouter.of(context).prepareAuthEvent();
                             if (passwordLoginController?.text !=
                                 passwordLogin2Controller?.text) {
@@ -739,6 +744,10 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                     size: 30,
                   ),
                   onPressed: () async {
+                    logFirebaseEvent(
+                        'REGISTRATION_arrow_back_outlined_ICN_ON_');
+                    logFirebaseEvent('IconButton_navigate_to');
+
                     context.pushNamed('PINLogin');
                   },
                 ),

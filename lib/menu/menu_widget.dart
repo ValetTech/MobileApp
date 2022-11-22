@@ -25,7 +25,7 @@ class _MenuWidgetState extends State<MenuWidget> {
   @override
   void initState() {
     super.initState();
-
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Menu'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -37,9 +37,12 @@ class _MenuWidgetState extends State<MenuWidget> {
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-          endDrawer: Drawer(
-            elevation: 16,
-            child: EndDrawerContainerWidget(),
+          endDrawer: Container(
+            width: 250,
+            child: Drawer(
+              elevation: 16,
+              child: EndDrawerContainerWidget(),
+            ),
           ),
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(60),
@@ -77,6 +80,8 @@ class _MenuWidgetState extends State<MenuWidget> {
                     size: 30,
                   ),
                   onPressed: () async {
+                    logFirebaseEvent('MENU_PAGE_menu_ICN_ON_TAP');
+                    logFirebaseEvent('IconButton_drawer');
                     scaffoldKey.currentState!.openEndDrawer();
                   },
                 ),
@@ -143,10 +148,17 @@ class _MenuWidgetState extends State<MenuWidget> {
                                           4, 0, 4, 0),
                                       child: InkWell(
                                         onTap: () async {
+                                          logFirebaseEvent(
+                                              'MENU_PAGE_Icon_tc27qpjt_ON_TAP');
+                                          logFirebaseEvent(
+                                              'Icon_update_local_state');
                                           setState(() =>
                                               FFAppState().filtersOn = false);
+                                          logFirebaseEvent(
+                                              'Icon_clear_all_select_all');
                                           setState(() =>
                                               choiceChipsValues.value = []);
+                                          logFirebaseEvent('Icon_navigate_to');
 
                                           context.pushNamed(
                                             'Menu',
@@ -216,6 +228,10 @@ class _MenuWidgetState extends State<MenuWidget> {
                                               onChanged: (val) async {
                                                 setState(() => choiceChipsValues
                                                     .value = val);
+                                                logFirebaseEvent(
+                                                    'MENU_ChoiceChips_ryfecnoz_ON_FORM_WIDGET');
+                                                logFirebaseEvent(
+                                                    'ChoiceChips_update_local_state');
                                                 setState(() => FFAppState()
                                                     .filtersOn = true);
                                               },
@@ -610,6 +626,9 @@ class _MenuWidgetState extends State<MenuWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
                         child: FFButtonWidget(
                           onPressed: () async {
+                            logFirebaseEvent('MENU_PAGE_FAB_ON_TAP');
+                            logFirebaseEvent('FAB_navigate_to');
+
                             context.pushNamed('NewOrder');
                           },
                           text: 'New Order',

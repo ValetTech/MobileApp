@@ -63,6 +63,8 @@ class _PINLoginWidgetState extends State<PINLoginWidget>
     super.initState();
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      logFirebaseEvent('P_I_N_LOGIN_PAGE_PINLogin_ON_PAGE_LOAD');
+      logFirebaseEvent('PINLogin_biometric_verification');
       final _localAuth = LocalAuthentication();
       bool _isBiometricSupported = await _localAuth.isDeviceSupported();
       bool canCheckBiometrics = await _localAuth.canCheckBiometrics;
@@ -75,8 +77,11 @@ class _PINLoginWidgetState extends State<PINLoginWidget>
       }
 
       if (biometriLoginResult!) {
+        logFirebaseEvent('PINLogin_navigate_to');
+
         context.goNamed('Dashboard');
       } else {
+        logFirebaseEvent('PINLogin_show_snack_bar');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -92,6 +97,7 @@ class _PINLoginWidgetState extends State<PINLoginWidget>
       }
     });
 
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'PINLogin'});
     pinCodeController = TextEditingController();
     setupAnimations(
       animationsMap.values.where((anim) =>
@@ -300,6 +306,10 @@ class _PINLoginWidgetState extends State<PINLoginWidget>
                                           0, 24, 0, 24),
                                       child: FFButtonWidget(
                                         onPressed: () async {
+                                          logFirebaseEvent(
+                                              'P_I_N_LOGIN_PAGE_LOGIN_BTN_ON_TAP');
+                                          logFirebaseEvent(
+                                              'Button_validate_form');
                                           if (formKey.currentState == null ||
                                               !formKey.currentState!
                                                   .validate()) {
@@ -307,8 +317,13 @@ class _PINLoginWidgetState extends State<PINLoginWidget>
                                           }
 
                                           if (biometriLoginResult!) {
+                                            logFirebaseEvent(
+                                                'Button_navigate_to');
+
                                             context.pushNamed('Dashboard');
                                           } else {
+                                            logFirebaseEvent(
+                                                'Button_show_snack_bar');
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               SnackBar(
@@ -357,6 +372,11 @@ class _PINLoginWidgetState extends State<PINLoginWidget>
                                       child: AuthUserStreamWidget(
                                         child: FFButtonWidget(
                                           onPressed: () async {
+                                            logFirebaseEvent(
+                                                'P_I_N_LOGIN_PAGE__BTN_ON_TAP');
+                                            logFirebaseEvent(
+                                                'Button_navigate_to');
+
                                             context.pushNamed(
                                               'mainLogin',
                                               extra: <String, dynamic>{

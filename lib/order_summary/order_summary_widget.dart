@@ -66,6 +66,8 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
       this,
     );
 
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'OrderSummary'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -77,9 +79,12 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-          endDrawer: Drawer(
-            elevation: 16,
-            child: EndDrawerContainerWidget(),
+          endDrawer: Container(
+            width: 250,
+            child: Drawer(
+              elevation: 16,
+              child: EndDrawerContainerWidget(),
+            ),
           ),
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(60),
@@ -117,6 +122,8 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
                     size: 30,
                   ),
                   onPressed: () async {
+                    logFirebaseEvent('ORDER_SUMMARY_PAGE_menu_ICN_ON_TAP');
+                    logFirebaseEvent('IconButton_drawer');
                     scaffoldKey.currentState!.openEndDrawer();
                   },
                 ),
@@ -390,6 +397,10 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
                                                 flex: 1,
                                                 child: InkWell(
                                                   onTap: () async {
+                                                    logFirebaseEvent(
+                                                        'ORDER_SUMMARY_PAGE_Icon_mo4zlxrf_ON_TAP');
+                                                    logFirebaseEvent(
+                                                        'Icon_backend_call');
                                                     await listViewMenuRecord
                                                         .reference
                                                         .delete();
@@ -423,6 +434,10 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
                       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
                       child: FFButtonWidget(
                         onPressed: () async {
+                          logFirebaseEvent(
+                              'ORDER_SUMMARY_PAGE_CreateOrder_ON_TAP');
+                          logFirebaseEvent('CreateOrder_backend_call');
+
                           final ordersCreateData = createOrdersRecordData(
                             status: 'Open',
                             date: getCurrentTimestamp,
@@ -433,9 +448,11 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
                           await ordersRecordReference.set(ordersCreateData);
                           createNewOrder = OrdersRecord.getDocumentFromData(
                               ordersCreateData, ordersRecordReference);
+                          logFirebaseEvent('CreateOrder_navigate_to');
 
                           context.pushNamed('Orders');
 
+                          logFirebaseEvent('CreateOrder_show_snack_bar');
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(

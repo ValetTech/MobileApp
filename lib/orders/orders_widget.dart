@@ -32,6 +32,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
       start: DateTime.now().startOfDay,
       end: DateTime.now().endOfDay,
     );
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Orders'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -43,10 +44,10 @@ class _OrdersWidgetState extends State<OrdersWidget> {
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-          endDrawer: Drawer(
-            elevation: 16,
-            child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+          endDrawer: Container(
+            width: 250,
+            child: Drawer(
+              elevation: 16,
               child: EndDrawerContainerWidget(),
             ),
           ),
@@ -86,6 +87,8 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                     size: 30,
                   ),
                   onPressed: () async {
+                    logFirebaseEvent('ORDERS_PAGE_menu_ICN_ON_TAP');
+                    logFirebaseEvent('IconButton_drawer');
                     scaffoldKey.currentState!.openEndDrawer();
                   },
                 ),
@@ -166,6 +169,10 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                                                 newSelectedDate) async {
                                               calendarPickerReservationsMainSelectedDay =
                                                   newSelectedDate;
+                                              logFirebaseEvent(
+                                                  'ORDERS_CalendarPickerReservationsMain_ON');
+                                              logFirebaseEvent(
+                                                  'CalendarPickerReservationsMain_update_lo');
                                               setState(() => FFAppState()
                                                       .selectedDate =
                                                   calendarPickerReservationsMainSelectedDay
@@ -280,8 +287,14 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                                                   .fromSTEB(4, 0, 4, 0),
                                               child: InkWell(
                                                 onTap: () async {
+                                                  logFirebaseEvent(
+                                                      'ORDERS_PAGE_Icon_3gs0xcjd_ON_TAP');
+                                                  logFirebaseEvent(
+                                                      'Icon_update_local_state');
                                                   setState(() => FFAppState()
                                                       .filtersOn = false);
+                                                  logFirebaseEvent(
+                                                      'Icon_clear_all_select_all');
                                                   setState(() =>
                                                       choiceChipsValues.value =
                                                           []);
@@ -341,6 +354,10 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                                                       setState(() =>
                                                           choiceChipsValues
                                                               .value = val);
+                                                      logFirebaseEvent(
+                                                          'ORDERS_ChoiceChips_yfwvu1r3_ON_FORM_WIDG');
+                                                      logFirebaseEvent(
+                                                          'ChoiceChips_update_local_state');
                                                       setState(() =>
                                                           FFAppState()
                                                                   .filtersOn =
@@ -522,6 +539,9 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
                         child: FFButtonWidget(
                           onPressed: () async {
+                            logFirebaseEvent('ORDERS_PAGE_FAB_ON_TAP');
+                            logFirebaseEvent('FAB_navigate_to');
+
                             context.pushNamed('NewOrder');
                           },
                           text: 'New Order',

@@ -62,6 +62,8 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
       start: DateTime.now().startOfDay,
       end: DateTime.now().endOfDay,
     );
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'Reservations'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -73,9 +75,12 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-          endDrawer: Drawer(
-            elevation: 16,
-            child: EndDrawerContainerWidget(),
+          endDrawer: Container(
+            width: 250,
+            child: Drawer(
+              elevation: 16,
+              child: EndDrawerContainerWidget(),
+            ),
           ),
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(60),
@@ -113,6 +118,8 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                     size: 30,
                   ),
                   onPressed: () async {
+                    logFirebaseEvent('RESERVATIONS_PAGE_menu_ICN_ON_TAP');
+                    logFirebaseEvent('IconButton_drawer');
                     scaffoldKey.currentState!.openEndDrawer();
                   },
                 ),
@@ -161,6 +168,10 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                             snapshot.data!;
                         return RefreshIndicator(
                           onRefresh: () async {
+                            logFirebaseEvent(
+                                'RESERVATIONS_ColumnScaffold_ON_PULL_TO_R');
+                            logFirebaseEvent(
+                                'ColumnScaffold_refresh_database_request');
                             setState(() => _apiRequestCompleter = null);
                             await waitForApiRequestCompleter();
                           },
@@ -235,19 +246,31 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                       newSelectedDate) async {
                                                     calendarPickerReservationsMainSelectedDay =
                                                         newSelectedDate;
+                                                    logFirebaseEvent(
+                                                        'RESERVATIONS_CalendarPickerReservationsM');
+                                                    logFirebaseEvent(
+                                                        'CalendarPickerReservationsMain_update_lo');
                                                     setState(() => FFAppState()
                                                             .selectedDate =
                                                         calendarPickerReservationsMainSelectedDay
                                                             ?.start);
+                                                    logFirebaseEvent(
+                                                        'CalendarPickerReservationsMain_refresh_d');
                                                     setState(() =>
                                                         _apiRequestCompleter =
                                                             null);
+                                                    logFirebaseEvent(
+                                                        'CalendarPickerReservationsMain_clear_all');
                                                     setState(() =>
                                                         sittingChipsValues
                                                             .value = []);
+                                                    logFirebaseEvent(
+                                                        'CalendarPickerReservationsMain_clear_all');
                                                     setState(() =>
                                                         areaChipsValues.value =
                                                             []);
+                                                    logFirebaseEvent(
+                                                        'CalendarPickerReservationsMain_update_lo');
                                                     setState(() => FFAppState()
                                                         .filtersOn = false);
                                                     setState(() {});
@@ -375,16 +398,26 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                                 4, 0, 4, 0),
                                                     child: InkWell(
                                                       onTap: () async {
+                                                        logFirebaseEvent(
+                                                            'RESERVATIONS_PAGE_Icon_trtt78f9_ON_TAP');
+                                                        logFirebaseEvent(
+                                                            'Icon_update_local_state');
                                                         setState(() =>
                                                             FFAppState()
                                                                     .filtersOn =
                                                                 false);
+                                                        logFirebaseEvent(
+                                                            'Icon_clear_all_select_all');
                                                         setState(() =>
                                                             sittingChipsValues
                                                                 .value = []);
+                                                        logFirebaseEvent(
+                                                            'Icon_clear_all_select_all');
                                                         setState(() =>
                                                             areaChipsValues
                                                                 .value = []);
+                                                        logFirebaseEvent(
+                                                            'Icon_refresh_database_request');
                                                         setState(() =>
                                                             _apiRequestCompleter =
                                                                 null);
@@ -481,10 +514,16 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                                   sittingChipsValues
                                                                           .value =
                                                                       val);
+                                                              logFirebaseEvent(
+                                                                  'RESERVATIONS_SittingChips_ON_FORM_WIDGET');
+                                                              logFirebaseEvent(
+                                                                  'SittingChips_update_local_state');
                                                               setState(() =>
                                                                   FFAppState()
                                                                           .filtersOn =
                                                                       true);
+                                                              logFirebaseEvent(
+                                                                  'SittingChips_refresh_database_request');
                                                               setState(() =>
                                                                   _apiRequestCompleter =
                                                                       null);
@@ -608,10 +647,16 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                                 areaChipsValues
                                                                         .value =
                                                                     val);
+                                                            logFirebaseEvent(
+                                                                'RESERVATIONS_AreaChips_ON_FORM_WIDGET_SE');
+                                                            logFirebaseEvent(
+                                                                'AreaChips_update_local_state');
                                                             setState(() =>
                                                                 FFAppState()
                                                                         .filtersOn =
                                                                     true);
+                                                            logFirebaseEvent(
+                                                                'AreaChips_refresh_database_request');
                                                             setState(() =>
                                                                 _apiRequestCompleter =
                                                                     null);
@@ -736,6 +781,10 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                         }
                                         return RefreshIndicator(
                                           onRefresh: () async {
+                                            logFirebaseEvent(
+                                                'RESERVATIONS_ListViewMain_ON_PULL_TO_REF');
+                                            logFirebaseEvent(
+                                                'ListViewMain_refresh_database_request');
                                             setState(() =>
                                                 _apiRequestCompleter = null);
                                           },
@@ -753,6 +802,11 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                     .fromSTEB(12, 4, 0, 4),
                                                 child: InkWell(
                                                   onTap: () async {
+                                                    logFirebaseEvent(
+                                                        'RESERVATIONS_PAGE_reservationList_ON_TAP');
+                                                    logFirebaseEvent(
+                                                        'reservationList_navigate_to');
+
                                                     context.pushNamed(
                                                       'ViewReservation',
                                                       queryParams: {
@@ -934,6 +988,11 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                                 ),
                                                                 onPressed:
                                                                     () async {
+                                                                  logFirebaseEvent(
+                                                                      'RESERVATIONS_keyboard_arrow_right_ICN_ON');
+                                                                  logFirebaseEvent(
+                                                                      'IconButton_navigate_to');
+
                                                                   context
                                                                       .pushNamed(
                                                                     'ViewReservation',
@@ -979,6 +1038,9 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
                         child: FFButtonWidget(
                           onPressed: () async {
+                            logFirebaseEvent('RESERVATIONS_PAGE_FAB_ON_TAP');
+                            logFirebaseEvent('FAB_navigate_to');
+
                             context.pushNamed('NewReservation');
                           },
                           text: 'New Reservation',
