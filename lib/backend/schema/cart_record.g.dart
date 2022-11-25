@@ -24,21 +24,18 @@ class _$CartRecordSerializer implements StructuredSerializer<CartRecord> {
       result
         ..add('item_ref')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(
-                DocumentReference, const [const FullType.nullable(Object)])));
+            specifiedType: const FullType(BuiltList, const [
+              const FullType(
+                  DocumentReference, const [const FullType.nullable(Object)])
+            ])));
     }
     value = object.qty;
     if (value != null) {
       result
         ..add('qty')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
-    }
-    value = object.price;
-    if (value != null) {
-      result
-        ..add('price')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(double)));
+            specifiedType:
+                const FullType(BuiltList, const [const FullType(int)])));
     }
     value = object.ffRef;
     if (value != null) {
@@ -63,18 +60,17 @@ class _$CartRecordSerializer implements StructuredSerializer<CartRecord> {
       final Object? value = iterator.current;
       switch (key) {
         case 'item_ref':
-          result.itemRef = serializers.deserialize(value,
-              specifiedType: const FullType(DocumentReference, const [
-                const FullType.nullable(Object)
-              ])) as DocumentReference<Object?>?;
+          result.itemRef.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltList, const [
+                const FullType(
+                    DocumentReference, const [const FullType.nullable(Object)])
+              ]))! as BuiltList<Object?>);
           break;
         case 'qty':
-          result.qty = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
-          break;
-        case 'price':
-          result.price = serializers.deserialize(value,
-              specifiedType: const FullType(double)) as double?;
+          result.qty.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(int)]))!
+              as BuiltList<Object?>);
           break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
@@ -91,18 +87,16 @@ class _$CartRecordSerializer implements StructuredSerializer<CartRecord> {
 
 class _$CartRecord extends CartRecord {
   @override
-  final DocumentReference<Object?>? itemRef;
+  final BuiltList<DocumentReference<Object?>>? itemRef;
   @override
-  final int? qty;
-  @override
-  final double? price;
+  final BuiltList<int>? qty;
   @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$CartRecord([void Function(CartRecordBuilder)? updates]) =>
       (new CartRecordBuilder()..update(updates))._build();
 
-  _$CartRecord._({this.itemRef, this.qty, this.price, this.ffRef}) : super._();
+  _$CartRecord._({this.itemRef, this.qty, this.ffRef}) : super._();
 
   @override
   CartRecord rebuild(void Function(CartRecordBuilder) updates) =>
@@ -117,15 +111,13 @@ class _$CartRecord extends CartRecord {
     return other is CartRecord &&
         itemRef == other.itemRef &&
         qty == other.qty &&
-        price == other.price &&
         ffRef == other.ffRef;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc($jc($jc(0, itemRef.hashCode), qty.hashCode), price.hashCode),
-        ffRef.hashCode));
+    return $jf(
+        $jc($jc($jc(0, itemRef.hashCode), qty.hashCode), ffRef.hashCode));
   }
 
   @override
@@ -133,7 +125,6 @@ class _$CartRecord extends CartRecord {
     return (newBuiltValueToStringHelper(r'CartRecord')
           ..add('itemRef', itemRef)
           ..add('qty', qty)
-          ..add('price', price)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -142,17 +133,15 @@ class _$CartRecord extends CartRecord {
 class CartRecordBuilder implements Builder<CartRecord, CartRecordBuilder> {
   _$CartRecord? _$v;
 
-  DocumentReference<Object?>? _itemRef;
-  DocumentReference<Object?>? get itemRef => _$this._itemRef;
-  set itemRef(DocumentReference<Object?>? itemRef) => _$this._itemRef = itemRef;
+  ListBuilder<DocumentReference<Object?>>? _itemRef;
+  ListBuilder<DocumentReference<Object?>> get itemRef =>
+      _$this._itemRef ??= new ListBuilder<DocumentReference<Object?>>();
+  set itemRef(ListBuilder<DocumentReference<Object?>>? itemRef) =>
+      _$this._itemRef = itemRef;
 
-  int? _qty;
-  int? get qty => _$this._qty;
-  set qty(int? qty) => _$this._qty = qty;
-
-  double? _price;
-  double? get price => _$this._price;
-  set price(double? price) => _$this._price = price;
+  ListBuilder<int>? _qty;
+  ListBuilder<int> get qty => _$this._qty ??= new ListBuilder<int>();
+  set qty(ListBuilder<int>? qty) => _$this._qty = qty;
 
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
@@ -165,9 +154,8 @@ class CartRecordBuilder implements Builder<CartRecord, CartRecordBuilder> {
   CartRecordBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _itemRef = $v.itemRef;
-      _qty = $v.qty;
-      _price = $v.price;
+      _itemRef = $v.itemRef?.toBuilder();
+      _qty = $v.qty?.toBuilder();
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -189,9 +177,24 @@ class CartRecordBuilder implements Builder<CartRecord, CartRecordBuilder> {
   CartRecord build() => _build();
 
   _$CartRecord _build() {
-    final _$result = _$v ??
-        new _$CartRecord._(
-            itemRef: itemRef, qty: qty, price: price, ffRef: ffRef);
+    _$CartRecord _$result;
+    try {
+      _$result = _$v ??
+          new _$CartRecord._(
+              itemRef: _itemRef?.build(), qty: _qty?.build(), ffRef: ffRef);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'itemRef';
+        _itemRef?.build();
+        _$failedField = 'qty';
+        _qty?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'CartRecord', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

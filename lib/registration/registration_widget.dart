@@ -1,5 +1,4 @@
 import '../auth/auth_util.dart';
-import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -697,17 +696,6 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                             if (user == null) {
                               return;
                             }
-
-                            final userListCreateData = createUserListRecordData(
-                              email: emailAddressController!.text,
-                              createdTime: getCurrentTimestamp,
-                              lastName: lastNameController!.text,
-                              firstName: firstNameController!.text,
-                              pin: int.parse(pinCodeController!.text),
-                            );
-                            await UserListRecord.collection
-                                .doc(user.uid)
-                                .update(userListCreateData);
 
                             context.goNamedAuth('Dashboard', mounted);
                           },

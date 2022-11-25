@@ -1,4 +1,3 @@
-import '../auth/auth_util.dart';
 import '../backend/api_requests/api_calls.dart';
 import '../components/end_drawer_container_widget.dart';
 import '../components/page_name_widget.dart';
@@ -80,7 +79,9 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
             width: 250,
             child: Drawer(
               elevation: 16,
-              child: EndDrawerContainerWidget(),
+              child: EndDrawerContainerWidget(
+                pageName: 'View Reservation',
+              ),
             ),
           ),
           appBar: PreferredSize(
@@ -974,8 +975,9 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                                                                       .resDetails,
                                                                   r'''$.id''',
                                                                 ),
-                                                                authToken:
-                                                                    currentJwtToken,
+                                                                token:
+                                                                    FFAppState()
+                                                                        .token,
                                                                 value:
                                                                     'Confirmed',
                                                               );
@@ -1284,8 +1286,7 @@ class _ViewReservationWidgetState extends State<ViewReservationWidget>
                                                             .updateReservationCall
                                                             .call(
                                                       status: 'Cancelled',
-                                                      authToken:
-                                                          FFAppState().token,
+                                                      token: FFAppState().token,
                                                     );
                                                     logFirebaseEvent(
                                                         'Button_navigate_to');

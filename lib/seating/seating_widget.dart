@@ -76,7 +76,9 @@ class _SeatingWidgetState extends State<SeatingWidget>
             width: 250,
             child: Drawer(
               elevation: 16,
-              child: EndDrawerContainerWidget(),
+              child: EndDrawerContainerWidget(
+                pageName: 'Seating',
+              ),
             ),
           ),
           appBar: PreferredSize(
@@ -137,8 +139,8 @@ class _SeatingWidgetState extends State<SeatingWidget>
                     FutureBuilder<ApiCallResponse>(
                       future:
                           (_apiRequestCompleter ??= Completer<ApiCallResponse>()
-                                ..complete(ValetAPIGroup.newAreaCall.call(
-                                  authToken: FFAppState().token,
+                                ..complete(WidgetsGroup.getTablesCall.call(
+                                  token: FFAppState().token,
                                 )))
                               .future,
                       builder: (context, snapshot) {
@@ -156,7 +158,7 @@ class _SeatingWidgetState extends State<SeatingWidget>
                             ),
                           );
                         }
-                        final columnScaffoldNewAreaResponse = snapshot.data!;
+                        final columnScaffoldGetTablesResponse = snapshot.data!;
                         return RefreshIndicator(
                           onRefresh: () async {
                             logFirebaseEvent(
@@ -528,7 +530,7 @@ class _SeatingWidgetState extends State<SeatingWidget>
                                         child: Builder(
                                           builder: (context) {
                                             final tableAPI = getJsonField(
-                                              columnScaffoldNewAreaResponse
+                                              columnScaffoldGetTablesResponse
                                                   .jsonBody,
                                               r'''$.tables''',
                                             ).toList();

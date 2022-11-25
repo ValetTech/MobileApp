@@ -36,11 +36,16 @@ class FFAppState {
         await secureStorage.getStringList('ff_currentUserRoles') ??
             _currentUserRoles;
     _cartsum = await secureStorage.getDouble('ff_cartsum') ?? _cartsum;
-    _cart = (await secureStorage.getStringList('ff_cart'))
+    _token = await secureStorage.getString('ff_token') ?? _token;
+    _usercart = (await secureStorage.getStringList('ff_usercart'))
             ?.map((path) => path.ref)
             .toList() ??
-        _cart;
-    _token = await secureStorage.getString('ff_token') ?? _token;
+        _usercart;
+    _itemcount = await secureStorage.getInt('ff_itemcount') ?? _itemcount;
+    _itemqty = (await secureStorage.getStringList('ff_itemqty'))
+            ?.map(int.parse)
+            .toList() ??
+        _itemqty;
   }
 
   late FlutterSecureStorage secureStorage;
@@ -213,28 +218,8 @@ class FFAppState {
     secureStorage.delete(key: 'ff_cartsum');
   }
 
-  List<DocumentReference> _cart = [];
-  List<DocumentReference> get cart => _cart;
-  set cart(List<DocumentReference> _value) {
-    _cart = _value;
-    secureStorage.setStringList('ff_cart', _value.map((x) => x.path).toList());
-  }
-
-  void deleteCart() {
-    secureStorage.delete(key: 'ff_cart');
-  }
-
-  void addToCart(DocumentReference _value) {
-    _cart.add(_value);
-    secureStorage.setStringList('ff_cart', _cart.map((x) => x.path).toList());
-  }
-
-  void removeFromCart(DocumentReference _value) {
-    _cart.remove(_value);
-    secureStorage.setStringList('ff_cart', _cart.map((x) => x.path).toList());
-  }
-
-  String _token = '';
+  String _token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay14cXJoMUBvbmUtYnV0dG9uLTYzZmY5LmlhbS5nc2VydmljZWFjY291bnQuY29tIiwianRpIjoiNWYyYjM1YWEtZDgxNC00MTRjLTkyYjctZDVmY2Q4ZTRiODY1IiwiaWF0Ijo2MzgwNDgwMjU5NzQwNDI4OTMsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImFAYS5jb20iLCJlbWFpbCI6ImFAYS5jb20iLCJkaXNwbGF5X25hbWUiOiJhZG1pbiIsInVpZCI6Ijc2YzMwODQ3LWY2NGUtNGFlMS1iNDY1LWZhOTMyYmYxOWFjNCIsImNyZWF0ZWRfdGltZSI6IjExLzIzLzIwMjIgMTI6MTY6MzcgUE0iLCJwaG90b191cmwiOiIiLCJwaG9uZV9udW1iZXIiOiIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiQWRtaW4iLCJVc2VyIl0sImV4cCI6MTY2OTI5MjE5NywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo0MjAwIn0.VNUjEKxWCcAnizkEDowNmnXOyh5II-UXrjDljHLbNIc';
   String get token => _token;
   set token(String _value) {
     _token = _value;
@@ -243,6 +228,65 @@ class FFAppState {
 
   void deleteToken() {
     secureStorage.delete(key: 'ff_token');
+  }
+
+  List<DocumentReference> _usercart = [];
+  List<DocumentReference> get usercart => _usercart;
+  set usercart(List<DocumentReference> _value) {
+    _usercart = _value;
+    secureStorage.setStringList(
+        'ff_usercart', _value.map((x) => x.path).toList());
+  }
+
+  void deleteUsercart() {
+    secureStorage.delete(key: 'ff_usercart');
+  }
+
+  void addToUsercart(DocumentReference _value) {
+    _usercart.add(_value);
+    secureStorage.setStringList(
+        'ff_usercart', _usercart.map((x) => x.path).toList());
+  }
+
+  void removeFromUsercart(DocumentReference _value) {
+    _usercart.remove(_value);
+    secureStorage.setStringList(
+        'ff_usercart', _usercart.map((x) => x.path).toList());
+  }
+
+  int _itemcount = 0;
+  int get itemcount => _itemcount;
+  set itemcount(int _value) {
+    _itemcount = _value;
+    secureStorage.setInt('ff_itemcount', _value);
+  }
+
+  void deleteItemcount() {
+    secureStorage.delete(key: 'ff_itemcount');
+  }
+
+  List<int> _itemqty = [];
+  List<int> get itemqty => _itemqty;
+  set itemqty(List<int> _value) {
+    _itemqty = _value;
+    secureStorage.setStringList(
+        'ff_itemqty', _value.map((x) => x.toString()).toList());
+  }
+
+  void deleteItemqty() {
+    secureStorage.delete(key: 'ff_itemqty');
+  }
+
+  void addToItemqty(int _value) {
+    _itemqty.add(_value);
+    secureStorage.setStringList(
+        'ff_itemqty', _itemqty.map((x) => x.toString()).toList());
+  }
+
+  void removeFromItemqty(int _value) {
+    _itemqty.remove(_value);
+    secureStorage.setStringList(
+        'ff_itemqty', _itemqty.map((x) => x.toString()).toList());
   }
 }
 

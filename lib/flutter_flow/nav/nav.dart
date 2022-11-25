@@ -69,13 +69,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, _) =>
-          appStateNotifier.loggedIn ? NavBarPage() : PINLoginWidget(),
+          appStateNotifier.loggedIn ? NavBarPage() : MainLoginWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? NavBarPage() : PINLoginWidget(),
+              appStateNotifier.loggedIn ? NavBarPage() : MainLoginWidget(),
           routes: [
             FFRoute(
               name: 'mainLogin',
@@ -111,20 +111,20 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                   : ReservationsWidget(),
             ),
             FFRoute(
-              name: 'Seating',
-              path: 'seating',
-              requireAuth: true,
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'Seating')
-                  : SeatingWidget(),
-            ),
-            FFRoute(
               name: 'Orders',
               path: 'orders',
               requireAuth: true,
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'Orders')
                   : OrdersWidget(),
+            ),
+            FFRoute(
+              name: 'Seating',
+              path: 'seating',
+              requireAuth: true,
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'Seating')
+                  : SeatingWidget(),
             ),
             FFRoute(
               name: 'NewReservation',
@@ -175,6 +175,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ),
             ),
             FFRoute(
+              name: 'Allocate',
+              path: 'Allocate',
+              requireAuth: true,
+              builder: (context, params) => AllocateWidget(),
+            ),
+            FFRoute(
               name: 'NewOrder',
               path: 'newOrder',
               requireAuth: true,
@@ -193,18 +199,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 initialPage: '',
                 page: OrderSummaryWidget(
                   table: params.getParam('table', ParamType.String),
-                  items: params.getParam(
-                      'items', ParamType.DocumentReference, false, 'cart'),
                 ),
               ),
-            ),
-            FFRoute(
-              name: 'SeatingCopy',
-              path: 'Allocate',
-              requireAuth: true,
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'SeatingCopy')
-                  : SeatingCopyWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),
@@ -364,7 +360,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.location);
-            return '/pINLogin';
+            return '/mainLogin';
           }
           return null;
         },

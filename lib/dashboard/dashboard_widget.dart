@@ -1,4 +1,5 @@
 import '../backend/api_requests/api_calls.dart';
+import '../backend/backend.dart';
 import '../components/end_drawer_container_widget.dart';
 import '../components/header_widget.dart';
 import '../flutter_flow/flutter_flow_calendar.dart';
@@ -23,12 +24,15 @@ class DashboardWidget extends StatefulWidget {
 }
 
 class _DashboardWidgetState extends State<DashboardWidget> {
+  ApiCallResponse? allTables;
+  ApiCallResponse? tokenAPICall;
+  ApiCallResponse? vacantTables;
+  ApiCallResponse? unallocatedReservations;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   ApiCallResponse? allTablesChange;
   ApiCallResponse? vacantTablesChange;
   ApiCallResponse? unallocatedReservationsChange;
   DateTimeRange? calendarPickerSelectedDay;
-  ApiCallResponse? tokenAPICall;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -37,9 +41,99 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       logFirebaseEvent('DASHBOARD_PAGE_Dashboard_ON_PAGE_LOAD');
       logFirebaseEvent('Dashboard_backend_call');
-      tokenAPICall = await ValetAPIGroup.loginUserCall.call();
+      tokenAPICall = await ValetAPIGroup.loginUserCall.call(
+        email: 'a@a.com',
+        password: 'adminAdmin1!',
+      );
+      if ((tokenAPICall?.succeeded ?? true)) {
+        logFirebaseEvent('Dashboard_update_local_state');
+        setState(() => FFAppState().token = ValetAPIGroup.loginUserCall
+            .jWTToken(
+              (tokenAPICall?.jsonBody ?? ''),
+            )
+            .toString());
+      } else {
+        logFirebaseEvent('Dashboard_show_snack_bar');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              (tokenAPICall?.statusCode ?? 200).toString(),
+              style: TextStyle(
+                color: FlutterFlowTheme.of(context).primaryText,
+              ),
+            ),
+            duration: Duration(milliseconds: 4000),
+            backgroundColor: Color(0x00000000),
+          ),
+        );
+      }
+
       logFirebaseEvent('Dashboard_update_local_state');
       setState(() => FFAppState().selectedDate = getCurrentTimestamp);
+      logFirebaseEvent('Dashboard_backend_call');
+      allTables = await WidgetsGroup.getTablesCall.call(
+        date: functions.formatDateForPOST(FFAppState().selectedDate!),
+        token: FFAppState().token,
+      );
+      logFirebaseEvent('Dashboard_backend_call');
+      vacantTables = await WidgetsGroup.getTablesCall.call(
+        date: functions.formatDateForPOST(FFAppState().selectedDate!),
+        hasReservations: false.toString(),
+        token: FFAppState().token,
+      );
+      logFirebaseEvent('Dashboard_backend_call');
+      unallocatedReservations = await WidgetsGroup.getReservationsCall.call(
+        date: functions.formatDateForPOST(FFAppState().selectedDate!),
+        hasTables: false.toString(),
+        token: FFAppState().token,
+      );
+      if ((allTables?.succeeded ?? true) &&
+          (vacantTables?.succeeded ?? true) &&
+          (unallocatedReservations?.succeeded ?? true)) {
+        logFirebaseEvent('Dashboard_update_local_state');
+        setState(() => FFAppState().UnallocatedReservations =
+                functions.arrayCount(valueOrDefault<dynamic>(
+              WidgetsGroup.getReservationsCall.allReservations(
+                (unallocatedReservationsChange?.jsonBody ?? ''),
+              ),
+              0,
+            ).toList()));
+        logFirebaseEvent('Dashboard_update_local_state');
+        setState(() => FFAppState().AvaliableTables =
+                functions.arrayCount(valueOrDefault<dynamic>(
+              WidgetsGroup.getTablesCall.allTables(
+                (vacantTablesChange?.jsonBody ?? ''),
+              ),
+              0,
+            )));
+      } else {
+        logFirebaseEvent('Dashboard_show_snack_bar');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Something went wrong.',
+              style: TextStyle(
+                color: FlutterFlowTheme.of(context).primaryText,
+              ),
+            ),
+            duration: Duration(milliseconds: 4000),
+            backgroundColor: Color(0x00000000),
+          ),
+        );
+        return;
+      }
+
+      logFirebaseEvent('Dashboard_update_local_state');
+      setState(() => FFAppState().VacancyRate = valueOrDefault<double>(
+            functions.getPercentage(
+                functions.arrayCount(WidgetsGroup.getTablesCall.allTables(
+                  (vacantTablesChange?.jsonBody ?? ''),
+                )),
+                functions.arrayCount(WidgetsGroup.getTablesCall.allTables(
+                  (allTablesChange?.jsonBody ?? ''),
+                ))),
+            0.0,
+          ));
     });
 
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'Dashboard'});
@@ -62,7 +156,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
             width: 250,
             child: Drawer(
               elevation: 16,
-              child: EndDrawerContainerWidget(),
+              child: EndDrawerContainerWidget(
+                pageName: 'Dashboard',
+              ),
             ),
           ),
           appBar: PreferredSize(
@@ -160,6 +256,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                   await WidgetsGroup.getTablesCall.call(
                                 date: functions.formatDateForPOST(
                                     FFAppState().selectedDate!),
+                                token: FFAppState().token,
                               );
                               logFirebaseEvent('CalendarPicker_backend_call');
                               vacantTablesChange =
@@ -167,6 +264,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                 date: functions.formatDateForPOST(
                                     FFAppState().selectedDate!),
                                 hasReservations: false.toString(),
+                                token: FFAppState().token,
                               );
                               logFirebaseEvent('CalendarPicker_backend_call');
                               unallocatedReservationsChange =
@@ -174,6 +272,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                 date: functions.formatDateForPOST(
                                     FFAppState().selectedDate!),
                                 hasTables: false.toString(),
+                                token: FFAppState().token,
                               );
                               if ((allTablesChange?.succeeded ?? true) &&
                                   (vacantTablesChange?.succeeded ?? true) &&
@@ -192,7 +291,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                             ''),
                                       ),
                                       0,
-                                    )));
+                                    ).toList()));
                                 logFirebaseEvent(
                                     'CalendarPicker_update_local_state');
                                 setState(() => FFAppState().AvaliableTables =
@@ -437,131 +536,201 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         16, 8, 8, 8),
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.5,
-                                      decoration: BoxDecoration(
-                                        color:
-                                            FlutterFlowTheme.of(context).white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            blurRadius: 5,
-                                            color: Color(0x44111417),
-                                            offset: Offset(0, 2),
-                                          )
-                                        ],
-                                        borderRadius: BorderRadius.circular(8),
+                                    child: StreamBuilder<List<OrdersRecord>>(
+                                      stream: queryOrdersRecord(
+                                        queryBuilder: (ordersRecord) =>
+                                            ordersRecord.where('date_created',
+                                                isEqualTo:
+                                                    calendarPickerSelectedDay
+                                                        ?.start),
                                       ),
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            12, 12, 12, 12),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Icon(
-                                                  Icons.restaurant_menu,
-                                                  color: Color(0xFF101213),
-                                                  size: 44,
-                                                ),
-                                                Text(
-                                                  '34',
-                                                  textAlign: TextAlign.center,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .title3,
-                                                ),
-                                              ],
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(0, 0, 0, 8),
-                                              child: Text(
-                                                'Open Orders',
-                                                textAlign: TextAlign.center,
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .subtitle2,
-                                              ),
-                                            ),
-                                            FFButtonWidget(
-                                              onPressed: () async {
-                                                logFirebaseEvent(
-                                                    'DASHBOARD_PAGE_NEW_ORDER_BTN_ON_TAP');
-                                                logFirebaseEvent(
-                                                    'Button_navigate_to');
-
-                                                context.pushNamed('NewOrder');
-                                              },
-                                              text: 'New Order',
-                                              icon: FaIcon(
-                                                FontAwesomeIcons.calendarPlus,
-                                                size: 20,
-                                              ),
-                                              options: FFButtonOptions(
-                                                width: 175,
-                                                height: 40,
+                                      builder: (context, snapshot) {
+                                        // Customize what your widget looks like when it's loading.
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                            child: SizedBox(
+                                              width: 40,
+                                              height: 40,
+                                              child: SpinKitRipple(
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .secondaryColor,
-                                                textStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyText1,
-                                                elevation: 2,
-                                                borderSide: BorderSide(
-                                                  color: Colors.transparent,
-                                                  width: 1,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
+                                                size: 40,
                                               ),
                                             ),
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(0, 8, 0, 0),
-                                              child: FFButtonWidget(
-                                                onPressed: () async {
-                                                  logFirebaseEvent(
-                                                      'DASHBOARD_PAGE_VIEW_SETTLE_BTN_ON_TAP');
-                                                  logFirebaseEvent(
-                                                      'Button_navigate_to');
-
-                                                  context.pushNamed('Orders');
-                                                },
-                                                text: 'View/Settle',
-                                                icon: FaIcon(
-                                                  FontAwesomeIcons.calendarPlus,
-                                                  size: 20,
+                                          );
+                                        }
+                                        List<OrdersRecord>
+                                            openOrdersOrdersRecordList =
+                                            snapshot.data!;
+                                        return Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.5,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .white,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                blurRadius: 5,
+                                                color: Color(0x44111417),
+                                                offset: Offset(0, 2),
+                                              )
+                                            ],
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    12, 12, 12, 12),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.restaurant_menu,
+                                                      color: Color(0xFF101213),
+                                                      size: 44,
+                                                    ),
+                                                    if (openOrdersOrdersRecordList
+                                                            .length >=
+                                                        1)
+                                                      Text(
+                                                        openOrdersOrdersRecordList
+                                                            .length
+                                                            .toString(),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        maxLines: 2,
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .title3,
+                                                      ),
+                                                  ],
                                                 ),
-                                                options: FFButtonOptions(
-                                                  width: 175,
-                                                  height: 40,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondaryColor,
-                                                  textStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyText1,
-                                                  elevation: 2,
-                                                  borderSide: BorderSide(
-                                                    color: Colors.transparent,
-                                                    width: 1,
+                                                if (openOrdersOrdersRecordList
+                                                        .length <
+                                                    1)
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                0, 0, 0, 8),
+                                                    child: Text(
+                                                      'There Are No',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .subtitle2,
+                                                    ),
                                                   ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(0, 0, 0, 8),
+                                                  child: Text(
+                                                    'Open Orders',
+                                                    textAlign: TextAlign.center,
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .subtitle2,
+                                                  ),
                                                 ),
-                                              ),
+                                                FFButtonWidget(
+                                                  onPressed: () async {
+                                                    logFirebaseEvent(
+                                                        'DASHBOARD_PAGE_NEW_ORDER_BTN_ON_TAP');
+                                                    logFirebaseEvent(
+                                                        'Button_navigate_to');
+
+                                                    context
+                                                        .pushNamed('NewOrder');
+                                                  },
+                                                  text: 'New Order',
+                                                  icon: FaIcon(
+                                                    FontAwesomeIcons
+                                                        .calendarPlus,
+                                                    size: 20,
+                                                  ),
+                                                  options: FFButtonOptions(
+                                                    width: 175,
+                                                    height: 40,
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondaryColor,
+                                                    textStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyText1,
+                                                    elevation: 2,
+                                                    borderSide: BorderSide(
+                                                      color: Colors.transparent,
+                                                      width: 1,
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(0, 8, 0, 0),
+                                                  child: FFButtonWidget(
+                                                    onPressed: () async {
+                                                      logFirebaseEvent(
+                                                          'DASHBOARD_PAGE_VIEW_SETTLE_BTN_ON_TAP');
+                                                      logFirebaseEvent(
+                                                          'Button_navigate_to');
+
+                                                      context
+                                                          .pushNamed('Orders');
+                                                    },
+                                                    text: 'View/Settle',
+                                                    icon: FaIcon(
+                                                      FontAwesomeIcons
+                                                          .calendarPlus,
+                                                      size: 20,
+                                                    ),
+                                                    options: FFButtonOptions(
+                                                      width: 175,
+                                                      height: 40,
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondaryColor,
+                                                      textStyle:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyText1,
+                                                      elevation: 2,
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            Colors.transparent,
+                                                        width: 1,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                      ),
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ),
                                   Padding(
@@ -604,7 +773,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                                     FFAppState()
                                                         .UnallocatedReservations
                                                         .toString(),
-                                                    '0',
+                                                    'Loading',
                                                   ),
                                                   textAlign: TextAlign.center,
                                                   style: FlutterFlowTheme.of(
@@ -626,8 +795,13 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                               ),
                                             ),
                                             FFButtonWidget(
-                                              onPressed: () {
-                                                print('Button pressed ...');
+                                              onPressed: () async {
+                                                logFirebaseEvent(
+                                                    'DASHBOARD_PAGE_ALLOCATE_BTN_ON_TAP');
+                                                logFirebaseEvent(
+                                                    'Button_navigate_to');
+
+                                                context.pushNamed('Allocate');
                                               },
                                               text: 'Allocate',
                                               icon: Icon(
@@ -710,7 +884,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                                   FFAppState()
                                                       .AvaliableTables
                                                       .toString(),
-                                                  '0',
+                                                  'Loading',
                                                 ),
                                                 textAlign: TextAlign.center,
                                                 style:

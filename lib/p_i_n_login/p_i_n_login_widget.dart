@@ -211,12 +211,12 @@ class _PINLoginWidgetState extends State<PINLoginWidget>
                               ],
                             ),
                           ),
-                          StreamBuilder<List<UserListRecord>>(
-                            stream: queryUserListRecord(
-                              queryBuilder: (userListRecord) =>
-                                  userListRecord.where('pin',
-                                      isEqualTo:
-                                          int.parse(pinCodeController!.text)),
+                          StreamBuilder<List<UsersRecord>>(
+                            stream: queryUsersRecord(
+                              queryBuilder: (usersRecord) => usersRecord.where(
+                                  'PIN',
+                                  isEqualTo:
+                                      int.parse(pinCodeController!.text)),
                               singleRecord: true,
                             ),
                             builder: (context, snapshot) {
@@ -234,11 +234,11 @@ class _PINLoginWidgetState extends State<PINLoginWidget>
                                   ),
                                 );
                               }
-                              List<UserListRecord> formUserListRecordList =
+                              List<UsersRecord> formUsersRecordList =
                                   snapshot.data!;
-                              final formUserListRecord =
-                                  formUserListRecordList.isNotEmpty
-                                      ? formUserListRecordList.first
+                              final formUsersRecord =
+                                  formUsersRecordList.isNotEmpty
+                                      ? formUsersRecordList.first
                                       : null;
                               return Form(
                                 key: formKey,

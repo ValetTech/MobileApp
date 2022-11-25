@@ -137,7 +137,9 @@ class _EditReservationWidgetState extends State<EditReservationWidget> {
             width: 250,
             child: Drawer(
               elevation: 16,
-              child: EndDrawerContainerWidget(),
+              child: EndDrawerContainerWidget(
+                pageName: 'Edit Reservation',
+              ),
             ),
           ),
           appBar: PreferredSize(

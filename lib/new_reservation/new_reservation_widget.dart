@@ -43,7 +43,9 @@ class _NewReservationWidgetState extends State<NewReservationWidget> {
             width: 250,
             child: Drawer(
               elevation: 16,
-              child: EndDrawerContainerWidget(),
+              child: EndDrawerContainerWidget(
+                pageName: 'New Reservation',
+              ),
             ),
           ),
           appBar: PreferredSize(

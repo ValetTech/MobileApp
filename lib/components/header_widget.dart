@@ -1,4 +1,5 @@
 import '../auth/auth_util.dart';
+import '../auth/firebase_user_provider.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
         Padding(
           padding: EdgeInsetsDirectional.fromSTEB(0, 0, 4, 0),
           child: Text(
-            'Hey',
+            loggedIn == true ? 'Hey' : 'Welcome to ',
             style: FlutterFlowTheme.of(context).title1.override(
                   fontFamily: 'Overpass',
                   color: FlutterFlowTheme.of(context).primaryColor,
@@ -45,7 +46,9 @@ class _HeaderWidgetState extends State<HeaderWidget> {
           padding: EdgeInsetsDirectional.fromSTEB(2, 0, 16, 0),
           child: AuthUserStreamWidget(
             child: Text(
-              valueOrDefault(currentUserDocument?.firstName, ''),
+              loggedIn == true
+                  ? valueOrDefault(currentUserDocument?.firstName, '')
+                  : 'Valet',
               textAlign: TextAlign.start,
               style: FlutterFlowTheme.of(context).title1.override(
                     fontFamily: 'Overpass',

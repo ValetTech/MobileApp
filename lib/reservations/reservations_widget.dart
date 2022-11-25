@@ -79,7 +79,9 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
             width: 250,
             child: Drawer(
               elevation: 16,
-              child: EndDrawerContainerWidget(),
+              child: EndDrawerContainerWidget(
+                pageName: 'Reservations',
+              ),
             ),
           ),
           appBar: PreferredSize(
@@ -146,7 +148,7 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                       areaChipsValues.value?.toList()),
                                   sitting: functions.listJoin(
                                       sittingChipsValues.value?.toList()),
-                                  authToken: FFAppState().token,
+                                  token: FFAppState().token,
                                 )))
                               .future,
                       builder: (context, snapshot) {
@@ -456,9 +458,8 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                               .formatDateForPOST(
                                                                   FFAppState()
                                                                       .selectedDate!),
-                                                          authToken:
-                                                              FFAppState()
-                                                                  .token,
+                                                          token: FFAppState()
+                                                              .token,
                                                         ),
                                                         builder: (context,
                                                             snapshot) {
@@ -595,7 +596,7 @@ class _ReservationsWidgetState extends State<ReservationsWidget>
                                                       future: ValetAPIGroup
                                                           .gETAreasBySittingIDCall
                                                           .call(
-                                                        authToken:
+                                                        token:
                                                             FFAppState().token,
                                                       ),
                                                       builder:

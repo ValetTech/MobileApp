@@ -19,17 +19,31 @@ class _$MenuRecordSerializer implements StructuredSerializer<MenuRecord> {
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[];
     Object? value;
-    value = object.name;
+    value = object.category;
     if (value != null) {
       result
-        ..add('name')
+        ..add('category')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
+    }
+    value = object.createdAt;
+    if (value != null) {
+      result
+        ..add('created_at')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(DateTime)));
     }
     value = object.description;
     if (value != null) {
       result
         ..add('description')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.name;
+    if (value != null) {
+      result
+        ..add('name')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
@@ -40,55 +54,12 @@ class _$MenuRecordSerializer implements StructuredSerializer<MenuRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(double)));
     }
-    value = object.createdAt;
-    if (value != null) {
-      result
-        ..add('created_at')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(DateTime)));
-    }
-    value = object.modifiedAt;
-    if (value != null) {
-      result
-        ..add('modified_at')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(DateTime)));
-    }
-    value = object.onSale;
-    if (value != null) {
-      result
-        ..add('on_sale')
-        ..add(
-            serializers.serialize(value, specifiedType: const FullType(bool)));
-    }
-    value = object.salePrice;
-    if (value != null) {
-      result
-        ..add('sale_price')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(double)));
-    }
     value = object.image;
     if (value != null) {
       result
         ..add('image')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
-    }
-    value = object.category;
-    if (value != null) {
-      result
-        ..add('category')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
-    value = object.cat;
-    if (value != null) {
-      result
-        ..add('cat')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(
-                DocumentReference, const [const FullType.nullable(Object)])));
     }
     value = object.ffRef;
     if (value != null) {
@@ -112,47 +83,29 @@ class _$MenuRecordSerializer implements StructuredSerializer<MenuRecord> {
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
-        case 'name':
-          result.name = serializers.deserialize(value,
+        case 'category':
+          result.category = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
+          break;
+        case 'created_at':
+          result.createdAt = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime?;
           break;
         case 'description':
           result.description = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'name':
+          result.name = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
         case 'price':
           result.price = serializers.deserialize(value,
               specifiedType: const FullType(double)) as double?;
           break;
-        case 'created_at':
-          result.createdAt = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime)) as DateTime?;
-          break;
-        case 'modified_at':
-          result.modifiedAt = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime)) as DateTime?;
-          break;
-        case 'on_sale':
-          result.onSale = serializers.deserialize(value,
-              specifiedType: const FullType(bool)) as bool?;
-          break;
-        case 'sale_price':
-          result.salePrice = serializers.deserialize(value,
-              specifiedType: const FullType(double)) as double?;
-          break;
         case 'image':
           result.image = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
-          break;
-        case 'category':
-          result.category = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'cat':
-          result.cat = serializers.deserialize(value,
-              specifiedType: const FullType(DocumentReference, const [
-                const FullType.nullable(Object)
-              ])) as DocumentReference<Object?>?;
           break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
@@ -169,25 +122,17 @@ class _$MenuRecordSerializer implements StructuredSerializer<MenuRecord> {
 
 class _$MenuRecord extends MenuRecord {
   @override
-  final String? name;
-  @override
-  final String? description;
-  @override
-  final double? price;
+  final String? category;
   @override
   final DateTime? createdAt;
   @override
-  final DateTime? modifiedAt;
+  final String? description;
   @override
-  final bool? onSale;
+  final String? name;
   @override
-  final double? salePrice;
+  final double? price;
   @override
   final String? image;
-  @override
-  final String? category;
-  @override
-  final DocumentReference<Object?>? cat;
   @override
   final DocumentReference<Object?>? ffRef;
 
@@ -195,16 +140,12 @@ class _$MenuRecord extends MenuRecord {
       (new MenuRecordBuilder()..update(updates))._build();
 
   _$MenuRecord._(
-      {this.name,
-      this.description,
-      this.price,
+      {this.category,
       this.createdAt,
-      this.modifiedAt,
-      this.onSale,
-      this.salePrice,
+      this.description,
+      this.name,
+      this.price,
       this.image,
-      this.category,
-      this.cat,
       this.ffRef})
       : super._();
 
@@ -219,16 +160,12 @@ class _$MenuRecord extends MenuRecord {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is MenuRecord &&
-        name == other.name &&
-        description == other.description &&
-        price == other.price &&
-        createdAt == other.createdAt &&
-        modifiedAt == other.modifiedAt &&
-        onSale == other.onSale &&
-        salePrice == other.salePrice &&
-        image == other.image &&
         category == other.category &&
-        cat == other.cat &&
+        createdAt == other.createdAt &&
+        description == other.description &&
+        name == other.name &&
+        price == other.price &&
+        image == other.image &&
         ffRef == other.ffRef;
   }
 
@@ -238,37 +175,23 @@ class _$MenuRecord extends MenuRecord {
         $jc(
             $jc(
                 $jc(
-                    $jc(
-                        $jc(
-                            $jc(
-                                $jc(
-                                    $jc(
-                                        $jc($jc(0, name.hashCode),
-                                            description.hashCode),
-                                        price.hashCode),
-                                    createdAt.hashCode),
-                                modifiedAt.hashCode),
-                            onSale.hashCode),
-                        salePrice.hashCode),
-                    image.hashCode),
-                category.hashCode),
-            cat.hashCode),
+                    $jc($jc($jc(0, category.hashCode), createdAt.hashCode),
+                        description.hashCode),
+                    name.hashCode),
+                price.hashCode),
+            image.hashCode),
         ffRef.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'MenuRecord')
-          ..add('name', name)
-          ..add('description', description)
-          ..add('price', price)
-          ..add('createdAt', createdAt)
-          ..add('modifiedAt', modifiedAt)
-          ..add('onSale', onSale)
-          ..add('salePrice', salePrice)
-          ..add('image', image)
           ..add('category', category)
-          ..add('cat', cat)
+          ..add('createdAt', createdAt)
+          ..add('description', description)
+          ..add('name', name)
+          ..add('price', price)
+          ..add('image', image)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -277,45 +200,29 @@ class _$MenuRecord extends MenuRecord {
 class MenuRecordBuilder implements Builder<MenuRecord, MenuRecordBuilder> {
   _$MenuRecord? _$v;
 
-  String? _name;
-  String? get name => _$this._name;
-  set name(String? name) => _$this._name = name;
-
-  String? _description;
-  String? get description => _$this._description;
-  set description(String? description) => _$this._description = description;
-
-  double? _price;
-  double? get price => _$this._price;
-  set price(double? price) => _$this._price = price;
+  String? _category;
+  String? get category => _$this._category;
+  set category(String? category) => _$this._category = category;
 
   DateTime? _createdAt;
   DateTime? get createdAt => _$this._createdAt;
   set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime? _modifiedAt;
-  DateTime? get modifiedAt => _$this._modifiedAt;
-  set modifiedAt(DateTime? modifiedAt) => _$this._modifiedAt = modifiedAt;
+  String? _description;
+  String? get description => _$this._description;
+  set description(String? description) => _$this._description = description;
 
-  bool? _onSale;
-  bool? get onSale => _$this._onSale;
-  set onSale(bool? onSale) => _$this._onSale = onSale;
+  String? _name;
+  String? get name => _$this._name;
+  set name(String? name) => _$this._name = name;
 
-  double? _salePrice;
-  double? get salePrice => _$this._salePrice;
-  set salePrice(double? salePrice) => _$this._salePrice = salePrice;
+  double? _price;
+  double? get price => _$this._price;
+  set price(double? price) => _$this._price = price;
 
   String? _image;
   String? get image => _$this._image;
   set image(String? image) => _$this._image = image;
-
-  String? _category;
-  String? get category => _$this._category;
-  set category(String? category) => _$this._category = category;
-
-  DocumentReference<Object?>? _cat;
-  DocumentReference<Object?>? get cat => _$this._cat;
-  set cat(DocumentReference<Object?>? cat) => _$this._cat = cat;
 
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
@@ -328,16 +235,12 @@ class MenuRecordBuilder implements Builder<MenuRecord, MenuRecordBuilder> {
   MenuRecordBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _name = $v.name;
-      _description = $v.description;
-      _price = $v.price;
-      _createdAt = $v.createdAt;
-      _modifiedAt = $v.modifiedAt;
-      _onSale = $v.onSale;
-      _salePrice = $v.salePrice;
-      _image = $v.image;
       _category = $v.category;
-      _cat = $v.cat;
+      _createdAt = $v.createdAt;
+      _description = $v.description;
+      _name = $v.name;
+      _price = $v.price;
+      _image = $v.image;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -361,16 +264,12 @@ class MenuRecordBuilder implements Builder<MenuRecord, MenuRecordBuilder> {
   _$MenuRecord _build() {
     final _$result = _$v ??
         new _$MenuRecord._(
-            name: name,
-            description: description,
-            price: price,
-            createdAt: createdAt,
-            modifiedAt: modifiedAt,
-            onSale: onSale,
-            salePrice: salePrice,
-            image: image,
             category: category,
-            cat: cat,
+            createdAt: createdAt,
+            description: description,
+            name: name,
+            price: price,
+            image: image,
             ffRef: ffRef);
     replace(_$result);
     return _$result;

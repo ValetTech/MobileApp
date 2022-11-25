@@ -1,4 +1,3 @@
-import '../backend/api_requests/api_calls.dart';
 import '../backend/backend.dart';
 import '../components/end_drawer_container_widget.dart';
 import '../components/page_name_widget.dart';
@@ -8,7 +7,6 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -48,7 +46,9 @@ class _OrdersWidgetState extends State<OrdersWidget> {
             width: 250,
             child: Drawer(
               elevation: 16,
-              child: EndDrawerContainerWidget(),
+              child: EndDrawerContainerWidget(
+                pageName: 'Orders',
+              ),
             ),
           ),
           appBar: PreferredSize(
@@ -318,121 +318,90 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                                                 VerticalDirection.down,
                                             clipBehavior: Clip.none,
                                             children: [
-                                              FutureBuilder<ApiCallResponse>(
-                                                future: ValetAPIGroup
-                                                    .gETSittingTypesByDateCall
-                                                    .call(
-                                                  date: functions
-                                                      .formatDateForPOST(
-                                                          FFAppState()
-                                                              .selectedDate!),
-                                                  authToken: FFAppState().token,
-                                                ),
-                                                builder: (context, snapshot) {
-                                                  // Customize what your widget looks like when it's loading.
-                                                  if (!snapshot.hasData) {
-                                                    return Center(
-                                                      child: SizedBox(
-                                                        width: 40,
-                                                        height: 40,
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          color:
-                                                              Color(0x00023047),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }
-                                                  final choiceChipsGETSittingTypesByDateResponse =
-                                                      snapshot.data!;
-                                                  return FlutterFlowChoiceChips(
-                                                    options: [
-                                                      ChipData('Upstairs',
-                                                          Icons.stairs_rounded)
-                                                    ],
-                                                    onChanged: (val) async {
-                                                      setState(() =>
-                                                          choiceChipsValues
-                                                              .value = val);
-                                                      logFirebaseEvent(
-                                                          'ORDERS_ChoiceChips_yfwvu1r3_ON_FORM_WIDG');
-                                                      logFirebaseEvent(
-                                                          'ChoiceChips_update_local_state');
-                                                      setState(() =>
-                                                          FFAppState()
-                                                                  .filtersOn =
-                                                              true);
-                                                    },
-                                                    selectedChipStyle:
-                                                        ChipStyle(
-                                                      backgroundColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .secondaryColor,
-                                                      textStyle:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyText1
-                                                              .override(
-                                                                fontFamily: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyText1Family,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primaryColor,
-                                                                useGoogleFonts: GoogleFonts
-                                                                        .asMap()
-                                                                    .containsKey(
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .bodyText1Family),
-                                                              ),
-                                                      iconColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryColor,
-                                                      iconSize: 14,
-                                                      elevation: 4,
-                                                    ),
-                                                    unselectedChipStyle:
-                                                        ChipStyle(
-                                                      backgroundColor:
-                                                          Colors.white,
-                                                      textStyle:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyText2
-                                                              .override(
-                                                                fontFamily: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyText2Family,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .iconGray,
-                                                                useGoogleFonts: GoogleFonts
-                                                                        .asMap()
-                                                                    .containsKey(
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .bodyText2Family),
-                                                              ),
-                                                      iconColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .iconGray,
-                                                      iconSize: 14,
-                                                      elevation: 4,
-                                                    ),
-                                                    chipSpacing: 8,
-                                                    multiselect: true,
-                                                    initialized:
-                                                        choiceChipsValues
-                                                                .value !=
-                                                            null,
-                                                    alignment: WrapAlignment
-                                                        .spaceEvenly,
-                                                    selectedValuesVariable:
-                                                        choiceChipsValues,
-                                                  );
+                                              FlutterFlowChoiceChips(
+                                                options: [
+                                                  ChipData('Upstairs',
+                                                      Icons.stairs_rounded)
+                                                ],
+                                                onChanged: (val) async {
+                                                  setState(() =>
+                                                      choiceChipsValues.value =
+                                                          val);
+                                                  logFirebaseEvent(
+                                                      'ORDERS_ChoiceChips_yfwvu1r3_ON_FORM_WIDG');
+                                                  logFirebaseEvent(
+                                                      'ChoiceChips_update_local_state');
+                                                  setState(() => FFAppState()
+                                                      .filtersOn = true);
                                                 },
+                                                selectedChipStyle: ChipStyle(
+                                                  backgroundColor:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .secondaryColor,
+                                                  textStyle: FlutterFlowTheme
+                                                          .of(context)
+                                                      .bodyText1
+                                                      .override(
+                                                        fontFamily:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyText1Family,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                        useGoogleFonts: GoogleFonts
+                                                                .asMap()
+                                                            .containsKey(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyText1Family),
+                                                      ),
+                                                  iconColor:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .primaryColor,
+                                                  iconSize: 14,
+                                                  elevation: 4,
+                                                ),
+                                                unselectedChipStyle: ChipStyle(
+                                                  backgroundColor: Colors.white,
+                                                  textStyle: FlutterFlowTheme
+                                                          .of(context)
+                                                      .bodyText2
+                                                      .override(
+                                                        fontFamily:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyText2Family,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .iconGray,
+                                                        useGoogleFonts: GoogleFonts
+                                                                .asMap()
+                                                            .containsKey(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyText2Family),
+                                                      ),
+                                                  iconColor:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .iconGray,
+                                                  iconSize: 14,
+                                                  elevation: 4,
+                                                ),
+                                                chipSpacing: 8,
+                                                multiselect: true,
+                                                initialized:
+                                                    choiceChipsValues.value !=
+                                                        null,
+                                                alignment:
+                                                    WrapAlignment.spaceEvenly,
+                                                selectedValuesVariable:
+                                                    choiceChipsValues,
                                               ),
                                             ],
                                           ),
@@ -464,8 +433,10 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                               child: StreamBuilder<List<OrdersRecord>>(
                                 stream: queryOrdersRecord(
                                   queryBuilder: (ordersRecord) =>
-                                      ordersRecord.where('date',
-                                          isEqualTo: FFAppState().selectedDate),
+                                      ordersRecord.where('date_created',
+                                          isEqualTo:
+                                              calendarPickerReservationsMainSelectedDay
+                                                  ?.start),
                                 ),
                                 builder: (context, snapshot) {
                                   // Customize what your widget looks like when it's loading.
@@ -507,12 +478,12 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                                               listViewIndex];
                                       return ListTile(
                                         title: Text(
-                                          listViewOrdersRecord.table!,
+                                          'Table ${listViewOrdersRecord.table}',
                                           style: FlutterFlowTheme.of(context)
                                               .title3,
                                         ),
                                         subtitle: Text(
-                                          listViewOrdersRecord.status!,
+                                          listViewIndex.toString(),
                                           style: FlutterFlowTheme.of(context)
                                               .subtitle2,
                                         ),

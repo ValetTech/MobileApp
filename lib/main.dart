@@ -121,7 +121,6 @@ class _NavBarPageState extends State<NavBarPage> {
       'Reservations': ReservationsWidget(),
       'Seating': SeatingWidget(),
       'Orders': OrdersWidget(),
-      'SeatingCopy': SeatingCopyWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
     return Scaffold(
@@ -236,32 +235,6 @@ class _NavBarPageState extends State<NavBarPage> {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: currentIndex == 3
-                        ? FlutterFlowTheme.of(context).secondaryColor
-                        : FlutterFlowTheme.of(context).iconGray,
-                    fontSize: 11.0,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          FloatingNavbarItem(
-            customWidget: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  currentIndex == 4
-                      ? Icons.table_chart_rounded
-                      : Icons.table_chart_outlined,
-                  color: currentIndex == 4
-                      ? FlutterFlowTheme.of(context).secondaryColor
-                      : FlutterFlowTheme.of(context).iconGray,
-                  size: 20,
-                ),
-                Text(
-                  'Seating',
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: currentIndex == 4
                         ? FlutterFlowTheme.of(context).secondaryColor
                         : FlutterFlowTheme.of(context).iconGray,
                     fontSize: 11.0,

@@ -6,7 +6,12 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EndDrawerContainerWidget extends StatefulWidget {
-  const EndDrawerContainerWidget({Key? key}) : super(key: key);
+  const EndDrawerContainerWidget({
+    Key? key,
+    this.pageName,
+  }) : super(key: key);
+
+  final String? pageName;
 
   @override
   _EndDrawerContainerWidgetState createState() =>
@@ -114,8 +119,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                     height: 40,
                     decoration: BoxDecoration(
                       color: valueOrDefault<Color>(
-                        'valet://app${GoRouter.of(context).location}' ==
-                                'valet://app/Dashboard'
+                        widget.pageName == 'Dashboard'
                             ? Color(0x7FFFFFFF)
                             : Colors.transparent,
                         Colors.transparent,
@@ -140,8 +144,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                             child: Icon(
                               Icons.dashboard,
                               color: valueOrDefault<Color>(
-                                'valet://app${GoRouter.of(context).location}' ==
-                                        'valet://app/Dashboard'
+                                widget.pageName == 'Dashboard'
                                     ? FlutterFlowTheme.of(context)
                                         .secondaryColor
                                     : FlutterFlowTheme.of(context).white,
@@ -182,8 +185,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                     height: 40,
                     decoration: BoxDecoration(
                       color: valueOrDefault<Color>(
-                        'valet://app${GoRouter.of(context).location}' ==
-                                'valet://app/Reservations'
+                        widget.pageName == 'Reservations'
                             ? Color(0x7FFFFFFF)
                             : Colors.transparent,
                         Colors.transparent,
@@ -195,9 +197,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                         logFirebaseEvent(
                             'END_DRAWER_CONTAINER_ViewEditResRow_ON_T');
                         logFirebaseEvent('ViewEditResRow_navigate_to');
-                        if (Navigator.of(context).canPop()) {
-                          context.pop();
-                        }
+
                         context.pushNamed('Reservations');
                       },
                       child: Row(
@@ -210,8 +210,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                             child: Icon(
                               Icons.calendar_today_rounded,
                               color: valueOrDefault<Color>(
-                                'valet://app${GoRouter.of(context).location}' ==
-                                        'valet://app/Reservations'
+                                widget.pageName == 'Reservations'
                                     ? FlutterFlowTheme.of(context)
                                         .secondaryColor
                                     : FlutterFlowTheme.of(context).white,
@@ -240,51 +239,60 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 4),
-                  child: Container(
-                    width: double.infinity,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: valueOrDefault<Color>(
-                        'valet://app${GoRouter.of(context).location}' ==
-                                'valet://app/Allocate'
-                            ? Color(0x7FFFFFFF)
-                            : Colors.transparent,
-                        Colors.transparent,
+                  child: InkWell(
+                    onTap: () async {
+                      logFirebaseEvent(
+                          'END_DRAWER_CONTAINER_Container_fccmm6xt_');
+                      logFirebaseEvent('Container_navigate_to');
+
+                      context.pushNamed('Allocate');
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: valueOrDefault<Color>(
+                          widget.pageName == 'Allocate'
+                              ? Color(0x7FFFFFFF)
+                              : Colors.transparent,
+                          Colors.transparent,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
-                          child: Icon(
-                            Icons.group_add,
-                            color: valueOrDefault<Color>(
-                              'valet://app${GoRouter.of(context).location}' ==
-                                      'valet://app/Allocate'
-                                  ? FlutterFlowTheme.of(context).secondaryColor
-                                  : FlutterFlowTheme.of(context).white,
-                              FlutterFlowTheme.of(context).white,
-                            ),
-                            size: 24,
-                          ),
-                        ),
-                        Text(
-                          'Allocate To Table',
-                          style: FlutterFlowTheme.of(context)
-                              .subtitle2
-                              .override(
-                                fontFamily: FlutterFlowTheme.of(context)
-                                    .subtitle2Family,
-                                color: FlutterFlowTheme.of(context).white,
-                                useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                    FlutterFlowTheme.of(context)
-                                        .subtitle2Family),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(12, 0, 32, 0),
+                            child: Icon(
+                              Icons.group_add,
+                              color: valueOrDefault<Color>(
+                                widget.pageName == 'Allocate'
+                                    ? FlutterFlowTheme.of(context)
+                                        .secondaryColor
+                                    : FlutterFlowTheme.of(context).white,
+                                FlutterFlowTheme.of(context).white,
                               ),
-                        ),
-                      ],
+                              size: 24,
+                            ),
+                          ),
+                          Text(
+                            'Allocate To Table',
+                            style: FlutterFlowTheme.of(context)
+                                .subtitle2
+                                .override(
+                                  fontFamily: FlutterFlowTheme.of(context)
+                                      .subtitle2Family,
+                                  color: FlutterFlowTheme.of(context).white,
+                                  useGoogleFonts: GoogleFonts.asMap()
+                                      .containsKey(FlutterFlowTheme.of(context)
+                                          .subtitle2Family),
+                                ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -302,8 +310,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                     height: 40,
                     decoration: BoxDecoration(
                       color: valueOrDefault<Color>(
-                        'valet://app${GoRouter.of(context).location}' ==
-                                'valet://app/Seating'
+                        widget.pageName == 'Seating'
                             ? Color(0x7FFFFFFF)
                             : Colors.transparent,
                         Colors.transparent,
@@ -328,8 +335,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                             child: Icon(
                               Icons.table_chart,
                               color: valueOrDefault<Color>(
-                                'valet://app${GoRouter.of(context).location}' ==
-                                        'valet://app/Seating'
+                                widget.pageName == 'Seating'
                                     ? FlutterFlowTheme.of(context)
                                         .secondaryColor
                                     : FlutterFlowTheme.of(context).white,
@@ -370,8 +376,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                     height: 40,
                     decoration: BoxDecoration(
                       color: valueOrDefault<Color>(
-                        'valet://app${GoRouter.of(context).location}' ==
-                                'valet://app/NewOrder'
+                        widget.pageName == 'New Order'
                             ? Color(0x7FFFFFFF)
                             : Colors.transparent,
                         Colors.transparent,
@@ -396,8 +401,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                             child: Icon(
                               Icons.post_add_rounded,
                               color: valueOrDefault<Color>(
-                                'valet://app${GoRouter.of(context).location}' ==
-                                        'valet://app/NewOrder'
+                                widget.pageName == 'New Order'
                                     ? FlutterFlowTheme.of(context)
                                         .secondaryColor
                                     : FlutterFlowTheme.of(context).white,
@@ -429,8 +433,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                   height: 40,
                   decoration: BoxDecoration(
                     color: valueOrDefault<Color>(
-                      'valet://app${GoRouter.of(context).location}' ==
-                              'valet://app/Orders'
+                      widget.pageName == 'Orders'
                           ? Color(0x7FFFFFFF)
                           : Colors.transparent,
                       Colors.transparent,
@@ -455,8 +458,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                           child: Icon(
                             Icons.payment_rounded,
                             color: valueOrDefault<Color>(
-                              'valet://app${GoRouter.of(context).location}' ==
-                                      'valet://app/Orders'
+                              widget.pageName == 'View Orders'
                                   ? FlutterFlowTheme.of(context).secondaryColor
                                   : FlutterFlowTheme.of(context).white,
                               FlutterFlowTheme.of(context).white,
@@ -488,8 +490,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                     height: 40,
                     decoration: BoxDecoration(
                       color: valueOrDefault<Color>(
-                        'valet://app${GoRouter.of(context).location}' ==
-                                'valet://app/Menu'
+                        widget.pageName == 'Menu'
                             ? Color(0x7FFFFFFF)
                             : Colors.transparent,
                         Colors.transparent,
@@ -514,8 +515,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                             child: Icon(
                               Icons.fastfood_rounded,
                               color: valueOrDefault<Color>(
-                                'valet://app${GoRouter.of(context).location}' ==
-                                        'valet://app/Menu'
+                                widget.pageName == 'Menu'
                                     ? FlutterFlowTheme.of(context)
                                         .secondaryColor
                                     : FlutterFlowTheme.of(context).white,
@@ -563,7 +563,7 @@ class _EndDrawerContainerWidgetState extends State<EndDrawerContainerWidget> {
                   GoRouter.of(context).prepareAuthEvent();
                   await signOut();
 
-                  context.goNamedAuth('PINLogin', mounted);
+                  context.goNamedAuth('mainLogin', mounted);
                 },
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,

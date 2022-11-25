@@ -20,26 +20,40 @@ class _$OrdersRecordSerializer implements StructuredSerializer<OrdersRecord> {
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[];
     Object? value;
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
-    value = object.date;
-    if (value != null) {
-      result
-        ..add('date')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(DateTime)));
-    }
     value = object.table;
     if (value != null) {
       result
         ..add('table')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
+    }
+    value = object.dateCreated;
+    if (value != null) {
+      result
+        ..add('date_created')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(DateTime)));
+    }
+    value = object.isOpen;
+    if (value != null) {
+      result
+        ..add('isOpen')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.qty;
+    if (value != null) {
+      result
+        ..add('qty')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.itemRef;
+    if (value != null) {
+      result
+        ..add('item_ref')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                DocumentReference, const [const FullType.nullable(Object)])));
     }
     value = object.ffRef;
     if (value != null) {
@@ -64,17 +78,27 @@ class _$OrdersRecordSerializer implements StructuredSerializer<OrdersRecord> {
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
-        case 'status':
-          result.status = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'date':
-          result.date = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime)) as DateTime?;
-          break;
         case 'table':
           result.table = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
+          break;
+        case 'date_created':
+          result.dateCreated = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime?;
+          break;
+        case 'isOpen':
+          result.isOpen = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'qty':
+          result.qty = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'item_ref':
+          result.itemRef = serializers.deserialize(value,
+              specifiedType: const FullType(DocumentReference, const [
+                const FullType.nullable(Object)
+              ])) as DocumentReference<Object?>?;
           break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
@@ -91,18 +115,28 @@ class _$OrdersRecordSerializer implements StructuredSerializer<OrdersRecord> {
 
 class _$OrdersRecord extends OrdersRecord {
   @override
-  final String? status;
-  @override
-  final DateTime? date;
-  @override
   final String? table;
+  @override
+  final DateTime? dateCreated;
+  @override
+  final bool? isOpen;
+  @override
+  final int? qty;
+  @override
+  final DocumentReference<Object?>? itemRef;
   @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$OrdersRecord([void Function(OrdersRecordBuilder)? updates]) =>
       (new OrdersRecordBuilder()..update(updates))._build();
 
-  _$OrdersRecord._({this.status, this.date, this.table, this.ffRef})
+  _$OrdersRecord._(
+      {this.table,
+      this.dateCreated,
+      this.isOpen,
+      this.qty,
+      this.itemRef,
+      this.ffRef})
       : super._();
 
   @override
@@ -116,25 +150,34 @@ class _$OrdersRecord extends OrdersRecord {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is OrdersRecord &&
-        status == other.status &&
-        date == other.date &&
         table == other.table &&
+        dateCreated == other.dateCreated &&
+        isOpen == other.isOpen &&
+        qty == other.qty &&
+        itemRef == other.itemRef &&
         ffRef == other.ffRef;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, status.hashCode), date.hashCode), table.hashCode),
+        $jc(
+            $jc(
+                $jc($jc($jc(0, table.hashCode), dateCreated.hashCode),
+                    isOpen.hashCode),
+                qty.hashCode),
+            itemRef.hashCode),
         ffRef.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'OrdersRecord')
-          ..add('status', status)
-          ..add('date', date)
           ..add('table', table)
+          ..add('dateCreated', dateCreated)
+          ..add('isOpen', isOpen)
+          ..add('qty', qty)
+          ..add('itemRef', itemRef)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -144,17 +187,25 @@ class OrdersRecordBuilder
     implements Builder<OrdersRecord, OrdersRecordBuilder> {
   _$OrdersRecord? _$v;
 
-  String? _status;
-  String? get status => _$this._status;
-  set status(String? status) => _$this._status = status;
-
-  DateTime? _date;
-  DateTime? get date => _$this._date;
-  set date(DateTime? date) => _$this._date = date;
-
   String? _table;
   String? get table => _$this._table;
   set table(String? table) => _$this._table = table;
+
+  DateTime? _dateCreated;
+  DateTime? get dateCreated => _$this._dateCreated;
+  set dateCreated(DateTime? dateCreated) => _$this._dateCreated = dateCreated;
+
+  bool? _isOpen;
+  bool? get isOpen => _$this._isOpen;
+  set isOpen(bool? isOpen) => _$this._isOpen = isOpen;
+
+  int? _qty;
+  int? get qty => _$this._qty;
+  set qty(int? qty) => _$this._qty = qty;
+
+  DocumentReference<Object?>? _itemRef;
+  DocumentReference<Object?>? get itemRef => _$this._itemRef;
+  set itemRef(DocumentReference<Object?>? itemRef) => _$this._itemRef = itemRef;
 
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
@@ -167,9 +218,11 @@ class OrdersRecordBuilder
   OrdersRecordBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _status = $v.status;
-      _date = $v.date;
       _table = $v.table;
+      _dateCreated = $v.dateCreated;
+      _isOpen = $v.isOpen;
+      _qty = $v.qty;
+      _itemRef = $v.itemRef;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -193,7 +246,12 @@ class OrdersRecordBuilder
   _$OrdersRecord _build() {
     final _$result = _$v ??
         new _$OrdersRecord._(
-            status: status, date: date, table: table, ffRef: ffRef);
+            table: table,
+            dateCreated: dateCreated,
+            isOpen: isOpen,
+            qty: qty,
+            itemRef: itemRef,
+            ffRef: ffRef);
     replace(_$result);
     return _$result;
   }

@@ -16,14 +16,14 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SeatingCopyWidget extends StatefulWidget {
-  const SeatingCopyWidget({Key? key}) : super(key: key);
+class AllocateWidget extends StatefulWidget {
+  const AllocateWidget({Key? key}) : super(key: key);
 
   @override
-  _SeatingCopyWidgetState createState() => _SeatingCopyWidgetState();
+  _AllocateWidgetState createState() => _AllocateWidgetState();
 }
 
-class _SeatingCopyWidgetState extends State<SeatingCopyWidget>
+class _AllocateWidgetState extends State<AllocateWidget>
     with TickerProviderStateMixin {
   Completer<ApiCallResponse>? _apiRequestCompleter;
   DateTimeRange? calendarPickerSeatingSelectedDay;
@@ -60,7 +60,7 @@ class _SeatingCopyWidgetState extends State<SeatingCopyWidget>
       start: DateTime.now().startOfDay,
       end: DateTime.now().endOfDay,
     );
-    logFirebaseEvent('screen_view', parameters: {'screen_name': 'SeatingCopy'});
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Allocate'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -76,7 +76,9 @@ class _SeatingCopyWidgetState extends State<SeatingCopyWidget>
             width: 250,
             child: Drawer(
               elevation: 16,
-              child: EndDrawerContainerWidget(),
+              child: EndDrawerContainerWidget(
+                pageName: 'Allocate',
+              ),
             ),
           ),
           appBar: PreferredSize(
@@ -115,7 +117,7 @@ class _SeatingCopyWidgetState extends State<SeatingCopyWidget>
                     size: 30,
                   ),
                   onPressed: () async {
-                    logFirebaseEvent('SEATING_COPY_PAGE_menu_ICN_ON_TAP');
+                    logFirebaseEvent('ALLOCATE_PAGE_menu_ICN_ON_TAP');
                     logFirebaseEvent('IconButton_drawer');
                     scaffoldKey.currentState!.openEndDrawer();
                   },
@@ -138,7 +140,7 @@ class _SeatingCopyWidgetState extends State<SeatingCopyWidget>
                       future:
                           (_apiRequestCompleter ??= Completer<ApiCallResponse>()
                                 ..complete(ValetAPIGroup.newAreaCall.call(
-                                  authToken: FFAppState().token,
+                                  token: FFAppState().token,
                                 )))
                               .future,
                       builder: (context, snapshot) {
@@ -160,7 +162,7 @@ class _SeatingCopyWidgetState extends State<SeatingCopyWidget>
                         return RefreshIndicator(
                           onRefresh: () async {
                             logFirebaseEvent(
-                                'SEATING_COPY_ColumnScaffold_ON_PULL_TO_R');
+                                'ALLOCATE_ColumnScaffold_ON_PULL_TO_REFRE');
                             logFirebaseEvent(
                                 'ColumnScaffold_refresh_database_request');
                             setState(() => _apiRequestCompleter = null);
@@ -238,7 +240,7 @@ class _SeatingCopyWidgetState extends State<SeatingCopyWidget>
                                                     calendarPickerSeatingSelectedDay =
                                                         newSelectedDate;
                                                     logFirebaseEvent(
-                                                        'SEATING_COPY_CalendarPickerSeating_ON_DA');
+                                                        'ALLOCATE_CalendarPickerSeating_ON_DATE_S');
                                                     logFirebaseEvent(
                                                         'CalendarPickerSeating_clear_all_select_a');
                                                     setState(() =>
@@ -376,7 +378,7 @@ class _SeatingCopyWidgetState extends State<SeatingCopyWidget>
                                                     child: InkWell(
                                                       onTap: () async {
                                                         logFirebaseEvent(
-                                                            'SEATING_COPY_PAGE_Icon_u6nwl4yh_ON_TAP');
+                                                            'ALLOCATE_PAGE_Icon_u6nwl4yh_ON_TAP');
                                                         logFirebaseEvent(
                                                             'Icon_update_local_state');
                                                         setState(() =>
@@ -426,7 +428,7 @@ class _SeatingCopyWidgetState extends State<SeatingCopyWidget>
                                                             allocatedFreeChipsValues
                                                                 .value = val);
                                                         logFirebaseEvent(
-                                                            'SEATING_COPY_AllocatedFreeChips_ON_FORM_');
+                                                            'ALLOCATE_AllocatedFreeChips_ON_FORM_WIDG');
                                                         logFirebaseEvent(
                                                             'AllocatedFreeChips_update_local_state');
                                                         setState(() =>
@@ -685,7 +687,7 @@ class _SeatingCopyWidgetState extends State<SeatingCopyWidget>
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 16),
                         child: FFButtonWidget(
                           onPressed: () async {
-                            logFirebaseEvent('SEATING_COPY_PAGE_FAB_ON_TAP');
+                            logFirebaseEvent('ALLOCATE_PAGE_FAB_ON_TAP');
                             logFirebaseEvent('FAB_navigate_to');
 
                             context.pushNamed('NewReservation');
