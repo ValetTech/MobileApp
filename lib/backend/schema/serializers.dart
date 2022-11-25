@@ -25,7 +25,6 @@ const kDocumentReferenceField = 'Document__Reference__Field';
   OrdersRecord,
   CartRecord,
   CartitemsRecord,
-  OrderItemsStruct,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..add(DocumentReferenceSerializer())

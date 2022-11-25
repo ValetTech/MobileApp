@@ -755,7 +755,7 @@ class _NewReservationPageViewWidgetState
                                 ),
                                 FlutterFlowChoiceChips(
                                   options: functions
-                                      .sessionTimes()
+                                      .sessionTimes()!
                                       .map((e) => dateTimeFormat('jm', e))
                                       .toList()
                                       .map((label) => ChipData(label))

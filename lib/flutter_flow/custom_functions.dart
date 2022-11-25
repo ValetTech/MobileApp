@@ -177,7 +177,7 @@ int countPricesAndQty(
   return qty;
 }
 
-List<DateTime> sessionTimes() {
+List<DateTime>? sessionTimes() {
   var times = <DateTime>[];
   var time = DateTime(2019, 1, 1, 9);
   while (time.hour < 23) {

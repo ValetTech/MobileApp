@@ -13,7 +13,7 @@ abstract class CartitemsRecord
 
   DocumentReference? get item;
 
-  int? get int;
+  int? get quantity;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
@@ -22,7 +22,7 @@ abstract class CartitemsRecord
   DocumentReference get parentReference => reference.parent.parent!;
 
   static void _initializeBuilder(CartitemsRecordBuilder builder) =>
-      builder..int = 0;
+      builder..quantity = 0;
 
   static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
       parent != null
@@ -52,14 +52,14 @@ abstract class CartitemsRecord
 
 Map<String, dynamic> createCartitemsRecordData({
   DocumentReference? item,
-  int? int,
+  int? quantity,
 }) {
   final firestoreData = serializers.toFirestore(
     CartitemsRecord.serializer,
     CartitemsRecord(
       (c) => c
         ..item = item
-        ..int = int,
+        ..quantity = quantity,
     ),
   );
 
