@@ -911,6 +911,14 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                                                                                                     logFirebaseEvent('Icon_update_local_state');
                                                                                                     setState(() => FFAppState().itemcount = 1);
                                                                                                   }
+
+                                                                                                  logFirebaseEvent('Icon_backend_call');
+
+                                                                                                  final cartUpdateData = {
+                                                                                                    'item_ref': newOrderMenuRecordList.map((e) => e.reference).toList(),
+                                                                                                    'qty': FieldValue.arrayUnion([1]),
+                                                                                                  };
+                                                                                                  await newCartFromLocalState!.reference.update(cartUpdateData);
                                                                                                 },
                                                                                                 child: Icon(
                                                                                                   Icons.add_circle,
