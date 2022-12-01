@@ -1,10 +1,10 @@
 <img src="https://user-images.githubusercontent.com/1101045/204400753-77f175ce-932c-4676-bfaa-c87a3dee5222.png" width="200">
 
 # Valet Android App
-An all-in-one management dashboard for the Valet reservation, table and order management system.
+The Flutter Android app for the Valet reservation, table and order management system.
 
 ## Try it out
-<img src="https://lh3.googleusercontent.com/q1k2l5CwMV31JdDXcpN4Ey7O43PxnjAuZBTmcHEwQxVuv_2wCE2gAAQMWxwNUC2FYEOnYgFPOpw6kmHJWuEGeIBLTj9CuxcOEeU8UXyzWJq4NJM3lg=s0"(https://play.google.com/store/apps/details?id=com.flutterflow.valet)>
+<img src="https://lh3.googleusercontent.com/q1k2l5CwMV31JdDXcpN4Ey7O43PxnjAuZBTmcHEwQxVuv_2wCE2gAAQMWxwNUC2FYEOnYgFPOpw6kmHJWuEGeIBLTj9CuxcOEeU8UXyzWJq4NJM3lg=s0" href="https://play.google.com/store/apps/details?id=com.flutterflow.valet">
 Available in beta on the Google Play Store. [Try it out here.](https://play.google.com/store/apps/details?id=com.flutterflow.valet)
 
 
