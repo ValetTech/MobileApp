@@ -1,5 +1,5 @@
 
-<img src="https://user-images.githubusercontent.com/1101045/204400753-77f175ce-932c-4676-bfaa-c87a3dee5222.png" width="200">
+<img src="https://www.getvalet.com.au/Header.jpg">
 
 # Valet Android App
 The Flutter Android app for the Valet reservation, table and order management system.
