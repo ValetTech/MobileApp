@@ -1,8 +1,14 @@
-# Valet
+<img src="https://user-images.githubusercontent.com/1101045/204400753-77f175ce-932c-4676-bfaa-c87a3dee5222.png" width="200">
 
-A new Flutter project.
+# Valet Android App
+An all-in-one management dashboard for the Valet reservation, table and order management system.
 
-## Getting Started
+## Try it out
+<img src="https://lh3.googleusercontent.com/q1k2l5CwMV31JdDXcpN4Ey7O43PxnjAuZBTmcHEwQxVuv_2wCE2gAAQMWxwNUC2FYEOnYgFPOpw6kmHJWuEGeIBLTj9CuxcOEeU8UXyzWJq4NJM3lg=s0">(https://play.google.com/store/apps/details?id=com.flutterflow.valet)
+Available in beta on the Google Play Store. [Try it out here.](https://play.google.com/store/apps/details?id=com.flutterflow.valet)
+
+
+## Getting Started With Flutter Code
 
 FlutterFlow projects are built to run on the Flutter _stable_ release.
 
