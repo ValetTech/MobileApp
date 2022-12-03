@@ -22,6 +22,9 @@ abstract class MenuRecord implements Built<MenuRecord, MenuRecordBuilder> {
 
   String? get image;
 
+  @BuiltValueField(wireName: 'cart_qty')
+  int? get cartQty;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -31,7 +34,8 @@ abstract class MenuRecord implements Built<MenuRecord, MenuRecordBuilder> {
     ..description = ''
     ..name = ''
     ..price = 0.0
-    ..image = '';
+    ..image = ''
+    ..cartQty = 0;
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('menu');
@@ -60,6 +64,7 @@ Map<String, dynamic> createMenuRecordData({
   String? name,
   double? price,
   String? image,
+  int? cartQty,
 }) {
   final firestoreData = serializers.toFirestore(
     MenuRecord.serializer,
@@ -70,7 +75,8 @@ Map<String, dynamic> createMenuRecordData({
         ..description = description
         ..name = name
         ..price = price
-        ..image = image,
+        ..image = image
+        ..cartQty = cartQty,
     ),
   );
 

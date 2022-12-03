@@ -45,15 +45,17 @@ class _$OrdersRecordSerializer implements StructuredSerializer<OrdersRecord> {
     if (value != null) {
       result
         ..add('qty')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value,
+            specifiedType:
+                const FullType(BuiltList, const [const FullType(int)])));
     }
-    value = object.itemRef;
+    value = object.items;
     if (value != null) {
       result
-        ..add('item_ref')
+        ..add('items')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(
-                DocumentReference, const [const FullType.nullable(Object)])));
+            specifiedType:
+                const FullType(BuiltList, const [const FullType(String)])));
     }
     value = object.ffRef;
     if (value != null) {
@@ -91,14 +93,16 @@ class _$OrdersRecordSerializer implements StructuredSerializer<OrdersRecord> {
               specifiedType: const FullType(bool)) as bool?;
           break;
         case 'qty':
-          result.qty = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.qty.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(int)]))!
+              as BuiltList<Object?>);
           break;
-        case 'item_ref':
-          result.itemRef = serializers.deserialize(value,
-              specifiedType: const FullType(DocumentReference, const [
-                const FullType.nullable(Object)
-              ])) as DocumentReference<Object?>?;
+        case 'items':
+          result.items.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
+              as BuiltList<Object?>);
           break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
@@ -121,9 +125,9 @@ class _$OrdersRecord extends OrdersRecord {
   @override
   final bool? isOpen;
   @override
-  final int? qty;
+  final BuiltList<int>? qty;
   @override
-  final DocumentReference<Object?>? itemRef;
+  final BuiltList<String>? items;
   @override
   final DocumentReference<Object?>? ffRef;
 
@@ -135,7 +139,7 @@ class _$OrdersRecord extends OrdersRecord {
       this.dateCreated,
       this.isOpen,
       this.qty,
-      this.itemRef,
+      this.items,
       this.ffRef})
       : super._();
 
@@ -154,7 +158,7 @@ class _$OrdersRecord extends OrdersRecord {
         dateCreated == other.dateCreated &&
         isOpen == other.isOpen &&
         qty == other.qty &&
-        itemRef == other.itemRef &&
+        items == other.items &&
         ffRef == other.ffRef;
   }
 
@@ -166,7 +170,7 @@ class _$OrdersRecord extends OrdersRecord {
                 $jc($jc($jc(0, table.hashCode), dateCreated.hashCode),
                     isOpen.hashCode),
                 qty.hashCode),
-            itemRef.hashCode),
+            items.hashCode),
         ffRef.hashCode));
   }
 
@@ -177,7 +181,7 @@ class _$OrdersRecord extends OrdersRecord {
           ..add('dateCreated', dateCreated)
           ..add('isOpen', isOpen)
           ..add('qty', qty)
-          ..add('itemRef', itemRef)
+          ..add('items', items)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -199,13 +203,13 @@ class OrdersRecordBuilder
   bool? get isOpen => _$this._isOpen;
   set isOpen(bool? isOpen) => _$this._isOpen = isOpen;
 
-  int? _qty;
-  int? get qty => _$this._qty;
-  set qty(int? qty) => _$this._qty = qty;
+  ListBuilder<int>? _qty;
+  ListBuilder<int> get qty => _$this._qty ??= new ListBuilder<int>();
+  set qty(ListBuilder<int>? qty) => _$this._qty = qty;
 
-  DocumentReference<Object?>? _itemRef;
-  DocumentReference<Object?>? get itemRef => _$this._itemRef;
-  set itemRef(DocumentReference<Object?>? itemRef) => _$this._itemRef = itemRef;
+  ListBuilder<String>? _items;
+  ListBuilder<String> get items => _$this._items ??= new ListBuilder<String>();
+  set items(ListBuilder<String>? items) => _$this._items = items;
 
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
@@ -221,8 +225,8 @@ class OrdersRecordBuilder
       _table = $v.table;
       _dateCreated = $v.dateCreated;
       _isOpen = $v.isOpen;
-      _qty = $v.qty;
-      _itemRef = $v.itemRef;
+      _qty = $v.qty?.toBuilder();
+      _items = $v.items?.toBuilder();
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -244,14 +248,29 @@ class OrdersRecordBuilder
   OrdersRecord build() => _build();
 
   _$OrdersRecord _build() {
-    final _$result = _$v ??
-        new _$OrdersRecord._(
-            table: table,
-            dateCreated: dateCreated,
-            isOpen: isOpen,
-            qty: qty,
-            itemRef: itemRef,
-            ffRef: ffRef);
+    _$OrdersRecord _$result;
+    try {
+      _$result = _$v ??
+          new _$OrdersRecord._(
+              table: table,
+              dateCreated: dateCreated,
+              isOpen: isOpen,
+              qty: _qty?.build(),
+              items: _items?.build(),
+              ffRef: ffRef);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'qty';
+        _qty?.build();
+        _$failedField = 'items';
+        _items?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'OrdersRecord', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

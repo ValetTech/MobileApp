@@ -169,14 +169,6 @@ double returncartprice(double value) {
   return value * -1;
 }
 
-int countPricesAndQty(
-  int qty,
-  double price,
-) {
-  qty = price.toInt() * qty;
-  return qty;
-}
-
 List<DateTime>? sessionTimes() {
   var times = <DateTime>[];
   var time = DateTime(2019, 1, 1, 9);
@@ -185,4 +177,11 @@ List<DateTime>? sessionTimes() {
     time = time.add(Duration(minutes: 30));
   }
   return times;
+}
+
+double pricexqty(
+  double price,
+  int qty,
+) {
+  return price * qty;
 }

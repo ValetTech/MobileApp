@@ -111,20 +111,20 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                   : ReservationsWidget(),
             ),
             FFRoute(
-              name: 'Orders',
-              path: 'orders',
-              requireAuth: true,
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'Orders')
-                  : OrdersWidget(),
-            ),
-            FFRoute(
               name: 'Seating',
               path: 'seating',
               requireAuth: true,
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'Seating')
                   : SeatingWidget(),
+            ),
+            FFRoute(
+              name: 'Orders',
+              path: 'orders',
+              requireAuth: true,
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'Orders')
+                  : OrdersWidget(),
             ),
             FFRoute(
               name: 'NewReservation',

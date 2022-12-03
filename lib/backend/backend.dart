@@ -9,8 +9,6 @@ import 'schema/token_record.dart';
 import 'schema/menu_record.dart';
 import 'schema/categories_record.dart';
 import 'schema/orders_record.dart';
-import 'schema/cart_record.dart';
-import 'schema/cartitems_record.dart';
 import 'schema/serializers.dart';
 
 export 'dart:async' show StreamSubscription;
@@ -23,8 +21,6 @@ export 'schema/token_record.dart';
 export 'schema/menu_record.dart';
 export 'schema/categories_record.dart';
 export 'schema/orders_record.dart';
-export 'schema/cart_record.dart';
-export 'schema/cartitems_record.dart';
 
 /// Functions to query UsersRecords (as a Stream and as a Future).
 Stream<List<UsersRecord>> queryUsersRecord({
@@ -230,93 +226,6 @@ Future<FFFirestorePage<OrdersRecord>> queryOrdersRecordPage({
     queryCollectionPage(
       OrdersRecord.collection,
       OrdersRecord.serializer,
-      queryBuilder: queryBuilder,
-      nextPageMarker: nextPageMarker,
-      pageSize: pageSize,
-      isStream: isStream,
-    );
-
-/// Functions to query CartRecords (as a Stream and as a Future).
-Stream<List<CartRecord>> queryCartRecord({
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-  bool singleRecord = false,
-}) =>
-    queryCollection(
-      CartRecord.collection,
-      CartRecord.serializer,
-      queryBuilder: queryBuilder,
-      limit: limit,
-      singleRecord: singleRecord,
-    );
-
-Future<List<CartRecord>> queryCartRecordOnce({
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-  bool singleRecord = false,
-}) =>
-    queryCollectionOnce(
-      CartRecord.collection,
-      CartRecord.serializer,
-      queryBuilder: queryBuilder,
-      limit: limit,
-      singleRecord: singleRecord,
-    );
-
-Future<FFFirestorePage<CartRecord>> queryCartRecordPage({
-  Query Function(Query)? queryBuilder,
-  DocumentSnapshot? nextPageMarker,
-  required int pageSize,
-  required bool isStream,
-}) =>
-    queryCollectionPage(
-      CartRecord.collection,
-      CartRecord.serializer,
-      queryBuilder: queryBuilder,
-      nextPageMarker: nextPageMarker,
-      pageSize: pageSize,
-      isStream: isStream,
-    );
-
-/// Functions to query CartitemsRecords (as a Stream and as a Future).
-Stream<List<CartitemsRecord>> queryCartitemsRecord({
-  DocumentReference? parent,
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-  bool singleRecord = false,
-}) =>
-    queryCollection(
-      CartitemsRecord.collection(parent),
-      CartitemsRecord.serializer,
-      queryBuilder: queryBuilder,
-      limit: limit,
-      singleRecord: singleRecord,
-    );
-
-Future<List<CartitemsRecord>> queryCartitemsRecordOnce({
-  DocumentReference? parent,
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-  bool singleRecord = false,
-}) =>
-    queryCollectionOnce(
-      CartitemsRecord.collection(parent),
-      CartitemsRecord.serializer,
-      queryBuilder: queryBuilder,
-      limit: limit,
-      singleRecord: singleRecord,
-    );
-
-Future<FFFirestorePage<CartitemsRecord>> queryCartitemsRecordPage({
-  DocumentReference? parent,
-  Query Function(Query)? queryBuilder,
-  DocumentSnapshot? nextPageMarker,
-  required int pageSize,
-  required bool isStream,
-}) =>
-    queryCollectionPage(
-      CartitemsRecord.collection(parent),
-      CartitemsRecord.serializer,
       queryBuilder: queryBuilder,
       nextPageMarker: nextPageMarker,
       pageSize: pageSize,

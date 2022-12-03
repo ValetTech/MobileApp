@@ -9,7 +9,6 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'dart:async';
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -98,7 +97,7 @@ class _AllocateWidgetState extends State<AllocateWidget>
                       child: Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
                         child: PageNameWidget(
-                          pageName: 'Seating',
+                          pageName: 'Allocate',
                         ),
                       ),
                     ),
@@ -519,161 +518,6 @@ class _AllocateWidgetState extends State<AllocateWidget>
                                       ),
                                     ),
                                   ),
-                                ),
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Expanded(
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            16, 16, 16, 0),
-                                        child: Builder(
-                                          builder: (context) {
-                                            final tableAPI = getJsonField(
-                                              columnScaffoldNewAreaResponse
-                                                  .jsonBody,
-                                              r'''$.tables''',
-                                            ).toList();
-                                            if (tableAPI.isEmpty) {
-                                              return Image.asset(
-                                                'assets/images/Screenshot_2022-10-21_at_10.24.55_pm.png',
-                                              );
-                                            }
-                                            return GridView.builder(
-                                              padding: EdgeInsets.zero,
-                                              gridDelegate:
-                                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 3,
-                                                crossAxisSpacing: 10,
-                                                mainAxisSpacing: 10,
-                                                childAspectRatio: 1,
-                                              ),
-                                              shrinkWrap: true,
-                                              scrollDirection: Axis.vertical,
-                                              itemCount: tableAPI.length,
-                                              itemBuilder:
-                                                  (context, tableAPIIndex) {
-                                                final tableAPIItem =
-                                                    tableAPI[tableAPIIndex];
-                                                return Material(
-                                                  color: Colors.transparent,
-                                                  elevation: 4,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                  ),
-                                                  child: Container(
-                                                    width: 100,
-                                                    height: 100,
-                                                    decoration: BoxDecoration(
-                                                      color: FlutterFlowTheme
-                                                              .of(context)
-                                                          .secondaryBackground,
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          blurRadius: 4,
-                                                          color:
-                                                              Color(0x33000000),
-                                                          offset: Offset(0, 2),
-                                                        )
-                                                      ],
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12),
-                                                      border: Border.all(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .iconGray,
-                                                      ),
-                                                    ),
-                                                    child: Align(
-                                                      alignment:
-                                                          AlignmentDirectional(
-                                                              0, 0),
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    0, 0, 0, 8),
-                                                        child: Stack(
-                                                          alignment:
-                                                              AlignmentDirectional(
-                                                                  0, 1),
-                                                          children: [
-                                                            Align(
-                                                              alignment:
-                                                                  AlignmentDirectional(
-                                                                      1, -0.7),
-                                                              child: Badge(
-                                                                badgeContent:
-                                                                    Text(
-                                                                  getJsonField(
-                                                                    tableAPIItem,
-                                                                    r'''$.capacity''',
-                                                                  ).toString(),
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyText1
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            FlutterFlowTheme.of(context).bodyText1Family,
-                                                                        color: Colors
-                                                                            .white,
-                                                                        useGoogleFonts:
-                                                                            GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyText1Family),
-                                                                      ),
-                                                                ),
-                                                                showBadge: true,
-                                                                shape:
-                                                                    BadgeShape
-                                                                        .circle,
-                                                                badgeColor: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .secondaryColor,
-                                                                elevation: 4,
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            8,
-                                                                            8,
-                                                                            8,
-                                                                            8),
-                                                                position:
-                                                                    BadgePosition
-                                                                        .topStart(),
-                                                                animationType:
-                                                                    BadgeAnimationType
-                                                                        .scale,
-                                                                toAnimate: true,
-                                                              ),
-                                                            ),
-                                                            Text(
-                                                              getJsonField(
-                                                                tableAPIItem,
-                                                                r'''$.type''',
-                                                              ).toString(),
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyText1,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ],
                                 ),
                               ],
                             ),

@@ -17,10 +17,9 @@ abstract class OrdersRecord
 
   bool? get isOpen;
 
-  int? get qty;
+  BuiltList<int>? get qty;
 
-  @BuiltValueField(wireName: 'item_ref')
-  DocumentReference? get itemRef;
+  BuiltList<String>? get items;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
@@ -29,7 +28,8 @@ abstract class OrdersRecord
   static void _initializeBuilder(OrdersRecordBuilder builder) => builder
     ..table = ''
     ..isOpen = false
-    ..qty = 0;
+    ..qty = ListBuilder()
+    ..items = ListBuilder();
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('orders');
@@ -56,8 +56,6 @@ Map<String, dynamic> createOrdersRecordData({
   String? table,
   DateTime? dateCreated,
   bool? isOpen,
-  int? qty,
-  DocumentReference? itemRef,
 }) {
   final firestoreData = serializers.toFirestore(
     OrdersRecord.serializer,
@@ -66,8 +64,8 @@ Map<String, dynamic> createOrdersRecordData({
         ..table = table
         ..dateCreated = dateCreated
         ..isOpen = isOpen
-        ..qty = qty
-        ..itemRef = itemRef,
+        ..qty = null
+        ..items = null,
     ),
   );
 

@@ -320,8 +320,9 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                                             children: [
                                               FlutterFlowChoiceChips(
                                                 options: [
-                                                  ChipData('Upstairs',
-                                                      Icons.stairs_rounded)
+                                                  ChipData('Open'),
+                                                  ChipData('Settled'),
+                                                  ChipData('Cancelled')
                                                 ],
                                                 onChanged: (val) async {
                                                   setState(() =>
@@ -416,89 +417,98 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                           Padding(
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 5,
-                                    color: Color(0x230E151B),
-                                    offset: Offset(0, 2),
-                                  )
-                                ],
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: StreamBuilder<List<OrdersRecord>>(
-                                stream: queryOrdersRecord(
-                                  queryBuilder: (ordersRecord) =>
-                                      ordersRecord.where('date_created',
-                                          isEqualTo:
-                                              calendarPickerReservationsMainSelectedDay
-                                                  ?.start),
-                                ),
-                                builder: (context, snapshot) {
-                                  // Customize what your widget looks like when it's loading.
-                                  if (!snapshot.hasData) {
-                                    return Center(
-                                      child: SizedBox(
-                                        width: 40,
-                                        height: 40,
-                                        child: SpinKitRipple(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryColor,
-                                          size: 40,
-                                        ),
+                            child: StreamBuilder<List<OrdersRecord>>(
+                              stream: queryOrdersRecord(),
+                              builder: (context, snapshot) {
+                                // Customize what your widget looks like when it's loading.
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                    child: SizedBox(
+                                      width: 40,
+                                      height: 40,
+                                      child: SpinKitRipple(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryColor,
+                                        size: 40,
                                       ),
-                                    );
-                                  }
-                                  List<OrdersRecord> listViewOrdersRecordList =
-                                      snapshot.data!;
-                                  if (listViewOrdersRecordList.isEmpty) {
-                                    return Center(
-                                      child: Image.asset(
-                                        'assets/images/Screenshot_2022-10-21_at_10.24.55_pm.png',
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height:
-                                            MediaQuery.of(context).size.height *
+                                    ),
+                                  );
+                                }
+                                List<OrdersRecord>
+                                    containerResListViewOrdersRecordList =
+                                    snapshot.data!;
+                                return Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        blurRadius: 5,
+                                        color: Color(0x230E151B),
+                                        offset: Offset(0, 2),
+                                      )
+                                    ],
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Builder(
+                                    builder: (context) {
+                                      final orders =
+                                          containerResListViewOrdersRecordList
+                                              .map((e) => e)
+                                              .toList();
+                                      if (orders.isEmpty) {
+                                        return Center(
+                                          child: Image.asset(
+                                            'assets/images/Screenshot_2022-10-21_at_10.24.55_pm.png',
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
                                                 0.5,
-                                      ),
-                                    );
-                                  }
-                                  return ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.vertical,
-                                    itemCount: listViewOrdersRecordList.length,
-                                    itemBuilder: (context, listViewIndex) {
-                                      final listViewOrdersRecord =
-                                          listViewOrdersRecordList[
-                                              listViewIndex];
-                                      return ListTile(
-                                        title: Text(
-                                          'Table ${listViewOrdersRecord.table}',
-                                          style: FlutterFlowTheme.of(context)
-                                              .title3,
-                                        ),
-                                        subtitle: Text(
-                                          listViewIndex.toString(),
-                                          style: FlutterFlowTheme.of(context)
-                                              .subtitle2,
-                                        ),
-                                        trailing: Icon(
-                                          Icons.arrow_forward_ios,
-                                          color: Color(0xFF303030),
-                                          size: 20,
-                                        ),
-                                        tileColor: Color(0xFFF5F5F5),
-                                        dense: false,
+                                          ),
+                                        );
+                                      }
+                                      return ListView.builder(
+                                        padding: EdgeInsets.zero,
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.vertical,
+                                        itemCount: orders.length,
+                                        itemBuilder: (context, ordersIndex) {
+                                          final ordersItem =
+                                              orders[ordersIndex];
+                                          return ListTile(
+                                            title: Text(
+                                              'Table ${ordersItem.table}',
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .title3,
+                                            ),
+                                            subtitle: Text(
+                                              valueOrDefault<String>(
+                                                '${ordersItem.qty!.toList().length.toString()} items',
+                                                ' items',
+                                              ),
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .subtitle2,
+                                            ),
+                                            trailing: Icon(
+                                              Icons.arrow_forward_ios,
+                                              color: Color(0xFF303030),
+                                              size: 20,
+                                            ),
+                                            tileColor: Color(0xFFF5F5F5),
+                                            dense: false,
+                                          );
+                                        },
                                       );
                                     },
-                                  );
-                                },
-                              ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ],

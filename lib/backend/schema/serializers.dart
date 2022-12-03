@@ -6,8 +6,6 @@ import 'token_record.dart';
 import 'menu_record.dart';
 import 'categories_record.dart';
 import 'orders_record.dart';
-import 'cart_record.dart';
-import 'cartitems_record.dart';
 
 import 'index.dart';
 
@@ -23,8 +21,7 @@ const kDocumentReferenceField = 'Document__Reference__Field';
   MenuRecord,
   CategoriesRecord,
   OrdersRecord,
-  CartRecord,
-  CartitemsRecord,
+  CartStruct,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..add(DocumentReferenceSerializer())

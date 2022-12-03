@@ -537,13 +537,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         16, 8, 8, 8),
                                     child: StreamBuilder<List<OrdersRecord>>(
-                                      stream: queryOrdersRecord(
-                                        queryBuilder: (ordersRecord) =>
-                                            ordersRecord.where('date_created',
-                                                isEqualTo:
-                                                    calendarPickerSelectedDay
-                                                        ?.start),
-                                      ),
+                                      stream: queryOrdersRecord(),
                                       builder: (context, snapshot) {
                                         // Customize what your widget looks like when it's loading.
                                         if (!snapshot.hasData) {
@@ -628,7 +622,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                                             .fromSTEB(
                                                                 0, 0, 0, 8),
                                                     child: Text(
-                                                      'There Are No',
+                                                      'Currently No',
                                                       textAlign:
                                                           TextAlign.center,
                                                       style:
@@ -945,88 +939,126 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       8, 8, 16, 16),
-                                  child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.5,
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          blurRadius: 5,
-                                          color: Color(0x44111417),
-                                          offset: Offset(0, 2),
-                                        )
-                                      ],
-                                      borderRadius: BorderRadius.circular(8),
+                                  child: FutureBuilder<List<MenuRecord>>(
+                                    future: queryMenuRecordOnce(
+                                      queryBuilder: (menuRecord) =>
+                                          menuRecord.where('name',
+                                              isEqualTo:
+                                                  'Aburi Salmon Chef Sampler'),
+                                      singleRecord: true,
                                     ),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          12, 12, 12, 12),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0, 0, 0, 8),
-                                            child: Text(
-                                              'Today\'s Chef\'s Special',
-                                              textAlign: TextAlign.center,
-                                              style:
+                                    builder: (context, snapshot) {
+                                      // Customize what your widget looks like when it's loading.
+                                      if (!snapshot.hasData) {
+                                        return Center(
+                                          child: SizedBox(
+                                            width: 40,
+                                            height: 40,
+                                            child: SpinKitRipple(
+                                              color:
                                                   FlutterFlowTheme.of(context)
+                                                      .secondaryColor,
+                                              size: 40,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      List<MenuRecord>
+                                          chefsSpecialMenuRecordList =
+                                          snapshot.data!;
+                                      final chefsSpecialMenuRecord =
+                                          chefsSpecialMenuRecordList.isNotEmpty
+                                              ? chefsSpecialMenuRecordList.first
+                                              : null;
+                                      return Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.5,
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryBackground,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              blurRadius: 5,
+                                              color: Color(0x44111417),
+                                              offset: Offset(0, 2),
+                                            )
+                                          ],
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  12, 12, 12, 12),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(0, 0, 0, 8),
+                                                child: Text(
+                                                  'Today\'s Chef\'s Special',
+                                                  textAlign: TextAlign.center,
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
                                                       .subtitle2,
-                                            ),
-                                          ),
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            child: Image.asset(
-                                              'assets/images/Special.jpg',
-                                              width: double.infinity,
-                                              height: 100,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0, 8, 0, 8),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Expanded(
-                                                  child: Text(
-                                                    'Pan-roasted Barramundi with Bacon, Mushrooms, and Peas ',
-                                                    textAlign: TextAlign.center,
-                                                    maxLines: 2,
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyText1
-                                                        .override(
-                                                          fontFamily:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyText1Family,
-                                                          fontStyle:
-                                                              FontStyle.italic,
-                                                          useGoogleFonts: GoogleFonts
-                                                                  .asMap()
-                                                              .containsKey(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyText1Family),
-                                                        ),
-                                                  ),
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                child: Image.network(
+                                                  chefsSpecialMenuRecord!
+                                                      .image!,
+                                                  width: double.infinity,
+                                                  height: 100,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(0, 8, 0, 8),
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Text(
+                                                        chefsSpecialMenuRecord!
+                                                            .name!,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        maxLines: 2,
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyText1
+                                                                .override(
+                                                                  fontFamily: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyText1Family,
+                                                                  fontStyle:
+                                                                      FontStyle
+                                                                          .italic,
+                                                                  useGoogleFonts: GoogleFonts
+                                                                          .asMap()
+                                                                      .containsKey(
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .bodyText1Family),
+                                                                ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    ),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
                               ],

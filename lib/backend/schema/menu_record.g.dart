@@ -61,6 +61,12 @@ class _$MenuRecordSerializer implements StructuredSerializer<MenuRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.cartQty;
+    if (value != null) {
+      result
+        ..add('cart_qty')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -107,6 +113,10 @@ class _$MenuRecordSerializer implements StructuredSerializer<MenuRecord> {
           result.image = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'cart_qty':
+          result.cartQty = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -134,6 +144,8 @@ class _$MenuRecord extends MenuRecord {
   @override
   final String? image;
   @override
+  final int? cartQty;
+  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$MenuRecord([void Function(MenuRecordBuilder)? updates]) =>
@@ -146,6 +158,7 @@ class _$MenuRecord extends MenuRecord {
       this.name,
       this.price,
       this.image,
+      this.cartQty,
       this.ffRef})
       : super._();
 
@@ -166,6 +179,7 @@ class _$MenuRecord extends MenuRecord {
         name == other.name &&
         price == other.price &&
         image == other.image &&
+        cartQty == other.cartQty &&
         ffRef == other.ffRef;
   }
 
@@ -175,11 +189,13 @@ class _$MenuRecord extends MenuRecord {
         $jc(
             $jc(
                 $jc(
-                    $jc($jc($jc(0, category.hashCode), createdAt.hashCode),
-                        description.hashCode),
-                    name.hashCode),
-                price.hashCode),
-            image.hashCode),
+                    $jc(
+                        $jc($jc($jc(0, category.hashCode), createdAt.hashCode),
+                            description.hashCode),
+                        name.hashCode),
+                    price.hashCode),
+                image.hashCode),
+            cartQty.hashCode),
         ffRef.hashCode));
   }
 
@@ -192,6 +208,7 @@ class _$MenuRecord extends MenuRecord {
           ..add('name', name)
           ..add('price', price)
           ..add('image', image)
+          ..add('cartQty', cartQty)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -224,6 +241,10 @@ class MenuRecordBuilder implements Builder<MenuRecord, MenuRecordBuilder> {
   String? get image => _$this._image;
   set image(String? image) => _$this._image = image;
 
+  int? _cartQty;
+  int? get cartQty => _$this._cartQty;
+  set cartQty(int? cartQty) => _$this._cartQty = cartQty;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -241,6 +262,7 @@ class MenuRecordBuilder implements Builder<MenuRecord, MenuRecordBuilder> {
       _name = $v.name;
       _price = $v.price;
       _image = $v.image;
+      _cartQty = $v.cartQty;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -270,6 +292,7 @@ class MenuRecordBuilder implements Builder<MenuRecord, MenuRecordBuilder> {
             name: name,
             price: price,
             image: image,
+            cartQty: cartQty,
             ffRef: ffRef);
     replace(_$result);
     return _$result;

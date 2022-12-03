@@ -4,8 +4,8 @@ export 'p_i_n_login/p_i_n_login_widget.dart' show PINLoginWidget;
 export 'registration/registration_widget.dart' show RegistrationWidget;
 export 'dashboard/dashboard_widget.dart' show DashboardWidget;
 export 'reservations/reservations_widget.dart' show ReservationsWidget;
-export 'orders/orders_widget.dart' show OrdersWidget;
 export 'seating/seating_widget.dart' show SeatingWidget;
+export 'orders/orders_widget.dart' show OrdersWidget;
 export 'new_reservation/new_reservation_widget.dart' show NewReservationWidget;
 export 'consumer_entry/consumer_entry_widget.dart' show ConsumerEntryWidget;
 export 'view_reservation/view_reservation_widget.dart'
