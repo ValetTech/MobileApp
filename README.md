@@ -1,31 +1,29 @@
-# Valet
 
-A new Flutter project.
+<img src="https://www.getvalet.com.au/Header.jpg">
 
-## Getting Started
+# Introducing Valet
 
-FlutterFlow projects are built to run on the Flutter _stable_ release.
+Valet is a fast, efficient and user-friendly hospitality management system that streamlines the operations of hospitality venues. 
+The Android and web-based applications combine to allow easy management of reservations, allocation of tables, menu management and ordering. Valet also integrates with the venue's existing website, allowing customers to make reservations online and ensures that all reservation information is easily accessible for venue staff. 
+With Valet, running a hospitality venue becomes a breeze – whatever’s on the menu - allowing you to focus on providing excellent service to your customers.
 
-### IMPORTANT:
 
-For projects with Firestore integration, you must first run the following commands to ensure the project compiles:
+# Valet Android App
 
-```
-flutter pub get
-flutter packages pub run build_runner build --delete-conflicting-outputs
-```
+The Valet Android app is specifically designed to streamline the operations of hospitality venues on the go.
 
-This command creates the generated files that parse each Record from Firestore into a schema object.
+* Upon launch, staff are presented with the Dashboard with widgets that give staff a snapshot of the day, including information occupancy, reservations and orders.
+* Built from the ground up for speed and efficiency, with a UI that brings functionality to the forefront. 
+* Built using Flutter, making it a reliable and user-friendly tool for managing your venue's operations on the go, and providing the ability to easily extend to iOS, Mac or Windows apps in the future with the same codebase.
 
-### Getting started continued:
 
-This project is a starting point for a Flutter application.
+# Try the Beta today!
 
-A few resources to get you started if this is your first Flutter project:
+[<img src="https://lh3.googleusercontent.com/q1k2l5CwMV31JdDXcpN4Ey7O43PxnjAuZBTmcHEwQxVuv_2wCE2gAAQMWxwNUC2FYEOnYgFPOpw6kmHJWuEGeIBLTj9CuxcOEeU8UXyzWJq4NJM3lg=s0">](https://play.google.com/store/apps/details?id=com.flutterflow.valet)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Available in beta on the Google Play Store.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### [**Try it out here**](https://play.google.com/store/apps/details?id=com.flutterflow.valet) 
+
+
+
